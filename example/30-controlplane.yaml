@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: shoot--foobar--ironcore
+  labels:
+#    backup.gardener.cloud/provider: ironcore
+#    seed.gardener.cloud/provider: ironcore
+    shoot.gardener.cloud/provider: ironcore
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudprovider
+  namespace: shoot--foobar--ironcore
+type: Opaque
+data:
+  namespace: my-namespace
+  username: my-user
+  token: abcd12345
+---
+apiVersion: extensions.gardener.cloud/v1alpha1
+kind: Cluster
+metadata:
+  name: shoot--foobar--ironcore
+spec:
+  cloudProfile:
+    apiVersion: core.gardener.cloud/v1beta1
+    kind: CloudProfile
+  seed:
+    apiVersion: core.gardener.cloud/v1beta1
+    kind: Seed
+  shoot:
+    apiVersion: core.gardener.cloud/v1beta1
+    kind: Shoot
+    spec:
+      networking:
+        pods: 10.250.0.0/19
+      kubernetes:
+        version: 1.26.0
+      hibernation:
+        enabled: false
+    status:
+      lastOperation:
+        state: Succeeded
+---
+apiVersion: extensions.gardener.cloud/v1alpha1
+kind: ControlPlane
+metadata:
+  name: control-plane
+  namespace: shoot--foobar--ironcore
+spec:
+  type: ironcore
+  region: my-region
+  secretRef:
+    name: cloudprovider
+    namespace: shoot--foobar--ironcore
+  providerConfig:
+    apiVersion: ironcore.provider.extensions.gardener.cloud/v1alpha1
+    kind: ControlPlaneConfig
+    cloudControllerManager:
+      featureGates:
+        CustomResourceValidation: true
+  infrastructureProviderStatus:
+    apiVersion: ironcore.provider.extensions.gardener.cloud/v1alpha1
+    kind: InfrastructureStatus
+    #networkRef: # (optional)
+    #  name: my-network

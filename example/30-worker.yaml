@@ -1,0 +1,95 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudprovider
+  namespace: shoot--foobar--ironcore
+type: Opaque
+data:
+  namespace: my-namespace
+  username: my-user
+  token: abcd12345
+---
+apiVersion: extensions.gardener.cloud/v1alpha1
+kind: Cluster
+metadata:
+  name: shoot--foobar--ironcore
+spec:
+  cloudProfile:
+    apiVersion: core.gardener.cloud/v1beta1
+    kind: CloudProfile
+    spec:
+      providerConfig:
+        apiVersion: ironcore.provider.extensions.gardener.cloud/v1alpha1
+        kind: CloudProfileConfig
+        machineImages:
+        - name: gardenlinux
+          versions:
+          - version: 1.0.0
+            image: registry/image:tag
+  seed:
+    apiVersion: core.gardener.cloud/v1beta1
+    kind: Seed
+  shoot:
+    apiVersion: core.gardener.cloud/v1beta1
+    kind: Shoot
+    spec:
+      kubernetes:
+        version: 1.26.0
+    status:
+      lastOperation:
+        state: Succeeded
+---
+# This resource does result in the deployment of the machine-controller-manager, the machine classes,
+# and the desired MachineDeployments. However, it does not create actual virtual machines because the
+# provided infrastructure status data (subnet name, etc.) is not valid/does not exist.
+apiVersion: extensions.gardener.cloud/v1alpha1
+kind: Worker
+metadata:
+  name: worker
+  namespace: shoot--foobar--ironcore
+  annotations:
+    gardener.cloud/operation: reconcile
+spec:
+  type: ironcore
+  region: my-region
+  secretRef:
+    name: cloudprovider
+    namespace: shoot--foobar--ironcore
+  infrastructureProviderStatus:
+    apiVersion: ironcore.provider.extensions.gardener.cloud/v1alpha1
+    kind: InfrastructureStatus
+    networkRef:
+      name: shoot--foobar--ironcore
+      uid: 1234
+    natGatewayRef:
+      name: shoot--foobar--ironcore
+      uid: 1234
+    prefixRef:
+      name: shoot--foobar--ironcore
+      uid: 1234
+  pools:
+  - name: cpu-worker
+    machineType: my-machine-class
+    machineImage:
+      name: gardenlinux
+      version: 1.0.0
+    minimum: 1
+    maximum: 1
+    maxSurge: 1
+    maxUnavailable: 0
+  # labels:
+  #   key: value
+  # annotations:
+  #   key: value
+  # taints: # See also https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+  # - key: foo
+  #   value: bar
+  #   effect: NoSchedule
+    userData: IyEvYmluL2Jhc2gKCmVjaG8gImhlbGxvIHdvcmxkIgo=
+    volume:
+      type: my-volume-class
+      size: 20Gi
+    zones:
+    - my-machine-pool-a
+    - my-machine-pool-b

@@ -1,0 +1,55 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: shoot--foobar--ironcore
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: core-ironcore
+  namespace: shoot--foobar--ironcore
+type: Opaque
+data:
+  namespace: my-namespace
+  username: my-user
+  token: abcd12345
+---
+apiVersion: extensions.gardener.cloud/v1alpha1
+kind: Cluster
+metadata:
+  name: shoot--foobar--ironcore
+spec:
+  cloudProfile:
+    apiVersion: core.gardener.cloud/v1beta1
+    kind: CloudProfile
+  seed:
+    apiVersion: core.gardener.cloud/v1beta1
+    kind: Seed
+  shoot:
+    apiVersion: core.gardener.cloud/v1beta1
+    kind: Shoot
+    spec:
+      networking:
+        pods: 10.243.128.0/17
+        services: 10.243.0.0/17
+    status:
+      lastOperation:
+        state: Succeeded
+---
+apiVersion: extensions.gardener.cloud/v1alpha1
+kind: Infrastructure
+metadata:
+  name: ironcore-infra
+  namespace: shoot--foobar--ironcore
+spec:
+  type: ironcore
+  region: my-region
+  secretRef:
+    namespace: shoot--foobar--ironcore
+    name: core-ironcore
+  providerConfig:
+    apiVersion: ironcore.provider.extensions.gardener.cloud/v1alpha1
+    kind: InfrastructureConfig
+    #networkRef: # (optional)
+    #  name: my-network
