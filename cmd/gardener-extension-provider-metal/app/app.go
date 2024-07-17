@@ -30,18 +30,18 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	metalinstall "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/install"
-	ironcorecmd "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/cmd"
+	metalcmd "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/cmd"
 	backupbucketcontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/backupbucket"
 	backupentrycontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/backupentry"
 	bastioncontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/bastion"
-	ironcorecontrolplane "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/controlplane"
+	metalcontrolplane "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/controlplane"
 	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/healthcheck"
 	infrastructurecontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/infrastructure"
 	workercontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/worker"
 	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
 )
 
-// NewControllerManagerCommand creates a new command for running a ironcore provider controller.
+// NewControllerManagerCommand creates a new command for running a metal provider controller.
 func NewControllerManagerCommand(ctx context.Context) *cobra.Command {
 	var (
 		generalOpts = &controllercmd.GeneralOptions{}
@@ -55,7 +55,7 @@ func NewControllerManagerCommand(ctx context.Context) *cobra.Command {
 			MetricsBindAddress:      ":8080",
 			HealthBindAddress:       ":8081",
 		}
-		configFileOpts = &ironcorecmd.ConfigOptions{}
+		configFileOpts = &metalcmd.ConfigOptions{}
 
 		// options for the backupbucket controller
 		backupBucketCtrlOpts = &controllercmd.ControllerOptions{
@@ -105,8 +105,8 @@ func NewControllerManagerCommand(ctx context.Context) *cobra.Command {
 			MaxConcurrentReconciles: 5,
 		}
 
-		controllerSwitches = ironcorecmd.ControllerSwitchOptions()
-		webhookSwitches    = ironcorecmd.WebhookSwitchOptions()
+		controllerSwitches = metalcmd.ControllerSwitchOptions()
+		webhookSwitches    = metalcmd.WebhookSwitchOptions()
 		webhookOptions     = webhookcmd.NewAddToManagerOptions(
 			metal.ProviderName,
 			genericactuator.ShootWebhooksResourceName,
@@ -224,7 +224,7 @@ func NewControllerManagerCommand(ctx context.Context) *cobra.Command {
 			if _, err := webhookOptions.Completed().AddToManager(ctx, mgr, nil); err != nil {
 				return fmt.Errorf("could not add webhooks to manager: %w", err)
 			}
-			ironcorecontrolplane.DefaultAddOptions.WebhookServerNamespace = webhookOptions.Server.Namespace
+			metalcontrolplane.DefaultAddOptions.WebhookServerNamespace = webhookOptions.Server.Namespace
 
 			if err := controllerSwitches.Completed().AddToManager(ctx, mgr); err != nil {
 				return fmt.Errorf("could not add controllers to manager: %w", err)

@@ -1,5 +1,5 @@
 {{- define "name" -}}
-gardener-extension-provider-ironcore
+gardener-extension-provider-metal
 {{- end -}}
 
 {{- define "labels.app.key" -}}

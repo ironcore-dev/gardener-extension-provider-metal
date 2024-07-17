@@ -9,28 +9,28 @@ data:
   filter-kubernetes.conf: |
     [FILTER]
         Name                parser
-        Match               kubernetes.*cloud-controller-manager*ironcore-cloud-controller-manager*
+        Match               kubernetes.*cloud-controller-manager*metal-cloud-controller-manager*
         Key_Name            log
         Parser              kubeapiserverParser
         Reserve_Data        True
 
     [FILTER]
         Name                parser
-        Match               kubernetes.*machine-controller-manager*ironcore-machine-controller-manager*
+        Match               kubernetes.*machine-controller-manager*metal-machine-controller-manager*
         Key_Name            log
         Parser              kubeapiserverParser
         Reserve_Data        True
 
     [FILTER]
         Name                parser
-        Match               kubernetes.*machine-controller-manager*machine-controller-manager-provider-ironcore*
+        Match               kubernetes.*machine-controller-manager*machine-controller-manager-provider-metal*
         Key_Name            log
         Parser              kubeapiserverParser
         Reserve_Data        True
 
     [FILTER]
         Name                parser
-        Match               kubernetes.*csi-driver-controller*ironcore-csi*
+        Match               kubernetes.*csi-driver-controller*metal-csi*
         Key_Name            log
         Parser              kubeapiserverParser
         Reserve_Data        True
@@ -38,11 +38,11 @@ data:
     [FILTER]
         Name                modify
         Match               kubernetes.*
-        Condition           Key_value_matches tag ^kubernetes\.var\.log\.containers\.(cloud-controller-manager-.+?_.+?_ironcore-cloud-controller-manager|csi-driver-controller-.+?_.+?_ironcore-csi)
+        Condition           Key_value_matches tag ^kubernetes\.var\.log\.containers\.(cloud-controller-manager-.+?_.+?_metal-cloud-controller-manager|csi-driver-controller-.+?_.+?_metal-csi)
         Add                 __gardener_multitenant_id__ operator;user
 
     [FILTER]
         Name                modify
         Match               kubernetes.*
-        Condition           Key_value_matches tag ^kubernetes\.var\.log\.containers\.machine-controller-manager-.+?_.+?_(ironcore-machine-controller-manager|machine-controller-manager-provider-ironcore)
+        Condition           Key_value_matches tag ^kubernetes\.var\.log\.containers\.machine-controller-manager-.+?_.+?_(metal-machine-controller-manager|machine-controller-manager-provider-metal)
         Add                 __gardener_multitenant_id__ operator;user

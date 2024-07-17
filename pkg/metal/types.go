@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	// ProviderName is the name of the ironcore provider.
-	ProviderName = "provider-ironcore"
+	// ProviderName is the name of the metal provider.
+	ProviderName = "provider-metal"
 
 	// CloudControllerManagerImageName is the name of the cloud-controller-manager image.
 	CloudControllerManagerImageName = "cloud-controller-manager"
@@ -27,12 +27,12 @@ const (
 	CSILivenessProbeImageName = "csi-liveness-probe"
 	// MachineControllerManagerImageName is the name of the MachineControllerManager image.
 	MachineControllerManagerImageName = "machine-controller-manager"
-	// MachineControllerManagerProviderIroncoreImageName is the name of the MachineController ironcore image.
-	MachineControllerManagerProviderIroncoreImageName = "machine-controller-manager-provider-ironcore"
+	// MachineControllerManagerProviderIroncoreImageName is the name of the MachineController metal image.
+	MachineControllerManagerProviderIroncoreImageName = "machine-controller-manager-provider-metal"
 
-	// BucketAccessKeyID is a constant for the key in a ironcore bucket access secret that holds the Bucket access key id.
+	// BucketAccessKeyID is a constant for the key in a metal bucket access secret that holds the Bucket access key id.
 	BucketAccessKeyID = "AWS_ACCESS_KEY_ID"
-	// BucketSecretAccessKey is a constant for the key in a ironcore bucket access secret that holds the Bucket secret access key.
+	// BucketSecretAccessKey is a constant for the key in a metal bucket access secret that holds the Bucket secret access key.
 	BucketSecretAccessKey = "AWS_SECRET_ACCESS_KEY"
 	// AccessKeyID is a constant for the key in a cloud provider secret and backup secret that holds the Bucket access key id.
 	AccessKeyID = "accessKeyID"
@@ -44,9 +44,9 @@ const (
 	UsernameFieldName = "username"
 	// NamespaceFieldName is the field in a secret where the namespace is stored at.
 	NamespaceFieldName = "namespace"
-	// KubeConfigFieldName is containing the effective kubeconfig to access an ironcore cluster.
+	// KubeConfigFieldName is containing the effective kubeconfig to access an metal cluster.
 	KubeConfigFieldName = "kubeconfig"
-	// TokenFieldName is containing the token to access an ironcore cluster.
+	// TokenFieldName is containing the token to access an metal cluster.
 	TokenFieldName = "token"
 	// NetworkFieldName is the name of network field
 	NetworkFieldName = "networkName"
@@ -68,7 +68,7 @@ const (
 	// VolumeClassFieldName is the name of the volume class field
 	VolumeClassFieldName = "volumeClassName"
 	// ClusterNameLabel is the name is the label key of the cluster name
-	ClusterNameLabel = "extension.ironcore.dev/cluster-name"
+	ClusterNameLabel = "extension.metal.dev/cluster-name"
 
 	// CloudProviderConfigName is the name of the secret containing the cloud provider config.
 	CloudProviderConfigName = "cloud-provider-config"
@@ -93,7 +93,7 @@ const (
 	// CSILivenessProbeName is a constant for the name of the csi-liveness-probe component.
 	CSILivenessProbeName = "csi-liveness-probe"
 	// CSIStorageProvisioner is a constant with the storage provisioner name which is used in storageclasses.
-	CSIStorageProvisioner = "ironcore-csi-driver"
+	CSIStorageProvisioner = "metal-csi-driver"
 	// MachineControllerManagerName is a constant for the name of the machine-controller-manager.
 	MachineControllerManagerName = "machine-controller-manager"
 	// MachineControllerManagerVpaName is the name of the VerticalPodAutoscaler of the machine-controller-manager deployment.
@@ -103,6 +103,6 @@ const (
 )
 
 var (
-	// UsernamePrefix is a constant for the username prefix of components deployed by ironcore.
+	// UsernamePrefix is a constant for the username prefix of components deployed by metal.
 	UsernamePrefix = extensionsv1alpha1.SchemeGroupVersion.Group + ":" + ProviderName + ":"
 )

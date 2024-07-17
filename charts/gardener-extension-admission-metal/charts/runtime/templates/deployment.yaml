@@ -15,7 +15,7 @@ spec:
     metadata:
       annotations:
         {{- if .Values.global.kubeconfig }}
-        checksum/gardener-extension-admission-ironcore-kubeconfig: {{ include (print $.Template.BasePath "/secret-kubeconfig.yaml") . | sha256sum }}
+        checksum/gardener-extension-admission-metal-kubeconfig: {{ include (print $.Template.BasePath "/secret-kubeconfig.yaml") . | sha256sum }}
         {{- end }}
       labels:
         networking.gardener.cloud/to-dns: allowed
@@ -32,7 +32,7 @@ spec:
         image: {{ include "image" .Values.global.image }}
         imagePullPolicy: {{ .Values.global.image.pullPolicy }}
         command:
-        - /gardener-extension-admission-ironcore
+        - /gardener-extension-admission-metal
         - --webhook-config-server-port={{ .Values.global.webhookConfig.serverPort }}
         {{- if .Values.global.virtualGarden.enabled }}
         - --webhook-config-mode=url
@@ -42,7 +42,7 @@ spec:
         {{- end }}
         - --webhook-config-namespace={{ .Release.Namespace }}
         {{- if .Values.global.kubeconfig }}
-        - --kubeconfig=/etc/gardener-extension-admission-ironcore/kubeconfig/kubeconfig
+        - --kubeconfig=/etc/gardener-extension-admission-metal/kubeconfig/kubeconfig
         {{- end }}
         {{- if .Values.global.projectedKubeconfig }}
         - --kubeconfig={{ required ".Values.global.projectedKubeconfig.baseMountPath is required" .Values.global.projectedKubeconfig.baseMountPath }}/kubeconfig
@@ -79,8 +79,8 @@ spec:
 {{- end }}
         volumeMounts:
         {{- if .Values.global.kubeconfig }}
-        - name: gardener-extension-admission-ironcore-kubeconfig
-          mountPath: /etc/gardener-extension-admission-ironcore/kubeconfig
+        - name: gardener-extension-admission-metal-kubeconfig
+          mountPath: /etc/gardener-extension-admission-metal/kubeconfig
           readOnly: true
         {{- end }}
         {{- if .Values.global.serviceAccountTokenVolumeProjection.enabled }}
@@ -89,14 +89,14 @@ spec:
           readOnly: true
         {{- end }}
       volumes:
-      - name: gardener-extension-admission-ironcore-cert
+      - name: gardener-extension-admission-metal-cert
         secret:
-          secretName: gardener-extension-admission-ironcore-cert
+          secretName: gardener-extension-admission-metal-cert
           defaultMode: 420
       {{- if .Values.global.kubeconfig }}
-      - name: gardener-extension-admission-ironcore-kubeconfig
+      - name: gardener-extension-admission-metal-kubeconfig
         secret:
-          secretName: gardener-extension-admission-ironcore-kubeconfig
+          secretName: gardener-extension-admission-metal-kubeconfig
           defaultMode: 420
       {{- end }}
       {{- if .Values.global.serviceAccountTokenVolumeProjection.enabled }}

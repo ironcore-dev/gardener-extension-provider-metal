@@ -1,5 +1,5 @@
 {{- define "name" -}}
-gardener-extension-admission-ironcore
+gardener-extension-admission-metal
 {{- end -}}
 
 {{- define "labels.app.key" -}}
@@ -23,5 +23,5 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{- define "leaderelectionid" -}}
-gardener-extension-admission-ironcore
+gardener-extension-admission-metal
 {{- end -}}

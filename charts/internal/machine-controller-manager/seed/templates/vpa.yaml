@@ -13,15 +13,15 @@ spec:
     updateMode: {{ .Values.vpa.updatePolicy.updateMode | quote }}
   resourcePolicy:
     containerPolicies:
-    - containerName: machine-controller-manager-provider-ironcore
+    - containerName: machine-controller-manager-provider-metal
       minAllowed:
-        cpu: {{ .Values.resources.mcmProviderIroncore.requests.cpu }}
-        memory: {{ .Values.resources.mcmProviderIroncore.requests.memory }}
+        cpu: {{ .Values.resources.mcmProviderMetal.requests.cpu }}
+        memory: {{ .Values.resources.mcmProviderMetal.requests.memory }}
       maxAllowed:
-        cpu: {{ .Values.vpa.resourcePolicy.mcmProviderIroncore.maxAllowed.cpu }}
-        memory: {{ .Values.vpa.resourcePolicy.mcmProviderIroncore.maxAllowed.memory }}
+        cpu: {{ .Values.vpa.resourcePolicy.mcmProviderMetal.maxAllowed.cpu }}
+        memory: {{ .Values.vpa.resourcePolicy.mcmProviderMetal.maxAllowed.memory }}
       controlledValues: RequestsOnly
-    - containerName: ironcore-machine-controller-manager
+    - containerName: metal-machine-controller-manager
       minAllowed:
         cpu: {{ .Values.resources.mcm.requests.cpu }}
         memory: {{ .Values.resources.mcm.requests.memory }}

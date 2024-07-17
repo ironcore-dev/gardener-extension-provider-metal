@@ -33,11 +33,11 @@ import (
 )
 
 // AdmissionName is the name of the admission component.
-const AdmissionName = "admission-ironcore"
+const AdmissionName = "admission-metal"
 
-var log = logf.Log.WithName("gardener-extension-admission-ironcore")
+var log = logf.Log.WithName("gardener-extension-admission-metal")
 
-// NewAdmissionCommand creates a new command for running an ironcore gardener-extension-admission-ironcore webhook.
+// NewAdmissionCommand creates a new command for running an ironcore gardener-extension-admission-metal webhook.
 func NewAdmissionCommand(ctx context.Context) *cobra.Command {
 	var (
 		restOpts = &controllercmd.RESTOptions{}

@@ -4,7 +4,7 @@ global:
     user:
       name: ""
   image:
-    repository: ghcr.io/ironcore-dev/gardener-extension-admission-ironcore
+    repository: ghcr.io/ironcore-dev/gardener-extension-admission-metal
     tag: latest
     pullPolicy: IfNotPresent
   replicaCount: 1

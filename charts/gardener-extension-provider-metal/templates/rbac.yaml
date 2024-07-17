@@ -47,7 +47,7 @@ rules:
   resources:
   - leases
   resourceNames:
-  - provider-ironcore-leader-election
+  - provider-metal-leader-election
   - gardener-extension-heartbeat
   verbs:
   - get

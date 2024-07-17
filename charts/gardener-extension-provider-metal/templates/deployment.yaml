@@ -23,7 +23,7 @@ spec:
     metadata:
       annotations:
         {{- if .Values.imageVectorOverwrite }}
-        checksum/configmap-ironcore-imagevector-overwrite: {{ include (print $.Template.BasePath "/configmap-imagevector-overwrite.yaml") . | sha256sum }}
+        checksum/configmap-metal-imagevector-overwrite: {{ include (print $.Template.BasePath "/configmap-imagevector-overwrite.yaml") . | sha256sum }}
         {{- end }}
         checksum/configmap-{{ include "name" . }}-config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         {{- if and .Values.metrics.enableScraping }}
@@ -47,7 +47,7 @@ spec:
         image: {{ include "image" . }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command:
-        - /gardener-extension-provider-ironcore
+        - /gardener-extension-provider-metal
         - --backupbucket-max-concurrent-reconciles={{ .Values.controllers.backupbucket.concurrentSyncs }}
         - --backupentry-max-concurrent-reconciles={{ .Values.controllers.backupentry.concurrentSyncs }}
         - --config-file=/etc/{{ include "name" . }}/config/config.yaml

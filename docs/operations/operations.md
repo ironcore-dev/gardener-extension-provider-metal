@@ -1,4 +1,4 @@
-# Using the ironcore provider extension with Gardener as operator
+# Using the metal provider extension with Gardener as operator
 
 The [`core.gardener.cloud/v1beta1.CloudProfile` resource](https://github.com/gardener/gardener/blob/master/example/30-cloudprofile.yaml) 
 declares a `providerConfig` field that is meant to contain provider-specific configuration.
@@ -10,21 +10,21 @@ This document explains the necessary configuration for this provider extension.
 
 ## `CloudProfile` resource
 
-This section describes, how the configuration for `CloudProfile`s looks like for `ironcore` by providing an example 
-`CloudProfile` manifest with minimal configuration that can be used to allow the creation of `ironcore` shoot clusters.
+This section describes, how the configuration for `CloudProfile`s looks like for `metal` by providing an example 
+`CloudProfile` manifest with minimal configuration that can be used to allow the creation of `metal` shoot clusters.
 
 ### `CloudProfileConfig`
 
-The cloud profile configuration contains information about the real machine image IDs in the `ironcore` environment.
-You have to map every version that you specify in `.spec.machineImages[].versions` here such that the `ironcore` extension 
+The cloud profile configuration contains information about the real machine image IDs in the `metal` environment.
+You have to map every version that you specify in `.spec.machineImages[].versions` here such that the `metal` extension 
 knows the location of the OCI image artefact for every version you want to offer. For each machine image version an 
 `architecture` field can be specified which specifies the CPU architecture of the machine on which given machine image 
 can be used.
 
-An example `CloudProfileConfig` for the `ironcore` extension looks as follows:
+An example `CloudProfileConfig` for the `metal` extension looks as follows:
 
 ```yaml
-apiVersion: ironcore.provider.extensions.gardener.cloud/v1alpha1
+apiVersion: metal.provider.extensions.gardener.cloud/v1alpha1
 kind: CloudProfileConfig
 machineImages:
   - name: gardenlinux
@@ -42,9 +42,9 @@ Please find below an example `CloudProfile` manifest:
 apiVersion: core.gardener.cloud/v1beta1
 kind: CloudProfile
 metadata:
-  name: ironcore
+  name: metal
 spec:
-  type: ironcore
+  type: metal
   kubernetes:
     versions:
     - version: 1.25.3
@@ -80,11 +80,11 @@ spec:
     - my-zone-b
     - my-zone-c
   providerConfig:
-    apiVersion: ironcore.provider.extensions.gardener.cloud/v1alpha1
+    apiVersion: metal.provider.extensions.gardener.cloud/v1alpha1
     kind: CloudProfileConfig
     regionConfigs:
     - name: my-region
-      server: https://ironcore-api-server
+      server: https://metal-api-server
       certificateAuthorityData: >-
         abcd12345
     storageClasses:
@@ -116,7 +116,7 @@ metadata:
   name: my-seed
 spec:
   provider:
-    type: ironcore
+    type: metal
   ...
 ```
 
@@ -134,7 +134,7 @@ metadata:
   name: my-shoot
   namespace: my-namespace
 spec:
-  cloudProfileName: ironcore
+  cloudProfileName: metal
   secretBindingName: my-credentials
   region: my-region
   networking:
@@ -142,9 +142,9 @@ spec:
     nodes: 10.1.0.0/16
   provider:
     infrastructureConfig:
-      apiVersion: ironcore.provider.extensions.gardener.cloud/v1alpha1
+      apiVersion: metal.provider.extensions.gardener.cloud/v1alpha1
       kind: InfrastructureConfig
-    type: ironcore
+    type: metal
     workers:
       - name: pool1
         machine:
