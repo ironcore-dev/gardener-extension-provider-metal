@@ -57,10 +57,6 @@ func RegisterHealthChecks(ctx context.Context, mgr manager.Manager, opts healthc
 				HealthCheck:   general.NewSeedDeploymentHealthChecker(metal.CloudControllerManagerName),
 			},
 			{
-				ConditionType: string(gardencorev1beta1.ShootControlPlaneHealthy),
-				HealthCheck:   general.NewSeedDeploymentHealthChecker(metal.CSIControllerName),
-			},
-			{
 				ConditionType: string(gardencorev1beta1.ShootSystemComponentsHealthy),
 				HealthCheck:   general.CheckManagedResource(genericcontrolplaneactuator.ControlPlaneShootChartResourceName),
 			},

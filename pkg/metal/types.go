@@ -13,33 +13,11 @@ const (
 
 	// CloudControllerManagerImageName is the name of the cloud-controller-manager image.
 	CloudControllerManagerImageName = "cloud-controller-manager"
-	// CSIDriverImageName is the name of the csi-driver image.
-	CSIDriverImageName = "csi-driver"
-	// CSIProvisionerImageName is the name of the csi-provisioner image.
-	CSIProvisionerImageName = "csi-provisioner"
-	// CSIAttacherImageName is the name of the csi-attacher image.
-	CSIAttacherImageName = "csi-attacher"
-	// CSIResizerImageName is the name of the csi-resizer image.
-	CSIResizerImageName = "csi-resizer"
-	// CSINodeDriverRegistrarImageName is the name of the csi-node-driver-registrar image.
-	CSINodeDriverRegistrarImageName = "csi-node-driver-registrar"
-	// CSILivenessProbeImageName is the name of the csi-liveness-probe image.
-	CSILivenessProbeImageName = "csi-liveness-probe"
 	// MachineControllerManagerImageName is the name of the MachineControllerManager image.
 	MachineControllerManagerImageName = "machine-controller-manager"
 	// MachineControllerManagerProviderIroncoreImageName is the name of the MachineController metal image.
 	MachineControllerManagerProviderIroncoreImageName = "machine-controller-manager-provider-metal"
 
-	// BucketAccessKeyID is a constant for the key in a metal bucket access secret that holds the Bucket access key id.
-	BucketAccessKeyID = "AWS_ACCESS_KEY_ID"
-	// BucketSecretAccessKey is a constant for the key in a metal bucket access secret that holds the Bucket secret access key.
-	BucketSecretAccessKey = "AWS_SECRET_ACCESS_KEY"
-	// AccessKeyID is a constant for the key in a cloud provider secret and backup secret that holds the Bucket access key id.
-	AccessKeyID = "accessKeyID"
-	// SecretAccessKey is a constant for the key in a cloud provider secret and backup secret that holds the Bucket secret access key.
-	SecretAccessKey = "secretAccessKey"
-	//Endpoint
-	Endpoint = "endpoint"
 	// UsernameFieldName is the field in a secret where the namespace is stored at.
 	UsernameFieldName = "username"
 	// NamespaceFieldName is the field in a secret where the namespace is stored at.
@@ -58,12 +36,6 @@ const (
 	ImageFieldName = "image"
 	// ServerLabels is the name of the server labels field
 	ServerLabels = "serverLabels"
-	// RootDiskFieldName is the name of the root disk field
-	RootDiskFieldName = "rootDisk"
-	// SizeFieldName is the name of the size field
-	SizeFieldName = "size"
-	// VolumeClassFieldName is the name of the volume class field
-	VolumeClassFieldName = "volumeClassName"
 	// ClusterNameLabel is the name is the label key of the cluster name
 	ClusterNameLabel = "extension.metal.dev/cluster-name"
 
@@ -71,26 +43,6 @@ const (
 	CloudProviderConfigName = "cloud-provider-config"
 	// CloudControllerManagerName is a constant for the name of the CloudController deployed by the worker controller.
 	CloudControllerManagerName = "cloud-controller-manager"
-	// CSIControllerName is a constant for the name of the CSI controller deployment in the seed.
-	CSIControllerName = "csi-driver-controller"
-	// CSIControllerObservabilityConfigName is the name of the ConfigMap containing monitoring and logging stack configurations for csi-driver.
-	CSIControllerObservabilityConfigName = "csi-driver-controller-observability-config"
-	// CSINodeName is a constant for the name of the CSI node deployment in the shoot.
-	CSINodeName = "csi-driver-node"
-	// CSIDriverName is a constant for the name of the csi-driver component.
-	CSIDriverName = "csi-driver"
-	// CSIProvisionerName is a constant for the name of the csi-provisioner component.
-	CSIProvisionerName = "csi-provisioner"
-	// CSIAttacherName is a constant for the name of the csi-attacher component.
-	CSIAttacherName = "csi-attacher"
-	// CSIResizerName is a constant for the name of the csi-resizer component.
-	CSIResizerName = "csi-resizer"
-	// CSINodeDriverRegistrarName is a constant for the name of the csi-node-driver-registrar component.
-	CSINodeDriverRegistrarName = "csi-node-driver-registrar"
-	// CSILivenessProbeName is a constant for the name of the csi-liveness-probe component.
-	CSILivenessProbeName = "csi-liveness-probe"
-	// CSIStorageProvisioner is a constant with the storage provisioner name which is used in storageclasses.
-	CSIStorageProvisioner = "metal-csi-driver"
 	// MachineControllerManagerName is a constant for the name of the machine-controller-manager.
 	MachineControllerManagerName = "machine-controller-manager"
 	// MachineControllerManagerVpaName is the name of the VerticalPodAutoscaler of the machine-controller-manager deployment.
