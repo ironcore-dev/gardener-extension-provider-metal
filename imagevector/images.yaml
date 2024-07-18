@@ -1,7 +1,7 @@
 images:
 - name: cloud-controller-manager
   sourceRepository: github.com/ironcore-dev/cloud-provider-metal
-  repository: ghcr.io/ironcore-dev/cloud-provider-metal
+  repository: ghcr.io/ironcore-dev/metal-cloud-controller-manager
   tag: "v0.3.3"
   labels:
   - name: 'gardener.cloud/cve-categorisation'
@@ -24,85 +24,5 @@ images:
       authentication_enforced: false
       user_interaction: 'gardener-operator'
       confidentiality_requirement: 'high'
-      integrity_requirement: 'high'
-      availability_requirement: 'low'
-
-- name: csi-driver
-  sourceRepository: github.com/ironcore-dev/metal-csi-driver
-  repository: ghcr.io/ironcore-dev/metal-csi-driver
-  tag: "v0.3.3"
-  labels:
-  - name: 'gardener.cloud/cve-categorisation'
-    value:
-      network_exposure: 'protected'
-      authentication_enforced: false
-      user_interaction: 'end-user'
-      confidentiality_requirement: 'high'
-      integrity_requirement: 'high'
-      availability_requirement: 'low'
-
-- name: csi-provisioner
-  sourceRepository: github.com/kubernetes-csi/external-provisioner
-  repository: registry.k8s.io/sig-storage/csi-provisioner
-  tag: "v3.6.0"
-  labels:
-  - name: 'gardener.cloud/cve-categorisation'
-    value:
-      network_exposure: 'private'
-      authentication_enforced: false
-      user_interaction: 'gardener-operator'
-      confidentiality_requirement: 'low'
-      integrity_requirement: 'high'
-      availability_requirement: 'low'
-- name: csi-attacher
-  sourceRepository: github.com/kubernetes-csi/external-attacher
-  repository: registry.k8s.io/sig-storage/csi-attacher
-  tag: "v4.5.0"
-  labels:
-  - name: 'gardener.cloud/cve-categorisation'
-    value:
-      network_exposure: 'private'
-      authentication_enforced: false
-      user_interaction: 'gardener-operator'
-      confidentiality_requirement: 'low'
-      integrity_requirement: 'high'
-      availability_requirement: 'low'
-- name: csi-resizer
-  sourceRepository: github.com/kubernetes-csi/external-resizer
-  repository: registry.k8s.io/sig-storage/csi-resizer
-  tag: "v1.10.0"
-  labels:
-  - name: 'gardener.cloud/cve-categorisation'
-    value:
-      network_exposure: 'private'
-      authentication_enforced: false
-      user_interaction: 'gardener-operator'
-      confidentiality_requirement: 'low'
-      integrity_requirement: 'high'
-      availability_requirement: 'low'
-- name: csi-node-driver-registrar
-  sourceRepository: github.com/kubernetes-csi/node-driver-registrar
-  repository: registry.k8s.io/sig-storage/csi-node-driver-registrar
-  tag: "v2.10.0"
-  labels:
-  - name: 'gardener.cloud/cve-categorisation'
-    value:
-      network_exposure: 'private'
-      authentication_enforced: false
-      user_interaction: 'end-user'
-      confidentiality_requirement: 'low'
-      integrity_requirement: 'high'
-      availability_requirement: 'low'
-- name: csi-liveness-probe
-  sourceRepository: github.com/kubernetes-csi/livenessprobe
-  repository: registry.k8s.io/sig-storage/livenessprobe
-  tag: "v2.12.0"
-  labels:
-  - name: 'gardener.cloud/cve-categorisation'
-    value:
-      network_exposure: 'private'
-      authentication_enforced: false
-      user_interaction: 'end-user'
-      confidentiality_requirement: 'low'
       integrity_requirement: 'high'
       availability_requirement: 'low'

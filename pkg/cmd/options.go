@@ -4,9 +4,6 @@
 package cmd
 
 import (
-	extensionsbackupbucketcontroller "github.com/gardener/gardener/extensions/pkg/controller/backupbucket"
-	extensionsbackupentrycontroller "github.com/gardener/gardener/extensions/pkg/controller/backupentry"
-	extensionsbastioncontroller "github.com/gardener/gardener/extensions/pkg/controller/bastion"
 	controllercmd "github.com/gardener/gardener/extensions/pkg/controller/cmd"
 	extensionscontrolplanecontroller "github.com/gardener/gardener/extensions/pkg/controller/controlplane"
 	extensionshealthcheckcontroller "github.com/gardener/gardener/extensions/pkg/controller/healthcheck"
@@ -17,9 +14,6 @@ import (
 	webhookcmd "github.com/gardener/gardener/extensions/pkg/webhook/cmd"
 	extensioncontrolplanewebhook "github.com/gardener/gardener/extensions/pkg/webhook/controlplane"
 
-	backupbucketcontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/backupbucket"
-	backupentrycontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/backupentry"
-	bastioncontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/bastion"
 	controlplanecontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/controlplane"
 	healthcheckcontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/healthcheck"
 	infrastructurecontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/infrastructure"
@@ -31,9 +25,6 @@ import (
 // ControllerSwitchOptions are the controllercmd.SwitchOptions for the provider controllers.
 func ControllerSwitchOptions() *controllercmd.SwitchOptions {
 	return controllercmd.NewSwitchOptions(
-		controllercmd.Switch(extensionsbackupbucketcontroller.ControllerName, backupbucketcontroller.AddToManager),
-		controllercmd.Switch(extensionsbackupentrycontroller.ControllerName, backupentrycontroller.AddToManager),
-		controllercmd.Switch(extensionsbastioncontroller.ControllerName, bastioncontroller.AddToManager),
 		controllercmd.Switch(extensionscontrolplanecontroller.ControllerName, controlplanecontroller.AddToManager),
 		controllercmd.Switch(extensionsinfrastructurecontroller.ControllerName, infrastructurecontroller.AddToManager),
 		controllercmd.Switch(extensionsworkercontroller.ControllerName, workercontroller.AddToManager),

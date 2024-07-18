@@ -12,7 +12,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/validation/field"
 	"k8s.io/utils/ptr"
 
-	apisironcore "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
+	apismetal "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
 )
 
 func InvalidField(fld string) types.GomegaMatcher {
@@ -29,7 +29,7 @@ func SimpleMatchField(errorType field.ErrorType, fld string) types.GomegaMatcher
 var _ = Describe("CloudProfileConfig validation", func() {
 	Describe("#ValidateCloudProfileConfig", func() {
 		var (
-			cloudProfileConfig  *apisironcore.CloudProfileConfig
+			cloudProfileConfig  *apismetal.CloudProfileConfig
 			machineImages       []core.MachineImage
 			nilPath             *field.Path
 			machineImageName    string
@@ -39,32 +39,16 @@ var _ = Describe("CloudProfileConfig validation", func() {
 		BeforeEach(func() {
 			machineImageName = "ubuntu"
 			machineImageVersion = "1.2.3"
-			cloudProfileConfig = &apisironcore.CloudProfileConfig{
-				MachineImages: []apisironcore.MachineImages{
+			cloudProfileConfig = &apismetal.CloudProfileConfig{
+				MachineImages: []apismetal.MachineImages{
 					{
 						Name: machineImageName,
-						Versions: []apisironcore.MachineImageVersion{
+						Versions: []apismetal.MachineImageVersion{
 							{
 								Version:      machineImageVersion,
 								Image:        "registry/image:sha1234",
 								Architecture: ptr.To[string]("amd64"),
 							},
-						},
-					},
-				},
-				StorageClasses: apisironcore.StorageClasses{
-					Default: &apisironcore.StorageClass{
-						Name: "default",
-						Type: "defaultType",
-					},
-					Additional: []apisironcore.StorageClass{
-						{
-							Name: "foo",
-							Type: "fooType",
-						},
-						{
-							Name: "bar",
-							Type: "barType",
 						},
 					},
 				},
@@ -138,41 +122,6 @@ var _ = Describe("CloudProfileConfig validation", func() {
 				))
 			})
 		})
-
-		DescribeTable("ValidateCloudProfileConfig StorageClass name",
-			func(cpConfig *apisironcore.CloudProfileConfig, machineImages []core.MachineImage, fldPath *field.Path, match types.GomegaMatcher) {
-				errList := ValidateCloudProfileConfig(cpConfig, machineImages, fldPath)
-				Expect(errList).To(match)
-			},
-			Entry("invalid storageClass name in default StorageClass",
-				&apisironcore.CloudProfileConfig{
-					StorageClasses: apisironcore.StorageClasses{
-						Default: &apisironcore.StorageClass{
-							Name: "foo*",
-							Type: "defaultType",
-						},
-					},
-				},
-				machineImages,
-				nilPath,
-				ContainElement(InvalidField("storageClasses.defaultStorageClasses.name")),
-			),
-			Entry("invalid storageClass name in additional storageClasses",
-				&apisironcore.CloudProfileConfig{
-					StorageClasses: apisironcore.StorageClasses{
-						Additional: []apisironcore.StorageClass{
-							{
-								Name: "foo*",
-								Type: "defaultType",
-							},
-						},
-					},
-				},
-				machineImages,
-				nilPath,
-				ContainElement(InvalidField("storageClasses.additionalStorageClasses[0].name")),
-			),
-		)
 
 	})
 })

@@ -48,10 +48,6 @@ const (
 	KubeConfigFieldName = "kubeconfig"
 	// TokenFieldName is containing the token to access an metal cluster.
 	TokenFieldName = "token"
-	// NetworkFieldName is the name of network field
-	NetworkFieldName = "networkName"
-	// PrefixFieldName is the name of the prefix field
-	PrefixFieldName = "prefixName"
 	// ClusterFieldName is the name of the cluster field
 	ClusterFieldName = "clusterName"
 	// LabelsFieldName is the name of the labels field

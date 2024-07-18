@@ -128,7 +128,7 @@ func (s *shoot) validateUpdate(ctx context.Context, oldShoot, currentShoot *core
 
 func newValidationContext(ctx context.Context, decoder runtime.Decoder, c client.Client, shoot *core.Shoot) (*validationContext, error) {
 	if shoot.Spec.Provider.InfrastructureConfig == nil {
-		return nil, field.Required(infrastructureConfigPath, "infrastructureConfig must be set for ironcore shoots")
+		return nil, field.Required(infrastructureConfigPath, "infrastructureConfig must be set for metal shoots")
 	}
 	infrastructureConfig, err := admission.DecodeInfrastructureConfig(decoder, shoot.Spec.Provider.InfrastructureConfig)
 	if err != nil {
@@ -136,7 +136,7 @@ func newValidationContext(ctx context.Context, decoder runtime.Decoder, c client
 	}
 
 	if shoot.Spec.Provider.ControlPlaneConfig == nil {
-		return nil, field.Required(controlPlaneConfigPath, "controlPlaneConfig must be set for ironcore shoots")
+		return nil, field.Required(controlPlaneConfigPath, "controlPlaneConfig must be set for metal shoots")
 	}
 	controlPlaneConfig, err := admission.DecodeControlPlaneConfig(decoder, shoot.Spec.Provider.ControlPlaneConfig)
 	if err != nil {

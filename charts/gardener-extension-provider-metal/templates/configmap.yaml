@@ -28,13 +28,3 @@ data:
     featureGates:
 {{ toYaml .Values.config.featureGates | indent 6 }}
 {{- end }}
-{{- if .Values.config.bastionConfig }}
-    bastionConfig:
-      image:  {{ .Values.config.bastionConfig.image }}
-      machineClassName: {{ .Values.config.bastionConfig.machineClassName }}
-      volumeClassName: {{ .Values.config.bastionConfig.volumeClassName }}
-{{- end }}
-{{- if .Values.config.backupBucketConfig }}
-    backupBucketConfig:
-      bucketClassName: {{ .Values.config.backupBucketConfig.bucketClassName }}
-{{- end }}

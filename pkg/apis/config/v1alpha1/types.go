@@ -13,7 +13,7 @@ import (
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// ControllerConfiguration defines the configuration for the ironcore provider.
+// ControllerConfiguration defines the configuration for the metal provider.
 type ControllerConfiguration struct {
 	metav1.TypeMeta `json:",inline"`
 
@@ -31,11 +31,6 @@ type ControllerConfiguration struct {
 	// Default: nil
 	// +optional
 	FeatureGates map[string]bool `json:"featureGates,omitempty"`
-	// BastionConfig is the config for the Bastion
-	// +optional
-	BastionConfig *BastionConfig `json:"bastionConfig,omitempty"`
-	// BackupBucketConfig is config for Backup Bucket
-	BackupBucketConfig *BackupBucketConfig `json:"backupBucketConfig,omitempty"`
 }
 
 // ETCD is an etcd configuration.
@@ -61,20 +56,4 @@ type ETCDBackup struct {
 	// Schedule is the etcd backup schedule.
 	// +optional
 	Schedule *string `json:"schedule,omitempty"`
-}
-
-// BastionConfig is the config for the Bastion
-type BastionConfig struct {
-	// Image is the URL pointing to an OCI registry containing the operating system image which should be used to boot the Bastion host
-	Image string `json:"image,omitempty"`
-	// MachineClassName is the name of the ironcore MachineClass to use for the Bastion host
-	MachineClassName string `json:"machineClassName,omitempty"`
-	// VolumeClassName is the name of the ironcore VolumeClass to use for the Bastion host root disk volume
-	VolumeClassName string `json:"volumeClassName,omitempty"`
-}
-
-// BackupBucketConfig is config for Backup Bucket
-type BackupBucketConfig struct {
-	// BucketClassName is the name of the ironcore BucketClass to use for the BackupBucket
-	BucketClassName string `json:"bucketClassName,omitempty"`
 }

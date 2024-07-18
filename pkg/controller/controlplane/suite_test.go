@@ -12,11 +12,6 @@ import (
 
 	"github.com/gardener/gardener/pkg/apis/core/v1beta1"
 	extensionsv1alpha1 "github.com/gardener/gardener/pkg/apis/extensions/v1alpha1"
-	"github.com/ironcore-dev/controller-utils/buildutils"
-	"github.com/ironcore-dev/controller-utils/modutils"
-	storagev1alpha1 "github.com/ironcore-dev/ironcore/api/storage/v1alpha1"
-	utilsenvtest "github.com/ironcore-dev/ironcore/utils/envtest"
-	"github.com/ironcore-dev/ironcore/utils/envtest/apiserver"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	corev1 "k8s.io/api/core/v1"
@@ -34,22 +29,18 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
-
-	ironcoreextensionv1alpha1 "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/v1alpha1"
 )
 
 const (
 	pollingInterval      = 50 * time.Millisecond
 	eventuallyTimeout    = 10 * time.Second
 	consistentlyDuration = 1 * time.Second
-	apiServiceTimeout    = 5 * time.Minute
 )
 
 var (
-	testEnv    *envtest.Environment
-	testEnvExt *utilsenvtest.EnvironmentExtensions
-	cfg        *rest.Config
-	k8sClient  client.Client
+	testEnv   *envtest.Environment
+	cfg       *rest.Config
+	k8sClient client.Client
 )
 
 func TestAPIs(t *testing.T) {
@@ -65,8 +56,6 @@ func TestAPIs(t *testing.T) {
 var _ = BeforeSuite(func() {
 	logf.SetLogger(zap.New(zap.WriteTo(GinkgoWriter), zap.UseDevMode(true)))
 
-	var err error
-
 	By("bootstrapping test environment")
 	testEnv = &envtest.Environment{
 		CRDDirectoryPaths: []string{
@@ -78,22 +67,14 @@ var _ = BeforeSuite(func() {
 		ErrorIfCRDPathMissing: true,
 	}
 
-	testEnvExt = &utilsenvtest.EnvironmentExtensions{
-		APIServiceDirectoryPaths: []string{
-			modutils.Dir("github.com/ironcore-dev/ironcore", "config", "apiserver", "apiservice", "bases"),
-		},
-		ErrorIfAPIServicePathIsMissing: true,
-	}
-
-	cfg, err = utilsenvtest.StartWithExtensions(testEnv, testEnvExt)
+	var err error
+	// cfg is defined in this file globally.
+	cfg, err = testEnv.Start()
 	Expect(err).NotTo(HaveOccurred())
 	Expect(cfg).NotTo(BeNil())
-	DeferCleanup(utilsenvtest.StopWithExtensions, testEnv, testEnvExt)
 
 	Expect(extensionsv1alpha1.AddToScheme(scheme.Scheme)).To(Succeed())
-	Expect(ironcoreextensionv1alpha1.AddToScheme(scheme.Scheme)).To(Succeed())
 	Expect(corev1.AddToScheme(scheme.Scheme)).To(Succeed())
-	Expect(storagev1alpha1.AddToScheme(scheme.Scheme)).To(Succeed())
 
 	// Init package-level k8sClient
 	k8sClient, err = client.New(cfg, client.Options{Scheme: scheme.Scheme})
@@ -101,22 +82,6 @@ var _ = BeforeSuite(func() {
 	Expect(k8sClient).NotTo(BeNil())
 
 	komega.SetClient(k8sClient)
-
-	apiSrv, err := apiserver.New(cfg, apiserver.Options{
-		MainPath:     "github.com/ironcore-dev/ironcore/cmd/ironcore-apiserver",
-		BuildOptions: []buildutils.BuildOption{buildutils.ModModeMod},
-		ETCDServers:  []string{testEnv.ControlPlane.Etcd.URL.String()},
-		Host:         testEnvExt.APIServiceInstallOptions.LocalServingHost,
-		Port:         testEnvExt.APIServiceInstallOptions.LocalServingPort,
-		CertDir:      testEnvExt.APIServiceInstallOptions.LocalServingCertDir,
-	})
-	Expect(err).NotTo(HaveOccurred())
-
-	Expect(apiSrv.Start()).To(Succeed())
-	DeferCleanup(apiSrv.Stop)
-
-	err = utilsenvtest.WaitUntilAPIServicesReadyWithTimeout(apiServiceTimeout, testEnvExt, k8sClient, scheme.Scheme)
-	Expect(err).NotTo(HaveOccurred())
 })
 
 func SetupTest() (*corev1.Namespace, *valuesProvider, *extensionsv1alpha1.Cluster) {

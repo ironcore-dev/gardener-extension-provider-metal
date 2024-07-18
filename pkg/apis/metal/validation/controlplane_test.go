@@ -9,17 +9,17 @@ import (
 	. "github.com/onsi/gomega/gstruct"
 	"k8s.io/apimachinery/pkg/util/validation/field"
 
-	apisironcore "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
+	apismetal "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
 )
 
 var _ = Describe("ControlPlaneConfig validation", func() {
 	var (
-		controlPlane *apisironcore.ControlPlaneConfig
+		controlPlane *apismetal.ControlPlaneConfig
 		fldPath      *field.Path
 	)
 
 	BeforeEach(func() {
-		controlPlane = &apisironcore.ControlPlaneConfig{}
+		controlPlane = &apismetal.ControlPlaneConfig{}
 	})
 
 	Describe("#ValidateControlPlaneConfig", func() {
@@ -28,7 +28,7 @@ var _ = Describe("ControlPlaneConfig validation", func() {
 		})
 
 		It("should fail with invalid CCM feature gates", func() {
-			controlPlane.CloudControllerManager = &apisironcore.CloudControllerManagerConfig{
+			controlPlane.CloudControllerManager = &apismetal.CloudControllerManagerConfig{
 				FeatureGates: map[string]bool{
 					"AnyVolumeDataSource":      true,
 					"CustomResourceValidation": true,

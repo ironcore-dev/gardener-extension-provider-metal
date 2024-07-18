@@ -16,7 +16,7 @@ func ValidateNetworking(networking *core.Networking, fldPath *field.Path) field.
 	allErrs := field.ErrorList{}
 
 	if networking == nil || networking.Nodes == nil {
-		allErrs = append(allErrs, field.Required(fldPath.Child("nodes"), "a nodes CIDR must be provided for ironcore shoots"))
+		allErrs = append(allErrs, field.Required(fldPath.Child("nodes"), "a nodes CIDR must be provided for metal shoots"))
 	}
 
 	return allErrs

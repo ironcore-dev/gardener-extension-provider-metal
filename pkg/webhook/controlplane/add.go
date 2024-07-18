@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	logger = log.Log.WithName("ironcore-controlplane-webhook")
+	logger = log.Log.WithName("metal-controlplane-webhook")
 	// GardenletManagesMCM specifies whether the machine-controller-manager should be managed.
 	GardenletManagesMCM bool
 )

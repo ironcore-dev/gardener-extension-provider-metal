@@ -7,11 +7,11 @@ import (
 	featurevalidation "github.com/gardener/gardener/pkg/utils/validation/features"
 	"k8s.io/apimachinery/pkg/util/validation/field"
 
-	apisironcore "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
+	apismetal "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
 )
 
 // ValidateControlPlaneConfig validates a ControlPlaneConfig object.
-func ValidateControlPlaneConfig(controlPlaneConfig *apisironcore.ControlPlaneConfig, version string, fldPath *field.Path) field.ErrorList {
+func ValidateControlPlaneConfig(controlPlaneConfig *apismetal.ControlPlaneConfig, version string, fldPath *field.Path) field.ErrorList {
 	allErrs := field.ErrorList{}
 
 	if controlPlaneConfig.CloudControllerManager != nil {
@@ -22,7 +22,7 @@ func ValidateControlPlaneConfig(controlPlaneConfig *apisironcore.ControlPlaneCon
 }
 
 // ValidateControlPlaneConfigUpdate validates a ControlPlaneConfig object.
-func ValidateControlPlaneConfigUpdate(oldConfig, newConfig *apisironcore.ControlPlaneConfig, fldPath *field.Path) field.ErrorList {
+func ValidateControlPlaneConfigUpdate(oldConfig, newConfig *apismetal.ControlPlaneConfig, fldPath *field.Path) field.ErrorList {
 	allErrs := field.ErrorList{}
 
 	return allErrs

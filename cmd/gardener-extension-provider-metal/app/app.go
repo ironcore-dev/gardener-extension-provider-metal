@@ -31,9 +31,6 @@ import (
 
 	metalinstall "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/install"
 	metalcmd "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/cmd"
-	backupbucketcontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/backupbucket"
-	backupentrycontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/backupentry"
-	bastioncontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/bastion"
 	metalcontrolplane "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/controlplane"
 	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/healthcheck"
 	infrastructurecontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/infrastructure"
@@ -56,16 +53,6 @@ func NewControllerManagerCommand(ctx context.Context) *cobra.Command {
 			HealthBindAddress:       ":8081",
 		}
 		configFileOpts = &metalcmd.ConfigOptions{}
-
-		// options for the backupbucket controller
-		backupBucketCtrlOpts = &controllercmd.ControllerOptions{
-			MaxConcurrentReconciles: 5,
-		}
-
-		// options for the backupentry controller
-		backupEntryCtrlOpts = &controllercmd.ControllerOptions{
-			MaxConcurrentReconciles: 5,
-		}
 
 		// options for the health care controller
 		healthCheckCtrlOpts = &controllercmd.ControllerOptions{
@@ -100,11 +87,6 @@ func NewControllerManagerCommand(ctx context.Context) *cobra.Command {
 			Namespace: os.Getenv("WEBHOOK_CONFIG_NAMESPACE"),
 		}
 
-		// options for the bastion controller
-		bastionCtrlOpts = &controllercmd.ControllerOptions{
-			MaxConcurrentReconciles: 5,
-		}
-
 		controllerSwitches = metalcmd.ControllerSwitchOptions()
 		webhookSwitches    = metalcmd.WebhookSwitchOptions()
 		webhookOptions     = webhookcmd.NewAddToManagerOptions(
@@ -124,9 +106,6 @@ func NewControllerManagerCommand(ctx context.Context) *cobra.Command {
 			controllercmd.PrefixOption("worker-", workerCtrlOpts),
 			controllercmd.PrefixOption("healthcheck-", healthCheckCtrlOpts),
 			controllercmd.PrefixOption("heartbeat-", heartbeatCtrlOpts),
-			controllercmd.PrefixOption("bastion-", bastionCtrlOpts),
-			controllercmd.PrefixOption("backupbucket-", backupBucketCtrlOpts),
-			controllercmd.PrefixOption("backupentry-", backupEntryCtrlOpts),
 			configFileOpts,
 			controllerSwitches,
 			reconcileOpts,
@@ -206,19 +185,11 @@ func NewControllerManagerCommand(ctx context.Context) *cobra.Command {
 
 			configFileOpts.Completed().ApplyHealthCheckConfig(&healthcheck.DefaultAddOptions.HealthCheckConfig)
 			healthCheckCtrlOpts.Completed().Apply(&healthcheck.DefaultAddOptions.Controller)
-			configFileOpts.Completed().ApplyBastionConfig(&bastioncontroller.DefaultAddOptions.BastionConfig)
 			heartbeatCtrlOpts.Completed().Apply(&heartbeat.DefaultAddOptions)
 			infraCtrlOpts.Completed().Apply(&infrastructurecontroller.DefaultAddOptions.Controller)
 			workerCtrlOpts.Completed().Apply(&workercontroller.DefaultAddOptions.Controller)
-			configFileOpts.Completed().ApplyBackupbucketConfig(&backupbucketcontroller.DefaultAddOptions.BackupBucketConfig)
-			bastionCtrlOpts.Completed().Apply(&bastioncontroller.DefaultAddOptions.Controller)
-			backupBucketCtrlOpts.Completed().Apply(&backupbucketcontroller.DefaultAddOptions.Controller)
-			backupEntryCtrlOpts.Completed().Apply(&backupentrycontroller.DefaultAddOptions.Controller)
-			reconcileOpts.Completed().Apply(&bastioncontroller.DefaultAddOptions.IgnoreOperationAnnotation)
 			reconcileOpts.Completed().Apply(&infrastructurecontroller.DefaultAddOptions.IgnoreOperationAnnotation)
 			reconcileOpts.Completed().Apply(&workercontroller.DefaultAddOptions.IgnoreOperationAnnotation)
-			reconcileOpts.Completed().Apply(&backupbucketcontroller.DefaultAddOptions.IgnoreOperationAnnotation)
-			reconcileOpts.Completed().Apply(&backupentrycontroller.DefaultAddOptions.IgnoreOperationAnnotation)
 			workercontroller.DefaultAddOptions.GardenCluster = gardenCluster
 
 			if _, err := webhookOptions.Completed().AddToManager(ctx, mgr, nil); err != nil {

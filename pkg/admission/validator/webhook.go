@@ -22,7 +22,7 @@ const (
 	SecretsValidatorName = "secrets." + Name
 )
 
-var logger = log.Log.WithName("ironcore-validator-webhook")
+var logger = log.Log.WithName("metal-validator-webhook")
 
 // New creates a new validation webhook for `core.gardener.cloud` resources.
 func New(mgr manager.Manager) (*extensionswebhook.Webhook, error) {

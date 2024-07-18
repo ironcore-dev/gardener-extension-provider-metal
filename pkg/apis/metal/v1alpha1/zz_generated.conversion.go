@@ -12,7 +12,6 @@ import (
 	unsafe "unsafe"
 
 	metal "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
-	v1 "k8s.io/api/core/v1"
 	conversion "k8s.io/apimachinery/pkg/conversion"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -202,7 +201,6 @@ func Convert_metal_ControlPlaneConfig_To_v1alpha1_ControlPlaneConfig(in *metal.C
 }
 
 func autoConvert_v1alpha1_InfrastructureConfig_To_metal_InfrastructureConfig(in *InfrastructureConfig, out *metal.InfrastructureConfig, s conversion.Scope) error {
-	out.NetworkRef = (*v1.LocalObjectReference)(unsafe.Pointer(in.NetworkRef))
 	return nil
 }
 
@@ -212,7 +210,6 @@ func Convert_v1alpha1_InfrastructureConfig_To_metal_InfrastructureConfig(in *Inf
 }
 
 func autoConvert_metal_InfrastructureConfig_To_v1alpha1_InfrastructureConfig(in *metal.InfrastructureConfig, out *InfrastructureConfig, s conversion.Scope) error {
-	out.NetworkRef = (*v1.LocalObjectReference)(unsafe.Pointer(in.NetworkRef))
 	return nil
 }
 
@@ -222,9 +219,6 @@ func Convert_metal_InfrastructureConfig_To_v1alpha1_InfrastructureConfig(in *met
 }
 
 func autoConvert_v1alpha1_InfrastructureStatus_To_metal_InfrastructureStatus(in *InfrastructureStatus, out *metal.InfrastructureStatus, s conversion.Scope) error {
-	out.NetworkRef = in.NetworkRef
-	out.NATGatewayRef = in.NATGatewayRef
-	out.PrefixRef = in.PrefixRef
 	return nil
 }
 
@@ -234,9 +228,6 @@ func Convert_v1alpha1_InfrastructureStatus_To_metal_InfrastructureStatus(in *Inf
 }
 
 func autoConvert_metal_InfrastructureStatus_To_v1alpha1_InfrastructureStatus(in *metal.InfrastructureStatus, out *InfrastructureStatus, s conversion.Scope) error {
-	out.NetworkRef = in.NetworkRef
-	out.NATGatewayRef = in.NATGatewayRef
-	out.PrefixRef = in.PrefixRef
 	return nil
 }
 

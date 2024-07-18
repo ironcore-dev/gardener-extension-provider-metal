@@ -24,7 +24,7 @@ var (
 	}
 )
 
-// AddOptions are options to apply when adding the ironcore worker controller to the manager.
+// AddOptions are options to apply when adding the metal worker controller to the manager.
 type AddOptions struct {
 	// GardenCluster is the garden cluster object.
 	GardenCluster cluster.Cluster

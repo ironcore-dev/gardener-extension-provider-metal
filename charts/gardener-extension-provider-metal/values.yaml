@@ -21,10 +21,6 @@ metricsPort: 8080
 healthPort: 8081
 
 controllers:
-  backupbucket:
-    concurrentSyncs: 5
-  backupentry:
-    concurrentSyncs: 5
   controlplane:
     concurrentSyncs: 5
   healthcheck:
@@ -32,8 +28,6 @@ controllers:
   heartbeat:
     renewIntervalSeconds: 30
   infrastructure:
-    concurrentSyncs: 5
-  bastion:
     concurrentSyncs: 5
   worker:
     concurrentSyncs: 5
@@ -83,12 +77,6 @@ config:
       provisioner: kubernetes.io/gce-pd
       volumeBindingMode: WaitForFirstConsumer
   featureGates: {}
-  bastionConfig:
-    image: ""
-    machineClassName: ""
-    volumeClassName: ""
-  backupBucketConfig:
-    bucketClassName: ""
 #   DisableGardenerServiceAccountCreation: false
 gardener:
   version: ""

@@ -4,7 +4,6 @@
 package worker
 
 import (
-	commonv1alpha1 "github.com/ironcore-dev/ironcore/api/common/v1alpha1"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,10 +25,6 @@ var _ = Describe("MachinesImages", func() {
 			TypeMeta: metav1.TypeMeta{
 				APIVersion: apiv1alpha1.SchemeGroupVersion.String(),
 				Kind:       "InfrastructureStatus",
-			},
-			NetworkRef: commonv1alpha1.LocalUIDReference{
-				Name: "my-network",
-				UID:  "1234",
 			},
 		}
 		w.Spec.InfrastructureProviderStatus = &runtime.RawExtension{Object: infraStatus}

@@ -12,13 +12,9 @@ import (
 	extensionsv1alpha1 "github.com/gardener/gardener/pkg/apis/extensions/v1alpha1"
 	secretsmanager "github.com/gardener/gardener/pkg/utils/secrets/manager"
 	fakesecretsmanager "github.com/gardener/gardener/pkg/utils/secrets/manager/fake"
-	"github.com/ironcore-dev/ironcore/api/common/v1alpha1"
-	corev1alpha1 "github.com/ironcore-dev/ironcore/api/core/v1alpha1"
-	storagev1alpha1 "github.com/ironcore-dev/ironcore/api/storage/v1alpha1"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	corev1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -79,16 +75,7 @@ var _ = Describe("Valueprovider Reconcile", func() {
 						},
 					},
 					InfrastructureProviderStatus: &runtime.RawExtension{
-						Raw: encode(&apismetal.InfrastructureStatus{
-							NetworkRef: v1alpha1.LocalUIDReference{
-								Name: "my-network",
-								UID:  "1234",
-							},
-							PrefixRef: v1alpha1.LocalUIDReference{
-								Name: "my-prefix",
-								UID:  "6789",
-							},
-						}),
+						Raw: encode(&apismetal.InfrastructureStatus{}),
 					},
 				},
 			}
@@ -105,204 +92,8 @@ var _ = Describe("Valueprovider Reconcile", func() {
 			Expect(config.Data).To(HaveKey("cloudprovider.conf"))
 			cloudProviderConfig := map[string]interface{}{}
 			Expect(yaml.Unmarshal([]byte(config.Data["cloudprovider.conf"]), &cloudProviderConfig)).NotTo(HaveOccurred())
-			Expect(cloudProviderConfig["networkName"]).To(Equal("my-network"))
-			Expect(cloudProviderConfig["prefixName"]).To(Equal("my-prefix"))
 			Expect(cloudProviderConfig["clusterName"]).To(Equal(cluster.Name))
 		})
-	})
-
-	Describe("#GetStorageClassesChartValues", func() {
-		BeforeEach(func(ctx SpecContext) {
-			By("creating an expand only VolumeClass")
-			volumeClassExpandOnly := &storagev1alpha1.VolumeClass{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: "volume-expandable",
-				},
-				Capabilities: corev1alpha1.ResourceList{
-					corev1alpha1.ResourceIOPS: resource.MustParse("100"),
-					corev1alpha1.ResourceTPS:  resource.MustParse("100"),
-				},
-				ResizePolicy: storagev1alpha1.ResizePolicyExpandOnly,
-			}
-			Expect(k8sClient.Create(ctx, volumeClassExpandOnly)).To(Succeed())
-			DeferCleanup(k8sClient.Delete, volumeClassExpandOnly)
-
-			By("creating an static VolumeClass")
-			volumeClassStatic := &storagev1alpha1.VolumeClass{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: "volume-static",
-				},
-				Capabilities: corev1alpha1.ResourceList{
-					corev1alpha1.ResourceIOPS: resource.MustParse("100"),
-					corev1alpha1.ResourceTPS:  resource.MustParse("100"),
-				},
-				ResizePolicy: storagev1alpha1.ResizePolicyStatic,
-			}
-			Expect(k8sClient.Create(ctx, volumeClassStatic)).To(Succeed())
-			DeferCleanup(k8sClient.Delete, volumeClassStatic)
-		})
-		It("should return an empty config chart value map if not storageclasses are present in the cloudprofile", func(ctx SpecContext) {
-			providerCloudProfile := &apismetal.CloudProfileConfig{}
-			providerCloudProfileJson, err := json.Marshal(providerCloudProfile)
-			Expect(err).NotTo(HaveOccurred())
-
-			cluster := &controller.Cluster{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: ns.Name,
-				},
-				CloudProfile: &gardencorev1beta1.CloudProfile{
-					Spec: gardencorev1beta1.CloudProfileSpec{
-						ProviderConfig: &runtime.RawExtension{
-							Raw: providerCloudProfileJson,
-						},
-					},
-				},
-			}
-
-			values, err := vp.GetStorageClassesChartValues(ctx, nil, cluster)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(values).To(Equal(map[string]interface{}{
-				"storageClasses": []map[string]interface{}{},
-			}))
-		})
-
-		It("should return correct config chart values if default and additional storage classes are present in the cloudprofile", func(ctx SpecContext) {
-			providerCloudProfile := &apismetal.CloudProfileConfig{
-				StorageClasses: apismetal.StorageClasses{
-					Default: &apismetal.StorageClass{
-						Name: "foo",
-						Type: "volume-expandable",
-					},
-					Additional: []apismetal.StorageClass{
-						{
-							Name: "foo1",
-							Type: "volume-expandable",
-						},
-						{
-							Name: "foo2",
-							Type: "volume-static",
-						},
-					},
-				},
-			}
-			providerCloudProfileJson, err := json.Marshal(providerCloudProfile)
-			Expect(err).NotTo(HaveOccurred())
-
-			cluster := &controller.Cluster{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: ns.Name,
-				},
-				CloudProfile: &gardencorev1beta1.CloudProfile{
-					Spec: gardencorev1beta1.CloudProfileSpec{
-						ProviderConfig: &runtime.RawExtension{
-							Raw: providerCloudProfileJson,
-						},
-					},
-				},
-			}
-
-			values, err := vp.GetStorageClassesChartValues(ctx, nil, cluster)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(values).To(Equal(map[string]interface{}{
-				"storageClasses": []map[string]interface{}{
-					{
-						"name":       "foo",
-						"type":       "volume-expandable",
-						"default":    true,
-						"expandable": true,
-					},
-					{
-						"name":       "foo1",
-						"type":       "volume-expandable",
-						"expandable": true,
-					},
-					{
-						"name":       "foo2",
-						"type":       "volume-static",
-						"expandable": false,
-					},
-				},
-			}))
-		})
-
-		It("should return correct config chart values if only additional storage classes are present in the cloudprofile", func(ctx SpecContext) {
-			providerCloudProfile := &apismetal.CloudProfileConfig{
-				StorageClasses: apismetal.StorageClasses{
-					Additional: []apismetal.StorageClass{
-						{
-							Name: "foo1",
-							Type: "volume-expandable",
-						},
-						{
-							Name: "foo2",
-							Type: "volume-static",
-						},
-					},
-				},
-			}
-			providerCloudProfileJson, err := json.Marshal(providerCloudProfile)
-			Expect(err).NotTo(HaveOccurred())
-
-			cluster := &controller.Cluster{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: ns.Name,
-				},
-				CloudProfile: &gardencorev1beta1.CloudProfile{
-					Spec: gardencorev1beta1.CloudProfileSpec{
-						ProviderConfig: &runtime.RawExtension{
-							Raw: providerCloudProfileJson,
-						},
-					},
-				},
-			}
-
-			values, err := vp.GetStorageClassesChartValues(ctx, nil, cluster)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(values).To(Equal(map[string]interface{}{
-				"storageClasses": []map[string]interface{}{
-					{
-						"name":       "foo1",
-						"type":       "volume-expandable",
-						"expandable": true,
-					},
-					{
-						"name":       "foo2",
-						"type":       "volume-static",
-						"expandable": false,
-					},
-				},
-			}))
-		})
-
-		It("should return error if volumeClass is not available", func(ctx SpecContext) {
-			providerCloudProfile := &apismetal.CloudProfileConfig{
-				StorageClasses: apismetal.StorageClasses{
-					Default: &apismetal.StorageClass{
-						Name: "foo",
-						Type: "volume-non-existing",
-					},
-				},
-			}
-			providerCloudProfileJson, err := json.Marshal(providerCloudProfile)
-			Expect(err).NotTo(HaveOccurred())
-
-			cluster := &controller.Cluster{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: ns.Name,
-				},
-				CloudProfile: &gardencorev1beta1.CloudProfile{
-					Spec: gardencorev1beta1.CloudProfileSpec{
-						ProviderConfig: &runtime.RawExtension{
-							Raw: providerCloudProfileJson,
-						},
-					},
-				},
-			}
-
-			_, err = vp.GetStorageClassesChartValues(ctx, nil, cluster)
-			Expect(err).To(MatchError("could not get resize policy from volumeclass : VolumeClass not found"))
-		})
-
 	})
 
 	Describe("#GetControlPlaneShootCRDsChartValues", func() {
@@ -310,61 +101,6 @@ var _ = Describe("Valueprovider Reconcile", func() {
 			values, err := vp.GetControlPlaneShootCRDsChartValues(ctx, nil, nil)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(values).To(Equal(map[string]interface{}{}))
-		})
-	})
-
-	Describe("#GetControlPlaneShootChartValues", func() {
-		It("should return correct config chart values", func(ctx SpecContext) {
-			providerCloudProfile := &apismetal.CloudProfileConfig{
-				StorageClasses: apismetal.StorageClasses{
-					Default: &apismetal.StorageClass{
-						Name: "foo",
-						Type: "volume-expandable",
-					},
-					Additional: []apismetal.StorageClass{
-						{
-							Name: "bar",
-							Type: "volume-static",
-						},
-					},
-				},
-			}
-			providerCloudProfileJson, err := json.Marshal(providerCloudProfile)
-			Expect(err).NotTo(HaveOccurred())
-			cluster := &controller.Cluster{
-				CloudProfile: &gardencorev1beta1.CloudProfile{
-					Spec: gardencorev1beta1.CloudProfileSpec{
-						ProviderConfig: &runtime.RawExtension{
-							Raw: providerCloudProfileJson,
-						},
-					},
-				},
-				Shoot: &gardencorev1beta1.Shoot{
-					ObjectMeta: metav1.ObjectMeta{
-						Namespace: ns.Name,
-						Name:      "my-shoot",
-					},
-					Spec: gardencorev1beta1.ShootSpec{
-						Kubernetes: gardencorev1beta1.Kubernetes{
-							Version: "1.26.0",
-							VerticalPodAutoscaler: &gardencorev1beta1.VerticalPodAutoscaler{
-								Enabled: true,
-							},
-						},
-					},
-				},
-			}
-			values, err := vp.GetControlPlaneShootChartValues(ctx, nil, cluster, nil, nil)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(values).To(Equal(map[string]interface{}{
-				"cloud-controller-manager": map[string]interface{}{
-					"enabled": true,
-				},
-				"csi-driver-node": map[string]interface{}{
-					"enabled":    true,
-					"vpaEnabled": true,
-				},
-			}))
 		})
 	})
 
@@ -394,29 +130,11 @@ var _ = Describe("Valueprovider Reconcile", func() {
 						},
 					},
 					InfrastructureProviderStatus: &runtime.RawExtension{
-						Raw: encode(&apismetal.InfrastructureStatus{
-							NetworkRef: v1alpha1.LocalUIDReference{
-								Name: "my-network",
-								UID:  "1234",
-							},
-						}),
+						Raw: encode(&apismetal.InfrastructureStatus{}),
 					},
 				},
 			}
-			providerCloudProfile := &apismetal.CloudProfileConfig{
-				StorageClasses: apismetal.StorageClasses{
-					Default: &apismetal.StorageClass{
-						Name: "foo",
-						Type: "volumeTypeFoo",
-					},
-					Additional: []apismetal.StorageClass{
-						{
-							Name: "bar",
-							Type: "volumeTypeBar",
-						},
-					},
-				},
-			}
+			providerCloudProfile := &apismetal.CloudProfileConfig{}
 			providerCloudProfileJson, err := json.Marshal(providerCloudProfile)
 			Expect(err).NotTo(HaveOccurred())
 			networkProviderConfig := &unstructured.Unstructured{Object: map[string]any{

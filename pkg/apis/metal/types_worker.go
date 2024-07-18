@@ -22,7 +22,7 @@ type WorkerStatus struct {
 	MachineImages []MachineImage
 }
 
-// MachineImage is a mapping from logical names and versions to ironcore-specific identifiers.
+// MachineImage is a mapping from logical names and versions to metal-specific identifiers.
 type MachineImage struct {
 	// Name is the logical name of the machine image.
 	Name string

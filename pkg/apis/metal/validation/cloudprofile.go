@@ -9,15 +9,14 @@ import (
 	gardenercore "github.com/gardener/gardener/pkg/apis/core"
 	gardenercorehelper "github.com/gardener/gardener/pkg/apis/core/helper"
 	v1beta1constants "github.com/gardener/gardener/pkg/apis/core/v1beta1/constants"
-	apivalidation "k8s.io/apimachinery/pkg/api/validation"
 	"k8s.io/apimachinery/pkg/util/validation/field"
 	"k8s.io/utils/strings/slices"
 
-	apisironcore "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
+	apismetal "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
 )
 
 // ValidateCloudProfileConfig validates a CloudProfileConfig object.
-func ValidateCloudProfileConfig(cpConfig *apisironcore.CloudProfileConfig, machineImages []gardenercore.MachineImage, fldPath *field.Path) field.ErrorList {
+func ValidateCloudProfileConfig(cpConfig *apismetal.CloudProfileConfig, machineImages []gardenercore.MachineImage, fldPath *field.Path) field.ErrorList {
 	allErrs := field.ErrorList{}
 	machineImagesPath := fldPath.Child("machineImages")
 
@@ -35,22 +34,10 @@ func ValidateCloudProfileConfig(cpConfig *apisironcore.CloudProfileConfig, machi
 		}
 	}
 
-	if cpConfig.StorageClasses.Default != nil {
-		for _, msg := range apivalidation.NameIsDNSLabel(cpConfig.StorageClasses.Default.Name, false) {
-			allErrs = append(allErrs, field.Invalid(fldPath.Child("storageClasses").Child("defaultStorageClasses").Child("name"), cpConfig.StorageClasses.Default.Name, msg))
-		}
-	}
-
-	for i, sc := range cpConfig.StorageClasses.Additional {
-		for _, msg := range apivalidation.NameIsDNSLabel(sc.Name, false) {
-			allErrs = append(allErrs, field.Invalid(fldPath.Child("storageClasses").Child("additionalStorageClasses").Index(i).Child("name"), sc.Name, msg))
-		}
-	}
-
 	return allErrs
 }
 
-func validateVersions(versionsConfig []apisironcore.MachineImageVersion, versions []gardenercore.ExpirableVersion, fldPath *field.Path) field.ErrorList {
+func validateVersions(versionsConfig []apismetal.MachineImageVersion, versions []gardenercore.ExpirableVersion, fldPath *field.Path) field.ErrorList {
 	allErrs := field.ErrorList{}
 
 	for _, version := range versions {

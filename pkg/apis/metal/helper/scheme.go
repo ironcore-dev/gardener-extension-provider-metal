@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	// Scheme is a scheme with the types relevant for ironcore actuators.
+	// Scheme is a scheme with the types relevant for metal actuators.
 	Scheme *runtime.Scheme
 
 	decoder runtime.Decoder

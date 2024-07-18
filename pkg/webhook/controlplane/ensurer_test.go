@@ -236,7 +236,7 @@ var _ = Describe("Ensurer", func() {
 			BeforeEach(func() {
 				ensurer = NewEnsurer(logger, true)
 				DeferCleanup(testutils.WithVar(&ImageVector, imagevectorutils.ImageVector{{
-					Name:       "machine-controller-manager-provider-ironcore",
+					Name:       "machine-controller-manager-provider-metal",
 					Repository: "foo",
 					Tag:        ptr.To[string]("bar"),
 				}}))
@@ -246,7 +246,7 @@ var _ = Describe("Ensurer", func() {
 				Expect(deployment.Spec.Template.Spec.Containers).To(BeEmpty())
 				Expect(ensurer.EnsureMachineControllerManagerDeployment(ctx, nil, deployment, nil)).To(Succeed())
 				Expect(deployment.Spec.Template.Spec.Containers).To(ConsistOf(corev1.Container{
-					Name:            "machine-controller-manager-provider-ironcore",
+					Name:            "machine-controller-manager-provider-metal",
 					Image:           "foo:bar",
 					ImagePullPolicy: corev1.PullIfNotPresent,
 					Command: []string{
@@ -262,7 +262,7 @@ var _ = Describe("Ensurer", func() {
 						"--port=10259",
 						"--target-kubeconfig=/var/run/secrets/gardener.cloud/shoot/generic-kubeconfig/kubeconfig",
 						"--v=3",
-						"--ironcore-kubeconfig=/etc/ironcore/kubeconfig",
+						"--metal-kubeconfig=/etc/metal/kubeconfig",
 					},
 					LivenessProbe: &corev1.Probe{
 						ProbeHandler: corev1.ProbeHandler{
@@ -286,7 +286,7 @@ var _ = Describe("Ensurer", func() {
 						},
 						{
 							Name:      "cloudprovider",
-							MountPath: "/etc/ironcore",
+							MountPath: "/etc/metal",
 							ReadOnly:  true,
 						},
 					},
@@ -324,7 +324,7 @@ var _ = Describe("Ensurer", func() {
 
 				ccv := vpaautoscalingv1.ContainerControlledValuesRequestsOnly
 				Expect(vpa.Spec.ResourcePolicy.ContainerPolicies).To(ConsistOf(vpaautoscalingv1.ContainerResourcePolicy{
-					ContainerName:    "machine-controller-manager-provider-ironcore",
+					ContainerName:    "machine-controller-manager-provider-metal",
 					ControlledValues: &ccv,
 					MinAllowed: corev1.ResourceList{
 						corev1.ResourceCPU:    resource.MustParse("30m"),

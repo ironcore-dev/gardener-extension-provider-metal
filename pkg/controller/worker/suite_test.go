@@ -15,9 +15,6 @@ import (
 	gardener "github.com/gardener/gardener/pkg/client/kubernetes"
 	machinescheme "github.com/gardener/machine-controller-manager/pkg/client/clientset/versioned/scheme"
 	"github.com/ironcore-dev/controller-utils/modutils"
-	networkingv1alpha1 "github.com/ironcore-dev/ironcore/api/networking/v1alpha1"
-	envtestutils "github.com/ironcore-dev/ironcore/utils/envtest"
-	metalv1alpha1 "github.com/ironcore-dev/metal-operator/api/v1alpha1"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"go.uber.org/zap/zapcore"
@@ -46,10 +43,9 @@ const (
 )
 
 var (
-	testEnv    *envtest.Environment
-	testEnvExt *envtestutils.EnvironmentExtensions
-	cfg        *rest.Config
-	k8sClient  client.Client
+	testEnv   *envtest.Environment
+	cfg       *rest.Config
+	k8sClient client.Client
 )
 
 // global Gardener resources used by delegates
@@ -80,8 +76,6 @@ func TestAPIs(t *testing.T) {
 var _ = BeforeSuite(func() {
 	logf.SetLogger(zap.New(zap.WriteTo(GinkgoWriter), zap.UseDevMode(true), zap.Level(zapcore.InfoLevel)))
 
-	var err error
-
 	By("bootstrapping test environment")
 	testEnv = &envtest.Environment{
 		CRDDirectoryPaths: []string{
@@ -90,30 +84,22 @@ var _ = BeforeSuite(func() {
 			modutils.Dir("github.com/gardener/machine-controller-manager", "kubernetes", "crds", "machine.sapcloud.io_machines.yaml"),
 			modutils.Dir("github.com/gardener/machine-controller-manager", "kubernetes", "crds", "machine.sapcloud.io_machinesets.yaml"),
 			modutils.Dir("github.com/gardener/machine-controller-manager", "kubernetes", "crds", "machine.sapcloud.io_scales.yaml"),
-			modutils.Dir("github.com/ironcore-dev/metal-operator", "config", "crd", "bases"),
 			filepath.Join("..", "..", "..", "example", "20-crd-extensions.gardener.cloud_controlplanes.yaml"),
 			filepath.Join("..", "..", "..", "example", "20-crd-extensions.gardener.cloud_workers.yaml"),
 		},
 		ErrorIfCRDPathMissing: true,
 	}
-	testEnvExt = &envtestutils.EnvironmentExtensions{
-		APIServiceDirectoryPaths: []string{
-			modutils.Dir("github.com/ironcore-dev/ironcore", "config", "apiserver", "apiservice", "bases"),
-		},
-		ErrorIfAPIServicePathIsMissing: true,
-	}
 
-	cfg, err = envtestutils.StartWithExtensions(testEnv, testEnvExt)
+	var err error
+	// cfg is defined in this file globally.
+	cfg, err = testEnv.Start()
 	Expect(err).NotTo(HaveOccurred())
 	Expect(cfg).NotTo(BeNil())
-	DeferCleanup(envtestutils.StopWithExtensions, testEnv, testEnvExt)
 
-	Expect(networkingv1alpha1.AddToScheme(scheme.Scheme)).To(Succeed())
 	Expect(apiextensionsscheme.AddToScheme(scheme.Scheme)).To(Succeed())
 	Expect(machinescheme.AddToScheme(scheme.Scheme)).To(Succeed())
 	Expect(gardenerextensionv1alpha1.AddToScheme(scheme.Scheme)).To(Succeed())
 	Expect(apiv1alpha1.AddToScheme(scheme.Scheme)).To(Succeed())
-	Expect(metalv1alpha1.AddToScheme(scheme.Scheme)).To(Succeed())
 
 	// Init package-level k8sClient
 	k8sClient, err = client.New(cfg, client.Options{Scheme: scheme.Scheme})
@@ -214,7 +200,7 @@ func SetupTest() (*corev1.Namespace, *gardener.ChartApplier) {
 		testCluster = &extensionscontroller.Cluster{
 			CloudProfile: &gardencorev1beta1.CloudProfile{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: "ironcore",
+					Name: "metal",
 				},
 				Spec: gardencorev1beta1.CloudProfileSpec{
 					ProviderConfig: &runtime.RawExtension{

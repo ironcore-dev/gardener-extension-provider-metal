@@ -21,12 +21,6 @@ spec:
     deploymentRefs:
     - name: provider-metal
   resources:
-  - kind: BackupBucket
-    type: metal
-  - kind: BackupEntry
-    type: metal
-  - kind: Bastion
-    type: metal
   - kind: ControlPlane
     type: metal
   - kind: Infrastructure

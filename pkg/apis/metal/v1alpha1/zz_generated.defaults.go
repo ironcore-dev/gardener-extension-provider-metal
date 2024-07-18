@@ -16,14 +16,5 @@ import (
 // Public to allow building arbitrary schemes.
 // All generated defaulters are covering - they call all nested defaulters.
 func RegisterDefaults(scheme *runtime.Scheme) error {
-	scheme.AddTypeDefaultingFunc(&InfrastructureConfig{}, func(obj interface{}) { SetObjectDefaults_InfrastructureConfig(obj.(*InfrastructureConfig)) })
 	return nil
-}
-
-func SetObjectDefaults_InfrastructureConfig(in *InfrastructureConfig) {
-	if in.NetworkRef != nil {
-		if in.NetworkRef.Name == "" {
-			in.NetworkRef.Name = ""
-		}
-	}
 }

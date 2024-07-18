@@ -23,7 +23,7 @@ import (
 	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
 )
 
-// DeployMachineClasses generates and creates the ironcore specific machine classes.
+// DeployMachineClasses generates and creates the metal specific machine classes.
 func (w *workerDelegate) DeployMachineClasses(ctx context.Context) error {
 	machineClasses, machineClassSecrets, err := w.generateMachineClassAndSecrets()
 	if err != nil {

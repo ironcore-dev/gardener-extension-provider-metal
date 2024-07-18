@@ -6,7 +6,7 @@
 </ul>
 <h2 id="metal.provider.extensions.gardener.cloud/v1alpha1">metal.provider.extensions.gardener.cloud/v1alpha1</h2>
 <p>
-<p>Package v1alpha1 contains the ironcore metal provider API resources.</p>
+<p>Package v1alpha1 contains the metal provider API resources.</p>
 </p>
 Resource Types:
 <ul><li>
@@ -223,45 +223,6 @@ map[string]bool
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>
-<code>networkRef</code></br>
-<em>
-<a href="https://github.com/ironcore-dev/ironcore/blob/main/docs/api-reference/common.md#localuidreference">
-github.com/ironcore-dev/ironcore/api/common/v1alpha1.LocalUIDReference
-</a>
-</em>
-</td>
-<td>
-<p>NetworkRef is the reference to the networked used</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>natGatewayRef</code></br>
-<em>
-<a href="https://github.com/ironcore-dev/ironcore/blob/main/docs/api-reference/common.md#localuidreference">
-github.com/ironcore-dev/ironcore/api/common/v1alpha1.LocalUIDReference
-</a>
-</em>
-</td>
-<td>
-<p>NATGatewayRef is the reference to the NAT gateway used</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>prefixRef</code></br>
-<em>
-<a href="https://github.com/ironcore-dev/ironcore/blob/main/docs/api-reference/common.md#localuidreference">
-github.com/ironcore-dev/ironcore/api/common/v1alpha1.LocalUIDReference
-</a>
-</em>
-</td>
-<td>
-<p>PrefixRef is the reference to the Prefix used</p>
-</td>
-</tr>
 </tbody>
 </table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.MachineImage">MachineImage

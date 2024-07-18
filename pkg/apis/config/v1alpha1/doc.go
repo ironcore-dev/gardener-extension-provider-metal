@@ -6,6 +6,6 @@
 // +k8s:openapi-gen=true
 // +k8s:defaulter-gen=TypeMeta
 
-// Package v1alpha1 contains the ironcore provider configuration API resources.
+// Package v1alpha1 contains the metal provider configuration API resources.
 // +groupName=metal.provider.extensions.config.gardener.cloud
 package v1alpha1 // import "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/config/v1alpha1"

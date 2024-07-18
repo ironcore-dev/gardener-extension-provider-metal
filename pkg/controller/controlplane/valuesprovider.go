@@ -20,12 +20,10 @@ import (
 	kutil "github.com/gardener/gardener/pkg/utils/kubernetes"
 	secretutils "github.com/gardener/gardener/pkg/utils/secrets"
 	secretsmanager "github.com/gardener/gardener/pkg/utils/secrets/manager"
-	storagev1alpha1 "github.com/ironcore-dev/ironcore/api/storage/v1alpha1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	storagev1 "k8s.io/api/storage/v1"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
@@ -137,8 +135,8 @@ var (
 				Objects: []*chart.Object{
 					{Type: &rbacv1.ClusterRole{}, Name: "system:controller:cloud-node-controller"},
 					{Type: &rbacv1.ClusterRoleBinding{}, Name: "system:controller:cloud-node-controller"},
-					{Type: &rbacv1.ClusterRole{}, Name: "ironcore:cloud-provider"},
-					{Type: &rbacv1.ClusterRoleBinding{}, Name: "ironcore:cloud-provider"},
+					{Type: &rbacv1.ClusterRole{}, Name: "metal:cloud-provider"},
+					{Type: &rbacv1.ClusterRoleBinding{}, Name: "metal:cloud-provider"},
 				},
 			},
 			{
@@ -183,7 +181,7 @@ var (
 	}
 )
 
-// valuesProvider is a ValuesProvider that provides ironcore-specific values for the 2 charts applied by the generic actuator.
+// valuesProvider is a ValuesProvider that provides metal-specific values for the 2 charts applied by the generic actuator.
 type valuesProvider struct {
 	client  client.Client
 	decoder runtime.Decoder
@@ -217,8 +215,6 @@ func (vp *valuesProvider) GetConfigChartValues(
 	}
 	// Collect config chart values
 	return map[string]interface{}{
-		metal.NetworkFieldName: infrastructureStatus.NetworkRef.Name,
-		metal.PrefixFieldName:  infrastructureStatus.PrefixRef.Name,
 		metal.ClusterFieldName: cluster.ObjectMeta.Name,
 	}, nil
 }
@@ -275,64 +271,8 @@ func (vp *valuesProvider) GetStorageClassesChartValues(
 	controlPlane *extensionsv1alpha1.ControlPlane,
 	cluster *extensionscontroller.Cluster,
 ) (map[string]interface{}, error) {
-	providerConfig := apismetal.CloudProfileConfig{}
-	if config := cluster.CloudProfile.Spec.ProviderConfig; config != nil {
-		if _, _, err := vp.decoder.Decode(config.Raw, nil, &providerConfig); err != nil {
-			return nil, fmt.Errorf("could not decode cloudprofile providerConfig for controlplane '%s': %w", client.ObjectKeyFromObject(controlPlane), err)
-		}
-	}
-
 	values := make(map[string]interface{})
-	var defaultStorageClass int
-	if providerConfig.StorageClasses.Default != nil {
-		defaultStorageClass++
-	}
-
-	// get ironcore credentials from infrastructure config
-	ironcoreClient, _, err := metal.GetIroncoreClientAndNamespaceFromCloudProviderSecret(ctx, vp.client, cluster.ObjectMeta.Name)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get ironcore client and namespace from cloudprovider secret: %w", err)
-	}
-
-	var expandable bool
-	storageClasses := make([]map[string]interface{}, 0, len(providerConfig.StorageClasses.Additional)+defaultStorageClass)
-	if providerConfig.StorageClasses.Default != nil {
-		if expandable, err = isVolumeClassExpandable(ctx, ironcoreClient, providerConfig.StorageClasses.Default); err != nil {
-			return nil, fmt.Errorf("could not get resize policy from volumeclass : %w", err)
-		}
-
-		storageClasses = append(storageClasses, map[string]interface{}{
-			StorageClassNameKeyName:       providerConfig.StorageClasses.Default.Name,
-			StorageClassTypeKeyName:       providerConfig.StorageClasses.Default.Type,
-			StorageClassDefaultKeyName:    true,
-			StorageClassExpandableKeyName: expandable,
-		})
-	}
-	for _, sc := range providerConfig.StorageClasses.Additional {
-		if expandable, err = isVolumeClassExpandable(ctx, ironcoreClient, &sc); err != nil {
-			return nil, fmt.Errorf("could not get resize policy from volumeclass : %w", err)
-		}
-		storageClasses = append(storageClasses, map[string]interface{}{
-			StorageClassNameKeyName:       sc.Name,
-			StorageClassTypeKeyName:       sc.Type,
-			StorageClassExpandableKeyName: expandable,
-		})
-	}
-
-	values["storageClasses"] = storageClasses
-
 	return values, nil
-}
-
-func isVolumeClassExpandable(ctx context.Context, ironcoreClient client.Client, storageClass *apismetal.StorageClass) (bool, error) {
-	volumeClass := &storagev1alpha1.VolumeClass{}
-	if err := ironcoreClient.Get(ctx, client.ObjectKey{Name: storageClass.Type}, volumeClass); err != nil {
-		if apierrors.IsNotFound(err) {
-			return false, fmt.Errorf("VolumeClass not found")
-		}
-		return false, fmt.Errorf("could not get volumeclass: %w", err)
-	}
-	return volumeClass.ResizePolicy == storagev1alpha1.ResizePolicyExpandOnly, nil
 }
 
 // getControlPlaneChartValues collects and returns the control plane chart values.

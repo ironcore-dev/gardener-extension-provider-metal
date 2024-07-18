@@ -18,7 +18,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
-	apisironcore "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
+	apismetal "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
 	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
 )
 
@@ -58,7 +58,7 @@ func (e *ensurer) EnsureCloudProviderSecret(ctx context.Context, gctx gcontext.G
 		return fmt.Errorf("failed to get cluster: %w", err)
 	}
 
-	cloudProfileConfig := &apisironcore.CloudProfileConfig{}
+	cloudProfileConfig := &apismetal.CloudProfileConfig{}
 	raw, err := cluster.CloudProfile.Spec.ProviderConfig.MarshalJSON()
 	if err != nil {
 		return fmt.Errorf("could not decode cluster object's providerConfig: %w", err)

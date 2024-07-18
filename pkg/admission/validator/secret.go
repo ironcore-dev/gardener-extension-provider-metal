@@ -12,7 +12,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/equality"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	ironcorevalidation "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/validation"
+	metalvalidation "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/validation"
 )
 
 type secret struct{}
@@ -22,7 +22,7 @@ func NewSecretValidator() extensionswebhook.Validator {
 	return &secret{}
 }
 
-// Validate checks whether the given new secret contains a valid ironcore service account.
+// Validate checks whether the given new secret contains a valid metal service account.
 func (s *secret) Validate(_ context.Context, newObj, oldObj client.Object) error {
 	secret, ok := newObj.(*corev1.Secret)
 	if !ok {
@@ -40,5 +40,5 @@ func (s *secret) Validate(_ context.Context, newObj, oldObj client.Object) error
 		}
 	}
 
-	return ironcorevalidation.ValidateCloudProviderSecret(secret)
+	return metalvalidation.ValidateCloudProviderSecret(secret)
 }

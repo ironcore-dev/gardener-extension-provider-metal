@@ -12,7 +12,7 @@ import (
 	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
 )
 
-// ValidateCloudProviderSecret checks whether the given secret contains a valid ironcore service account.
+// ValidateCloudProviderSecret checks whether the given secret contains a valid metal service account.
 func ValidateCloudProviderSecret(secret *corev1.Secret) error {
 	if _, ok := secret.Data[metal.TokenFieldName]; !ok {
 		return fmt.Errorf("missing field: %s in cloud provider secret", metal.TokenFieldName)

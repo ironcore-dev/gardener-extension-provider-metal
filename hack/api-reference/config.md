@@ -6,7 +6,7 @@
 </ul>
 <h2 id="metal.provider.extensions.config.gardener.cloud/v1alpha1">metal.provider.extensions.config.gardener.cloud/v1alpha1</h2>
 <p>
-<p>Package v1alpha1 contains the ironcore provider configuration API resources.</p>
+<p>Package v1alpha1 contains the metal provider configuration API resources.</p>
 </p>
 Resource Types:
 <ul><li>
@@ -15,7 +15,7 @@ Resource Types:
 <h3 id="metal.provider.extensions.config.gardener.cloud/v1alpha1.ControllerConfiguration">ControllerConfiguration
 </h3>
 <p>
-<p>ControllerConfiguration defines the configuration for the ironcore provider.</p>
+<p>ControllerConfiguration defines the configuration for the metal provider.</p>
 </p>
 <table>
 <thead>
@@ -96,115 +96,6 @@ map[string]bool
 <p>FeatureGates is a map of feature names to bools that enable
 or disable alpha/experimental features.
 Default: nil</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>bastionConfig</code></br>
-<em>
-<a href="#metal.provider.extensions.config.gardener.cloud/v1alpha1.BastionConfig">
-BastionConfig
-</a>
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-<p>BastionConfig is the config for the Bastion</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>backupBucketConfig</code></br>
-<em>
-<a href="#metal.provider.extensions.config.gardener.cloud/v1alpha1.BackupBucketConfig">
-BackupBucketConfig
-</a>
-</em>
-</td>
-<td>
-<p>BackupBucketConfig is config for Backup Bucket</p>
-</td>
-</tr>
-</tbody>
-</table>
-<h3 id="metal.provider.extensions.config.gardener.cloud/v1alpha1.BackupBucketConfig">BackupBucketConfig
-</h3>
-<p>
-(<em>Appears on:</em>
-<a href="#metal.provider.extensions.config.gardener.cloud/v1alpha1.ControllerConfiguration">ControllerConfiguration</a>)
-</p>
-<p>
-<p>BackupBucketConfig is config for Backup Bucket</p>
-</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>bucketClassName</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>BucketClassName is the name of the ironcore BucketClass to use for the BackupBucket</p>
-</td>
-</tr>
-</tbody>
-</table>
-<h3 id="metal.provider.extensions.config.gardener.cloud/v1alpha1.BastionConfig">BastionConfig
-</h3>
-<p>
-(<em>Appears on:</em>
-<a href="#metal.provider.extensions.config.gardener.cloud/v1alpha1.ControllerConfiguration">ControllerConfiguration</a>)
-</p>
-<p>
-<p>BastionConfig is the config for the Bastion</p>
-</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>image</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>Image is the URL pointing to an OCI registry containing the operating system image which should be used to boot the Bastion host</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>machineClassName</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>MachineClassName is the name of the ironcore MachineClass to use for the Bastion host</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>volumeClassName</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>VolumeClassName is the name of the ironcore VolumeClass to use for the Bastion host root disk volume</p>
 </td>
 </tr>
 </tbody>

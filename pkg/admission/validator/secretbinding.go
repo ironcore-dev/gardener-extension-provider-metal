@@ -15,7 +15,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
-	ironcorevalidation "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/validation"
+	metalvalidation "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/validation"
 )
 
 type secretBinding struct {
@@ -29,7 +29,7 @@ func NewSecretBindingValidator(mgr manager.Manager) extensionswebhook.Validator 
 	}
 }
 
-// Validate checks whether the given SecretBinding refers to a Secret with a valid ironcore service account.
+// Validate checks whether the given SecretBinding refers to a Secret with a valid metal service account.
 func (sb *secretBinding) Validate(ctx context.Context, newObj, oldObj client.Object) error {
 	secretBinding, ok := newObj.(*core.SecretBinding)
 	if !ok {
@@ -58,5 +58,5 @@ func (sb *secretBinding) Validate(ctx context.Context, newObj, oldObj client.Obj
 		return err
 	}
 
-	return ironcorevalidation.ValidateCloudProviderSecret(secret)
+	return metalvalidation.ValidateCloudProviderSecret(secret)
 }

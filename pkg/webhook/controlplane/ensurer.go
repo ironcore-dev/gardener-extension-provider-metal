@@ -27,7 +27,7 @@ import (
 // NewEnsurer creates a new controlplane ensurer.
 func NewEnsurer(logger logr.Logger, gardenletManagesMCM bool) genericmutator.Ensurer {
 	return &ensurer{
-		logger: logger.WithName("ironcore-controlplane-ensurer"),
+		logger: logger.WithName("metal-controlplane-ensurer"),
 	}
 }
 
@@ -54,11 +54,11 @@ func (e *ensurer) EnsureMachineControllerManagerDeployment(_ context.Context, _ 
 		machinecontrollermanager.ProviderSidecarContainer(newObj.Namespace, metal.ProviderName, image.String()),
 	)
 
-	if c := extensionswebhook.ContainerWithName(ps.Containers, "machine-controller-manager-provider-ironcore"); c != nil {
+	if c := extensionswebhook.ContainerWithName(ps.Containers, "machine-controller-manager-provider-metal"); c != nil {
 		ensureMCMCommandLineArgs(c)
 		c.VolumeMounts = extensionswebhook.EnsureVolumeMountWithName(c.VolumeMounts, corev1.VolumeMount{
 			Name:      "cloudprovider",
-			MountPath: "/etc/ironcore",
+			MountPath: "/etc/metal",
 			ReadOnly:  true,
 		})
 	}
@@ -134,7 +134,7 @@ func (e *ensurer) EnsureClusterAutoscalerDeployment(_ context.Context, _ extensi
 }
 
 func ensureMCMCommandLineArgs(c *corev1.Container) {
-	c.Command = extensionswebhook.EnsureStringWithPrefix(c.Command, "--ironcore-kubeconfig=", "/etc/ironcore/kubeconfig")
+	c.Command = extensionswebhook.EnsureStringWithPrefix(c.Command, "--metal-kubeconfig=", "/etc/metal/kubeconfig")
 }
 
 func ensureKubeAPIServerCommandLineArgs(c *corev1.Container) {

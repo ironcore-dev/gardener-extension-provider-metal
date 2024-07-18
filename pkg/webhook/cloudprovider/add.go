@@ -12,7 +12,7 @@ import (
 	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
 )
 
-var logger = log.Log.WithName("ironcore-cloudprovider-webhook")
+var logger = log.Log.WithName("metal-cloudprovider-webhook")
 
 // AddToManager creates the cloudprovider webhook and adds it to the manager.
 func AddToManager(mgr manager.Manager) (*extensionswebhook.Webhook, error) {

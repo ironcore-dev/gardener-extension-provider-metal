@@ -25,7 +25,7 @@ import (
 var _ = Describe("Machines", func() {
 	ns, _ := SetupTest()
 
-	It("should create the expected machine class for a multi zone cluster", func(ctx SpecContext) {
+	It("should create the expected machine class for a multi zone clπuster", func(ctx SpecContext) {
 		By("deploying the machine class for a given multi zone cluster")
 		decoder := serializer.NewCodecFactory(k8sClient.Scheme(), serializer.EnableStrict).UniversalDecoder()
 		workerDelegate, err := NewWorkerDelegate(k8sClient, decoder, k8sClient.Scheme(), "", w, testCluster)
@@ -69,7 +69,7 @@ var _ = Describe("Machines", func() {
 				Namespace: ns.Name,
 				Name:      className,
 			}),
-			HaveField("Provider", "ironcore"),
+			HaveField("Provider", "metal"),
 			HaveField("NodeTemplate", &machinecontrollerv1alpha1.NodeTemplate{
 				Capacity:     pool.NodeTemplate.Capacity,
 				InstanceType: pool.MachineType,

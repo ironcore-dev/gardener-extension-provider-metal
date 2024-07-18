@@ -83,17 +83,3 @@ func (c *Config) ApplyHealthCheckConfig(config *healthcheckconfig.HealthCheckCon
 		*config = *c.Config.HealthCheckConfig
 	}
 }
-
-// ApplyBastionConfig applies the BastionConfig to the config
-func (c *Config) ApplyBastionConfig(config *config.BastionConfig) {
-	if c.Config.BastionConfig != nil {
-		*config = *c.Config.BastionConfig
-	}
-}
-
-// ApplyBackupbucketConfig applies the BackupBucketConfig to the config
-func (c *Config) ApplyBackupbucketConfig(config *config.BackupBucketConfig) {
-	if c.Config.BackupBucketConfig != nil {
-		*config = *c.Config.BackupBucketConfig
-	}
-}
