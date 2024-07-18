@@ -1,0 +1,24 @@
+name: Pull Request Code test
+
+on:
+  pull_request:
+    types: [ assigned, opened, synchronize, reopened ]
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - 'example/**'
+
+jobs:
+  checks:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      # helm cli is needed for the controller registration generation
+      - uses: azure/setup-helm@v4
+        with:
+          version: 'v3.14.3'
+      - run: make test

@@ -164,19 +164,6 @@ string
 </td>
 <td><code>InfrastructureConfig</code></td>
 </tr>
-<tr>
-<td>
-<code>networkRef</code></br>
-<em>
-<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#localobjectreference-v1-core">
-Kubernetes core/v1.LocalObjectReference
-</a>
-</em>
-</td>
-<td>
-<p>NetworkRef references the network to use for the Shoot creation.</p>
-</td>
-</tr>
 </tbody>
 </table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerManagerConfig">CloudControllerManagerConfig
@@ -413,7 +400,7 @@ string
 </tr>
 <tr>
 <td>
-<code>labels</code></br>
+<code>serverLabels</code></br>
 <em>
 map[string]string
 </em>
