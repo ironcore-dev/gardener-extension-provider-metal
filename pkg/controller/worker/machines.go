@@ -101,14 +101,14 @@ func (w *workerDelegate) generateMachineClassAndSecrets() ([]*machinecontrollerv
 			return nil, nil, err
 		}
 
-		machineLabels, err := w.getMachineLabelsForMachineType(pool.MachineType)
+		serverLabels, err := w.getServerLabelsForMachineType(pool.MachineType)
 		if err != nil {
 			return nil, nil, err
 		}
 
 		machineClassProviderSpec := map[string]interface{}{
 			metal.ImageFieldName: machineImage,
-			metal.MachineLabels:  machineLabels,
+			metal.ServerLabels:   serverLabels,
 		}
 
 		for zoneIndex, zone := range pool.Zones {

@@ -310,7 +310,7 @@ func Convert_metal_MachineImages_To_v1alpha1_MachineImages(in *metal.MachineImag
 
 func autoConvert_v1alpha1_MachineType_To_metal_MachineType(in *MachineType, out *metal.MachineType, s conversion.Scope) error {
 	out.Name = in.Name
-	out.Labels = *(*map[string]string)(unsafe.Pointer(&in.Labels))
+	out.ServerLabels = *(*map[string]string)(unsafe.Pointer(&in.ServerLabels))
 	return nil
 }
 
@@ -321,7 +321,7 @@ func Convert_v1alpha1_MachineType_To_metal_MachineType(in *MachineType, out *met
 
 func autoConvert_metal_MachineType_To_v1alpha1_MachineType(in *metal.MachineType, out *MachineType, s conversion.Scope) error {
 	out.Name = in.Name
-	out.Labels = *(*map[string]string)(unsafe.Pointer(&in.Labels))
+	out.ServerLabels = *(*map[string]string)(unsafe.Pointer(&in.ServerLabels))
 	return nil
 }
 

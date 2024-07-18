@@ -167,7 +167,7 @@ func SetupTest() (*corev1.Namespace, *gardener.ChartApplier) {
 			MachineTypes: []apiv1alpha1.MachineType{
 				{
 					Name: "large",
-					Labels: map[string]string{
+					ServerLabels: map[string]string{
 						"foo": "bar",
 					},
 				},

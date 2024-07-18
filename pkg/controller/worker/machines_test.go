@@ -55,7 +55,7 @@ var _ = Describe("Machines", func() {
 			"labels": map[string]interface{}{
 				metal.ClusterNameLabel: testCluster.ObjectMeta.Name,
 			},
-			"machineLabels": map[string]string{
+			"serverLabels": map[string]string{
 				"foo": "bar",
 			},
 		}
@@ -143,11 +143,6 @@ var _ = Describe("Machines", func() {
 		}))
 	})
 })
-
-func encodeObject(obj runtime.Object) []byte {
-	data, _ := json.Marshal(obj)
-	return data
-}
 
 func encodeMap(m map[string]interface{}) []byte {
 	data, _ := json.Marshal(m)

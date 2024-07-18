@@ -45,7 +45,7 @@ func AddToManagerWithOptions(ctx context.Context, mgr manager.Manager, opts AddO
 		controlPlaneChart,
 		controlPlaneShootChart,
 		nil,
-		storageClassChart,
+		nil,
 		nil,
 		NewValuesProvider(mgr),
 		extensionscontroller.ChartRendererFactoryFunc(util.NewChartRendererForShoot),

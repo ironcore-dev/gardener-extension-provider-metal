@@ -23,8 +23,8 @@ type CloudProfileConfig struct {
 }
 
 type MachineType struct {
-	Name   string
-	Labels map[string]string
+	Name         string
+	ServerLabels map[string]string
 }
 
 // MachineImages is a mapping from logical names and versions to provider-specific identifiers.

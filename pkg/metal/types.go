@@ -56,7 +56,8 @@ const (
 	UserDataFieldName = "userData"
 	// ImageFieldName is the name of the image field
 	ImageFieldName = "image"
-	MachineLabels  = "machineLabels"
+	// ServerLabels is the name of the server labels field
+	ServerLabels = "serverLabels"
 	// RootDiskFieldName is the name of the root disk field
 	RootDiskFieldName = "rootDisk"
 	// SizeFieldName is the name of the size field

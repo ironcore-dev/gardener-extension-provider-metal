@@ -213,10 +213,6 @@ var _ = Describe("Valueprovider Reconcile", func() {
 					"podNetwork":           "10.0.0.0/16",
 					"configureCloudRoutes": true,
 				},
-				"csi-driver-controller": map[string]interface{}{
-					"enabled":  true,
-					"replicas": 1,
-				},
 			}))
 		})
 	})

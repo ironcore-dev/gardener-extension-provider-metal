@@ -13,7 +13,6 @@ import (
 	extensionssecretsmanager "github.com/gardener/gardener/extensions/pkg/util/secret/manager"
 	gardencorev1beta1 "github.com/gardener/gardener/pkg/apis/core/v1beta1"
 	v1beta1constants "github.com/gardener/gardener/pkg/apis/core/v1beta1/constants"
-	gardencorev1beta1helper "github.com/gardener/gardener/pkg/apis/core/v1beta1/helper"
 	extensionsv1alpha1 "github.com/gardener/gardener/pkg/apis/extensions/v1alpha1"
 	"github.com/gardener/gardener/pkg/utils/chart"
 	gutil "github.com/gardener/gardener/pkg/utils/gardener"
@@ -23,7 +22,6 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
-	storagev1 "k8s.io/api/storage/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
@@ -69,14 +67,6 @@ func secretConfigsFunc(namespace string) []extensionssecretsmanager.SecretConfig
 func shootAccessSecretsFunc(namespace string) []*gutil.AccessSecret {
 	return []*gutil.AccessSecret{
 		gutil.NewShootAccessSecret(cloudControllerManagerDeploymentName, namespace),
-		gutil.NewShootAccessSecret(metal.CSIProvisionerName, namespace),
-		gutil.NewShootAccessSecret(metal.CSIAttacherName, namespace),
-		gutil.NewShootAccessSecret(metal.CSIResizerName, namespace),
-		// TODO: This needs to be fixed!!!
-		//		 Since the csi controller needs to access the Node resources in the Shoot cluster,
-		//		 it should use the same ServiceAccount as the csi-driver-node in the Shoot. That way
-		//		 the correct ClusterRolebindings will be used for both components.
-		gutil.NewShootAccessSecret(metal.CSINodeName, namespace),
 	}
 }
 
@@ -105,22 +95,6 @@ var (
 					{Type: &autoscalingv1.VerticalPodAutoscaler{}, Name: "cloud-controller-manager-vpa"},
 				},
 			},
-			{
-				Name: metal.CSIControllerName,
-				Images: []string{
-					metal.CSIDriverImageName,
-					metal.CSIProvisionerImageName,
-					metal.CSIAttacherImageName,
-					metal.CSIResizerImageName,
-					metal.CSILivenessProbeImageName,
-				},
-				Objects: []*chart.Object{
-					// csi-driver-controller
-					{Type: &appsv1.Deployment{}, Name: metal.CSIControllerName},
-					{Type: &corev1.ConfigMap{}, Name: metal.CSIControllerObservabilityConfigName},
-					{Type: &autoscalingv1.VerticalPodAutoscaler{}, Name: metal.CSIControllerName + "-vpa"},
-				},
-			},
 		},
 	}
 
@@ -135,49 +109,10 @@ var (
 				Objects: []*chart.Object{
 					{Type: &rbacv1.ClusterRole{}, Name: "system:controller:cloud-node-controller"},
 					{Type: &rbacv1.ClusterRoleBinding{}, Name: "system:controller:cloud-node-controller"},
-					{Type: &rbacv1.ClusterRole{}, Name: "metal:cloud-provider"},
 					{Type: &rbacv1.ClusterRoleBinding{}, Name: "metal:cloud-provider"},
 				},
 			},
-			{
-				Name: metal.CSINodeName,
-				Images: []string{
-					metal.CSIDriverImageName,
-					metal.CSINodeDriverRegistrarImageName,
-					metal.CSILivenessProbeImageName,
-				},
-				Objects: []*chart.Object{
-					// csi-driver
-					{Type: &appsv1.DaemonSet{}, Name: metal.CSINodeName},
-					{Type: &storagev1.CSIDriver{}, Name: metal.CSIStorageProvisioner},
-					{Type: &corev1.ServiceAccount{}, Name: metal.CSIDriverName},
-					{Type: &rbacv1.ClusterRole{}, Name: metal.UsernamePrefix + metal.CSIDriverName},
-					{Type: &rbacv1.ClusterRoleBinding{}, Name: metal.UsernamePrefix + metal.CSIDriverName},
-					{Type: extensionscontroller.GetVerticalPodAutoscalerObject(), Name: metal.CSINodeName},
-					// csi-provisioner
-					{Type: &rbacv1.ClusterRole{}, Name: metal.UsernamePrefix + metal.CSIProvisionerName},
-					{Type: &rbacv1.ClusterRoleBinding{}, Name: metal.UsernamePrefix + metal.CSIProvisionerName},
-					{Type: &rbacv1.Role{}, Name: metal.UsernamePrefix + metal.CSIProvisionerName},
-					{Type: &rbacv1.RoleBinding{}, Name: metal.UsernamePrefix + metal.CSIProvisionerName},
-					// csi-attacher
-					{Type: &rbacv1.ClusterRole{}, Name: metal.UsernamePrefix + metal.CSIAttacherName},
-					{Type: &rbacv1.ClusterRoleBinding{}, Name: metal.UsernamePrefix + metal.CSIAttacherName},
-					{Type: &rbacv1.Role{}, Name: metal.UsernamePrefix + metal.CSIAttacherName},
-					{Type: &rbacv1.RoleBinding{}, Name: metal.UsernamePrefix + metal.CSIAttacherName},
-					// csi-resizer
-					{Type: &rbacv1.ClusterRole{}, Name: metal.UsernamePrefix + metal.CSIResizerName},
-					{Type: &rbacv1.ClusterRoleBinding{}, Name: metal.UsernamePrefix + metal.CSIResizerName},
-					{Type: &rbacv1.Role{}, Name: metal.UsernamePrefix + metal.CSIResizerName},
-					{Type: &rbacv1.RoleBinding{}, Name: metal.UsernamePrefix + metal.CSIResizerName},
-				},
-			},
 		},
-	}
-
-	storageClassChart = &chart.Chart{
-		Name:       "shoot-storageclasses",
-		EmbeddedFS: charts.InternalChart,
-		Path:       filepath.Join(charts.InternalChartsPath, "shoot-storageclasses"),
 	}
 )
 
@@ -292,17 +227,11 @@ func getControlPlaneChartValues(
 		return nil, err
 	}
 
-	csi, err := getCSIControllerChartValues(cpConfig, cp, cluster, secretsReader, checksums, scaledDown)
-	if err != nil {
-		return nil, err
-	}
-
 	return map[string]interface{}{
 		"global": map[string]interface{}{
 			"genericTokenKubeconfigSecretName": extensionscontroller.GenericTokenKubeconfigSecretNameFromCluster(cluster),
 		},
 		metal.CloudControllerManagerName: ccm,
-		metal.CSIControllerName:          csi,
 	}, nil
 }
 
@@ -376,34 +305,14 @@ func isOverlayEnabled(networking *gardencorev1beta1.Networking) (bool, error) {
 	return enabled, nil
 }
 
-// getCSIControllerChartValues collects and returns the CSIController chart values.
-func getCSIControllerChartValues(
-	_ *apismetal.ControlPlaneConfig,
-	_ *extensionsv1alpha1.ControlPlane,
-	cluster *extensionscontroller.Cluster,
-	_ secretsmanager.Reader,
-	_ map[string]string,
-	scaledDown bool,
-) (map[string]interface{}, error) {
-	return map[string]interface{}{
-		"enabled":  true,
-		"replicas": extensionscontroller.GetControlPlaneReplicas(cluster, scaledDown, 1),
-	}, nil
-}
-
 // getControlPlaneShootChartValues collects and returns the control plane shoot chart values.
 func (vp *valuesProvider) getControlPlaneShootChartValues(cluster *extensionscontroller.Cluster) (map[string]interface{}, error) {
 	if cluster.Shoot == nil {
 		return nil, fmt.Errorf("cluster %s does not contain a shoot object", cluster.ObjectMeta.Name)
 	}
-	csiNodeDriverValues := map[string]interface{}{
-		"enabled":    true,
-		"vpaEnabled": gardencorev1beta1helper.ShootWantsVerticalPodAutoscaler(cluster.Shoot),
-	}
 
 	return map[string]interface{}{
 		metal.CloudControllerManagerName: map[string]interface{}{"enabled": true},
-		metal.CSINodeName:                csiNodeDriverValues,
 	}, nil
 
 }

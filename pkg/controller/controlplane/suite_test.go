@@ -50,7 +50,7 @@ func TestAPIs(t *testing.T) {
 	SetDefaultConsistentlyDuration(consistentlyDuration)
 
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Infrastructure Controller Suite")
+	RunSpecs(t, "Controlplane Controller Suite")
 }
 
 var _ = BeforeSuite(func() {

@@ -84,10 +84,10 @@ type workerDelegate struct {
 	worker             *extensionsv1alpha1.Worker
 }
 
-func (w *workerDelegate) getMachineLabelsForMachineType(machineType string) (map[string]string, error) {
+func (w *workerDelegate) getServerLabelsForMachineType(machineType string) (map[string]string, error) {
 	for _, t := range w.cloudProfileConfig.MachineTypes {
 		if t.Name == machineType {
-			return t.Labels, nil
+			return t.ServerLabels, nil
 		}
 	}
 	return nil, fmt.Errorf("no machine type %s found", machineType)
