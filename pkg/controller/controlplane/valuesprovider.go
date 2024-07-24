@@ -144,10 +144,6 @@ func (vp *valuesProvider) GetConfigChartValues(
 	cp *extensionsv1alpha1.ControlPlane,
 	cluster *extensionscontroller.Cluster,
 ) (map[string]interface{}, error) {
-	infrastructureStatus := &apismetal.InfrastructureStatus{}
-	if _, _, err := vp.decoder.Decode(cp.Spec.InfrastructureProviderStatus.Raw, nil, infrastructureStatus); err != nil {
-		return nil, fmt.Errorf("failed to decode infrastructure status: %w", err)
-	}
 	// Collect config chart values
 	return map[string]interface{}{
 		metal.ClusterFieldName: cluster.ObjectMeta.Name,

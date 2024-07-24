@@ -74,9 +74,6 @@ var _ = Describe("Valueprovider Reconcile", func() {
 							}),
 						},
 					},
-					InfrastructureProviderStatus: &runtime.RawExtension{
-						Raw: encode(&apismetal.InfrastructureStatus{}),
-					},
 				},
 			}
 			Expect(k8sClient.Create(ctx, cp)).To(Succeed())
@@ -128,9 +125,6 @@ var _ = Describe("Valueprovider Reconcile", func() {
 								},
 							}),
 						},
-					},
-					InfrastructureProviderStatus: &runtime.RawExtension{
-						Raw: encode(&apismetal.InfrastructureStatus{}),
 					},
 				},
 			}
