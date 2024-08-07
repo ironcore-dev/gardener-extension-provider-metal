@@ -16,7 +16,7 @@ images:
 - name: machine-controller-manager-provider-metal
   sourceRepository: github.com/ironcore-dev/machine-controller-manager-provider-metal
   repository: ghcr.io/ironcore-dev/machine-controller-manager-provider-metal
-  tag: "v0.2.3"
+  tag: "sha256:199ddbdbfea49ae46785c3257ecc75edb6ea1f10c157edb7300c180ded6536b5"
   labels:
   - name: 'gardener.cloud/cve-categorisation'
     value:
