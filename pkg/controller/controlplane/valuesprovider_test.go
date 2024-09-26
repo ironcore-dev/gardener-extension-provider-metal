@@ -210,6 +210,175 @@ var _ = Describe("Valueprovider Reconcile", func() {
 			}))
 		})
 	})
+
+	Describe("#GetControlPlaneShootChartValues", func() {
+		It("should return correct shoot system chart values without metallb", func(ctx SpecContext) {
+			cp := &extensionsv1alpha1.ControlPlane{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "control-plane",
+					Namespace: ns.Name,
+				},
+				Spec: extensionsv1alpha1.ControlPlaneSpec{
+					Region: "foo",
+					SecretRef: corev1.SecretReference{
+						Name:      "my-infra-creds",
+						Namespace: ns.Name,
+					},
+					DefaultSpec: extensionsv1alpha1.DefaultSpec{
+						Type: metal.Type,
+						ProviderConfig: &runtime.RawExtension{
+							Raw: encode(&apismetal.ControlPlaneConfig{
+								CloudControllerManager: &apismetal.CloudControllerManagerConfig{
+									FeatureGates: map[string]bool{
+										"CustomResourceValidation": true,
+									},
+								},
+							}),
+						},
+					},
+				},
+			}
+			Expect(k8sClient.Create(ctx, cp)).To(Succeed())
+
+			providerCloudProfile := &apismetal.CloudProfileConfig{}
+			providerCloudProfileJson, err := json.Marshal(providerCloudProfile)
+			Expect(err).NotTo(HaveOccurred())
+			networkProviderConfig := &unstructured.Unstructured{Object: map[string]any{
+				"kind":       "FooNetworkConfig",
+				"apiVersion": "v1alpha1",
+				"overlay": map[string]any{
+					"enabled": false,
+				},
+			}}
+			networkProviderConfigData, err := runtime.Encode(unstructured.UnstructuredJSONScheme, networkProviderConfig)
+			Expect(err).NotTo(HaveOccurred())
+			cluster := &controller.Cluster{
+				CloudProfile: &gardencorev1beta1.CloudProfile{
+					Spec: gardencorev1beta1.CloudProfileSpec{
+						ProviderConfig: &runtime.RawExtension{
+							Raw: providerCloudProfileJson,
+						},
+					},
+				},
+				Shoot: &gardencorev1beta1.Shoot{
+					ObjectMeta: metav1.ObjectMeta{
+						Namespace: ns.Name,
+						Name:      "my-shoot",
+					},
+					Spec: gardencorev1beta1.ShootSpec{
+						Networking: &gardencorev1beta1.Networking{
+							ProviderConfig: &runtime.RawExtension{Raw: networkProviderConfigData},
+							Pods:           ptr.To[string]("10.0.0.0/16"),
+						},
+						Kubernetes: gardencorev1beta1.Kubernetes{
+							Version: "1.26.0",
+							VerticalPodAutoscaler: &gardencorev1beta1.VerticalPodAutoscaler{
+								Enabled: true,
+							},
+						},
+					},
+				},
+			}
+
+			values, err := vp.GetControlPlaneShootChartValues(ctx, cp, cluster, fakeSecretsManager, nil)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(values).To(Equal(map[string]interface{}{
+				"cloud-controller-manager": map[string]interface{}{"enabled": true},
+				"metallb": map[string]interface{}{
+					"enabled": false,
+				},
+			}))
+		})
+	})
+
+	Describe("#GetControlPlaneShootChartValues", func() {
+		It("should return correct shoot system chart values with metallb", func(ctx SpecContext) {
+			cp := &extensionsv1alpha1.ControlPlane{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "control-plane",
+					Namespace: ns.Name,
+				},
+				Spec: extensionsv1alpha1.ControlPlaneSpec{
+					Region: "foo",
+					SecretRef: corev1.SecretReference{
+						Name:      "my-infra-creds",
+						Namespace: ns.Name,
+					},
+					DefaultSpec: extensionsv1alpha1.DefaultSpec{
+						Type: metal.Type,
+						ProviderConfig: &runtime.RawExtension{
+							Raw: encode(&apismetal.ControlPlaneConfig{
+								CloudControllerManager: &apismetal.CloudControllerManagerConfig{
+									FeatureGates: map[string]bool{
+										"CustomResourceValidation": true,
+									},
+								},
+								LoadBalancerConfig: &apismetal.LoadBalancerConfig{
+									MetallbConfig: &apismetal.MetallbConfig{
+										IPAddressPool: []string{"10.10.10.0/24", "10.20.20.10-10.20.20.30"},
+									},
+								},
+							}),
+						},
+					},
+				},
+			}
+			Expect(k8sClient.Create(ctx, cp)).To(Succeed())
+
+			providerCloudProfile := &apismetal.CloudProfileConfig{}
+			providerCloudProfileJson, err := json.Marshal(providerCloudProfile)
+			Expect(err).NotTo(HaveOccurred())
+			networkProviderConfig := &unstructured.Unstructured{Object: map[string]any{
+				"kind":       "FooNetworkConfig",
+				"apiVersion": "v1alpha1",
+				"overlay": map[string]any{
+					"enabled": false,
+				},
+			}}
+			networkProviderConfigData, err := runtime.Encode(unstructured.UnstructuredJSONScheme, networkProviderConfig)
+			Expect(err).NotTo(HaveOccurred())
+			cluster := &controller.Cluster{
+				CloudProfile: &gardencorev1beta1.CloudProfile{
+					Spec: gardencorev1beta1.CloudProfileSpec{
+						ProviderConfig: &runtime.RawExtension{
+							Raw: providerCloudProfileJson,
+						},
+					},
+				},
+				Shoot: &gardencorev1beta1.Shoot{
+					ObjectMeta: metav1.ObjectMeta{
+						Namespace: ns.Name,
+						Name:      "my-shoot",
+					},
+					Spec: gardencorev1beta1.ShootSpec{
+						Networking: &gardencorev1beta1.Networking{
+							ProviderConfig: &runtime.RawExtension{Raw: networkProviderConfigData},
+							Pods:           ptr.To[string]("10.0.0.0/16"),
+						},
+						Kubernetes: gardencorev1beta1.Kubernetes{
+							Version: "1.26.0",
+							VerticalPodAutoscaler: &gardencorev1beta1.VerticalPodAutoscaler{
+								Enabled: true,
+							},
+						},
+					},
+				},
+			}
+
+			values, err := vp.GetControlPlaneShootChartValues(ctx, cp, cluster, fakeSecretsManager, nil)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(values).To(Equal(map[string]interface{}{
+				"cloud-controller-manager": map[string]interface{}{"enabled": true},
+				"metallb": map[string]interface{}{
+					"enabled": true,
+					"speaker": map[string]interface{}{
+						"enabled": false,
+					},
+					"ipAddressPool": []string{"10.10.10.0/24", "10.20.20.10-10.20.20.30"},
+				},
+			}))
+		})
+	})
 })
 
 func encode(obj runtime.Object) []byte {

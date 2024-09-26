@@ -17,6 +17,10 @@ type ControlPlaneConfig struct {
 	// CloudControllerManager contains configuration settings for the cloud-controller-manager.
 	// +optional
 	CloudControllerManager *CloudControllerManagerConfig `json:"cloudControllerManager,omitempty"`
+
+	// LoadBalancerConfig contains configuration settings for the shoot loadbalancing.
+	// +optional
+	LoadBalancerConfig *LoadBalancerConfig `json:"loadBalancerConfig,omitempty"`
 }
 
 // CloudControllerManagerConfig contains configuration settings for the cloud-controller-manager.
@@ -24,4 +28,17 @@ type CloudControllerManagerConfig struct {
 	// FeatureGates contains information about enabled feature gates.
 	// +optional
 	FeatureGates map[string]bool `json:"featureGates,omitempty"`
+}
+
+// LoadBalancerConfig contains configuration settings for the shoot loadbalancing.
+type LoadBalancerConfig struct {
+	// +optional
+	MetallbConfig *MetallbConfig `json:"metallbConfig,omitempty"`
+}
+
+// LoadBalancerConfig contains configuration settings for metallb.
+type MetallbConfig struct {
+	// IPAddressPool contains IP address pools for metallb.
+	// +optional
+	IPAddressPool []string `json:"ipAddressPool,omitempty"`
 }

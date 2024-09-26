@@ -4,8 +4,10 @@
 package controlplane
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"net"
 	"path/filepath"
 	"strings"
 
@@ -103,6 +105,7 @@ var (
 		Name:       "shoot-system-components",
 		EmbeddedFS: charts.InternalChart,
 		Path:       filepath.Join(charts.InternalChartsPath, "shoot-system-components"),
+		Images:     []string{metal.MetallbControllerImageName, metal.MetallbSpeakerImageName},
 		SubCharts: []*chart.Chart{
 			{
 				Name: "cloud-controller-manager",
@@ -111,6 +114,29 @@ var (
 					{Type: &rbacv1.ClusterRole{}, Name: "system:controller:cloud-node-controller"},
 					{Type: &rbacv1.ClusterRoleBinding{}, Name: "system:controller:cloud-node-controller"},
 					{Type: &rbacv1.ClusterRoleBinding{}, Name: "metal:cloud-provider"},
+				},
+			},
+			{
+				Name: "metallb",
+				Path: filepath.Join(charts.InternalChartsPath, "metallb"),
+				Objects: []*chart.Object{
+					{Type: &corev1.Namespace{}, Name: "metallb-system"},
+					{Type: &rbacv1.ClusterRole{}, Name: "metallb:controller"},
+					{Type: &rbacv1.ClusterRole{}, Name: "metallb:speaker"},
+					{Type: &rbacv1.ClusterRoleBinding{}, Name: "metallb:controller"},
+					{Type: &rbacv1.ClusterRoleBinding{}, Name: "metallb:speaker"},
+					{Type: &corev1.ConfigMap{}, Name: "metallb-excludel2"},
+					{Type: &appsv1.DaemonSet{}, Name: "metallb-speaker"},
+					{Type: &appsv1.Deployment{}, Name: "metallb-controller"},
+					{Type: &rbacv1.Role{}, Name: "metallb-controller"},
+					{Type: &rbacv1.Role{}, Name: "metallb-pod-lister"},
+					{Type: &rbacv1.RoleBinding{}, Name: "metallb-controller"},
+					{Type: &rbacv1.RoleBinding{}, Name: "metallb-pod-lister"},
+					{Type: &corev1.Secret{}, Name: "metallb-webhook-cert"},
+					{Type: &corev1.Service{}, Name: "metallb-webhook-service"},
+					{Type: &corev1.ServiceAccount{}, Name: "metallb-controller"},
+					{Type: &corev1.ServiceAccount{}, Name: "metallb-speaker"},
+					//{Type: &metallbv1beta1.IPAddressPool{}, Name: "default"},
 				},
 			},
 		},
@@ -176,7 +202,7 @@ func (vp *valuesProvider) GetControlPlaneChartValues(
 // GetControlPlaneShootChartValues returns the values for the control plane shoot chart applied by the generic actuator.
 func (vp *valuesProvider) GetControlPlaneShootChartValues(
 	_ context.Context,
-	_ *extensionsv1alpha1.ControlPlane,
+	cp *extensionsv1alpha1.ControlPlane,
 	cluster *extensionscontroller.Cluster,
 	_ secretsmanager.Reader,
 	_ map[string]string,
@@ -184,7 +210,13 @@ func (vp *valuesProvider) GetControlPlaneShootChartValues(
 	map[string]interface{},
 	error,
 ) {
-	return vp.getControlPlaneShootChartValues(cluster)
+	cpConfig := &apismetal.ControlPlaneConfig{}
+	if cp.Spec.ProviderConfig != nil {
+		if _, _, err := vp.decoder.Decode(cp.Spec.ProviderConfig.Raw, nil, cpConfig); err != nil {
+			return nil, fmt.Errorf("could not decode providerConfig of controlplane '%s': %w", kutil.ObjectName(cp), err)
+		}
+	}
+	return vp.getControlPlaneShootChartValues(cluster, cpConfig)
 }
 
 // GetControlPlaneShootCRDsChartValues returns the values for the control plane shoot CRDs chart applied by the generic actuator.
@@ -303,13 +335,68 @@ func isOverlayEnabled(networking *gardencorev1beta1.Networking) (bool, error) {
 }
 
 // getControlPlaneShootChartValues collects and returns the control plane shoot chart values.
-func (vp *valuesProvider) getControlPlaneShootChartValues(cluster *extensionscontroller.Cluster) (map[string]interface{}, error) {
+func (vp *valuesProvider) getControlPlaneShootChartValues(cluster *extensionscontroller.Cluster, cp *apismetal.ControlPlaneConfig) (map[string]interface{}, error) {
 	if cluster.Shoot == nil {
 		return nil, fmt.Errorf("cluster %s does not contain a shoot object", cluster.ObjectMeta.Name)
 	}
 
+	metallb, err := getMetallbChartValues(cp)
+	if err != nil {
+		return nil, err
+	}
 	return map[string]interface{}{
 		metal.CloudControllerManagerName: map[string]interface{}{"enabled": true},
+		metal.MetallbName:                metallb,
 	}, nil
+}
 
+// getMetallbChartValues collects and returns the CCM chart values.
+func getMetallbChartValues(
+	cpConfig *apismetal.ControlPlaneConfig,
+) (map[string]interface{}, error) {
+	if cpConfig.LoadBalancerConfig == nil || cpConfig.LoadBalancerConfig.MetallbConfig == nil {
+		return map[string]interface{}{
+			"enabled": false,
+		}, nil
+	}
+
+	for _, cidr := range cpConfig.LoadBalancerConfig.MetallbConfig.IPAddressPool {
+		if err := parseAddressPool(cidr); err != nil {
+			return nil, fmt.Errorf("invalid CIDR %q in pool: %w", cidr, err)
+		}
+	}
+
+	return map[string]interface{}{
+		"enabled": true,
+		"speaker": map[string]interface{}{
+			"enabled": false,
+		},
+		"ipAddressPool": cpConfig.LoadBalancerConfig.MetallbConfig.IPAddressPool,
+	}, nil
+}
+
+func parseAddressPool(cidr string) error {
+	if !strings.Contains(cidr, "-") {
+		_, _, err := net.ParseCIDR(cidr)
+		if err != nil {
+			return fmt.Errorf("invalid CIDR %q", cidr)
+		}
+		return nil
+	}
+	fs := strings.SplitN(cidr, "-", 2)
+	if len(fs) != 2 {
+		return fmt.Errorf("invalid IP range %q", cidr)
+	}
+	start := net.ParseIP(strings.TrimSpace(fs[0]))
+	if start == nil {
+		return fmt.Errorf("invalid IP range %q: invalid start IP %q", cidr, fs[0])
+	}
+	end := net.ParseIP(strings.TrimSpace(fs[1]))
+	if end == nil {
+		return fmt.Errorf("invalid IP range %q: invalid end IP %q", cidr, fs[1])
+	}
+	if bytes.Compare(start, end) > 0 {
+		return fmt.Errorf("invalid IP range %q: start IP %q is after the end IP %q", cidr, start, end)
+	}
+	return nil
 }

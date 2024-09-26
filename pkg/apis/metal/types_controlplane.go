@@ -16,10 +16,22 @@ type ControlPlaneConfig struct {
 
 	// CloudControllerManager contains configuration settings for the cloud-controller-manager.
 	CloudControllerManager *CloudControllerManagerConfig
+
+	// LoadBalancerConfig contains configuration settings for the shoot loadbalancing.
+	LoadBalancerConfig *LoadBalancerConfig
 }
 
 // CloudControllerManagerConfig contains configuration settings for the cloud-controller-manager.
 type CloudControllerManagerConfig struct {
 	// FeatureGates contains information about enabled feature gates.
 	FeatureGates map[string]bool
+}
+
+// LoadBalancerConfig contains configuration settings for the shoot loadbalancing.
+type LoadBalancerConfig struct {
+	MetallbConfig *MetallbConfig
+}
+
+type MetallbConfig struct {
+	IPAddressPool []string
 }

@@ -1,0 +1,10 @@
+{{- if .Values.ipAddressPool }}
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: default
+  namespace: metallb-system
+spec:
+  addresses:
+{{- toYaml .Values.ipAddressPool | nindent 4 }}
+{{- end }}

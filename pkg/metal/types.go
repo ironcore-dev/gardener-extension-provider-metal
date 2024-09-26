@@ -17,6 +17,10 @@ const (
 	MachineControllerManagerImageName = "machine-controller-manager"
 	// MachineControllerManagerProviderIroncoreImageName is the name of the MachineController metal image.
 	MachineControllerManagerProviderIroncoreImageName = "machine-controller-manager-provider-metal"
+	// MetallbSpeakerImageName is the name of the metallb speaker to deploy to the shoot.
+	MetallbSpeakerImageName = "metallb-speaker"
+	// MetallbControllerImageName is the name of the metallb controller to deploy to the shoot.
+	MetallbControllerImageName = "metallb-controller"
 
 	// UsernameFieldName is the field in a secret where the namespace is stored at.
 	UsernameFieldName = "username"
@@ -43,6 +47,8 @@ const (
 	CloudProviderConfigName = "cloud-provider-config"
 	// CloudControllerManagerName is a constant for the name of the CloudController deployed by the worker controller.
 	CloudControllerManagerName = "cloud-controller-manager"
+	// MetallbName is a constant for the name of the MetalLB deployed by the worker controller.
+	MetallbName = "metallb"
 	// MachineControllerManagerName is a constant for the name of the machine-controller-manager.
 	MachineControllerManagerName = "machine-controller-manager"
 	// MachineControllerManagerVpaName is the name of the VerticalPodAutoscaler of the machine-controller-manager deployment.

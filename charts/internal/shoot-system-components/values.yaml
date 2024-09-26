@@ -1,2 +1,5 @@
 cloud-controller-manager:
   enabled: true
+
+metallb:
+  enabled: false

@@ -31,6 +31,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 # Use distroless as minimal base image to package the manager binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
 FROM gcr.io/distroless/static:nonroot AS gardener-extension-provider-metal
+LABEL source_repository="https://github.com/ironcore-dev/gardener-extension-provider-metal"
 WORKDIR /
 COPY charts /charts
 COPY --from=builder /workspace/gardener-extension-provider-metal /gardener-extension-provider-metal
@@ -39,6 +40,7 @@ USER 65532:65532
 ENTRYPOINT ["/gardener-extension-provider-metal"]
 
 FROM gcr.io/distroless/static:nonroot AS gardener-extension-admission-metal
+LABEL source_repository="https://github.com/ironcore-dev/gardener-extension-provider-metal"
 WORKDIR /
 COPY charts /charts
 COPY --from=builder /workspace/gardener-extension-admission-metal /gardener-extension-admission-metal
