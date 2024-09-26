@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: metallb-speaker
-  namespace: metallb-system
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: metallb
     app.kubernetes.io/instance: metallb

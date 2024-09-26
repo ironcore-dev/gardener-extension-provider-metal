@@ -2,11 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: metallb-controller
-  namespace: metallb-system
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: metallb
     app.kubernetes.io/instance: metallb
     app.kubernetes.io/component: controller
+    foo: bar
 spec:
   strategy:
     type: RollingUpdate
