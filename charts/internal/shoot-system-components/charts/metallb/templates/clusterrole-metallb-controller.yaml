@@ -2,7 +2,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: metallb:controller
-  namespace: metallb-system
   labels:
     app.kubernetes.io/name: metallb
     app.kubernetes.io/instance: metallb
