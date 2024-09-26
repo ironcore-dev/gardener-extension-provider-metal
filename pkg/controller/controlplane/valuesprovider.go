@@ -366,10 +366,14 @@ func getMetallbChartValues(
 		}
 	}
 
+	enableSpeaker := false
+	if cpConfig.LoadBalancerConfig.MetallbConfig.EnableSpeaker {
+		enableSpeaker = true
+	}
 	return map[string]interface{}{
 		"enabled": true,
 		"speaker": map[string]interface{}{
-			"enabled": false,
+			"enabled": enableSpeaker,
 		},
 		"ipAddressPool": cpConfig.LoadBalancerConfig.MetallbConfig.IPAddressPool,
 	}, nil

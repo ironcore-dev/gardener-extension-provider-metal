@@ -34,4 +34,5 @@ type LoadBalancerConfig struct {
 
 type MetallbConfig struct {
 	IPAddressPool []string
+	EnableSpeaker bool
 }
