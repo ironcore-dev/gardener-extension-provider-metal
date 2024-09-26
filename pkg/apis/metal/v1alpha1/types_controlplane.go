@@ -32,11 +32,12 @@ type CloudControllerManagerConfig struct {
 
 // LoadBalancerConfig contains configuration settings for the shoot loadbalancing.
 type LoadBalancerConfig struct {
+	// MetallbConfig contains configuration settings for metallb.
 	// +optional
 	MetallbConfig *MetallbConfig `json:"metallbConfig,omitempty"`
 }
 
-// LoadBalancerConfig contains configuration settings for metallb.
+// MetallbConfig contains configuration settings for metallb.
 type MetallbConfig struct {
 	// IPAddressPool contains IP address pools for metallb.
 	// +optional

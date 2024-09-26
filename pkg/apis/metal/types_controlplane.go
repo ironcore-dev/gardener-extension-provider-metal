@@ -29,10 +29,15 @@ type CloudControllerManagerConfig struct {
 
 // LoadBalancerConfig contains configuration settings for the shoot loadbalancing.
 type LoadBalancerConfig struct {
+	// MetallbConfig contains configuration settings for metallb.
 	MetallbConfig *MetallbConfig
 }
 
+// MetallbConfig contains configuration settings for metallb.
 type MetallbConfig struct {
+	// IPAddressPool contains IP address pools for metallb.
 	IPAddressPool []string
+
+	// EnableSpeaker enables the metallb speaker.
 	EnableSpeaker bool
 }

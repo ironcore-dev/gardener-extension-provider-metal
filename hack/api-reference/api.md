@@ -132,6 +132,20 @@ CloudControllerManagerConfig
 <p>CloudControllerManager contains configuration settings for the cloud-controller-manager.</p>
 </td>
 </tr>
+<tr>
+<td>
+<code>loadBalancerConfig</code></br>
+<em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.LoadBalancerConfig">
+LoadBalancerConfig
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>LoadBalancerConfig contains configuration settings for the shoot loadbalancing.</p>
+</td>
+</tr>
 </tbody>
 </table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.InfrastructureConfig">InfrastructureConfig
@@ -210,6 +224,39 @@ map[string]bool
 </tr>
 </thead>
 <tbody>
+</tbody>
+</table>
+<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.LoadBalancerConfig">LoadBalancerConfig
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.ControlPlaneConfig">ControlPlaneConfig</a>)
+</p>
+<p>
+<p>LoadBalancerConfig contains configuration settings for the shoot loadbalancing.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>metallbConfig</code></br>
+<em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.MetallbConfig">
+MetallbConfig
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>MetallbConfig contains configuration settings for metallb.</p>
+</td>
+</tr>
 </tbody>
 </table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.MachineImage">MachineImage
@@ -406,6 +453,49 @@ map[string]string
 </em>
 </td>
 <td>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.MetallbConfig">MetallbConfig
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.LoadBalancerConfig">LoadBalancerConfig</a>)
+</p>
+<p>
+<p>MetallbConfig contains configuration settings for metallb.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>ipAddressPool</code></br>
+<em>
+[]string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>IPAddressPool contains IP address pools for metallb.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>enableSpeaker</code></br>
+<em>
+bool
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>EnableSpeaker enables the metallb speaker.</p>
 </td>
 </tr>
 </tbody>
