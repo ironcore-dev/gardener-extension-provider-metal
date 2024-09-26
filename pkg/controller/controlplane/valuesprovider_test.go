@@ -374,6 +374,9 @@ var _ = Describe("Valueprovider Reconcile", func() {
 					"speaker": map[string]interface{}{
 						"enabled": false,
 					},
+					"l2Advertisement": map[string]interface{}{
+						"enabled": false,
+					},
 					"ipAddressPool": []string{"10.10.10.0/24", "10.20.20.10-10.20.20.30"},
 				},
 			}))

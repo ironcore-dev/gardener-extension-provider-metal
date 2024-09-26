@@ -40,4 +40,7 @@ type MetallbConfig struct {
 
 	// EnableSpeaker enables the metallb speaker.
 	EnableSpeaker bool
+
+	// EnableL2Advertisement enables L2 advertisement.
+	EnableL2Advertisement bool
 }

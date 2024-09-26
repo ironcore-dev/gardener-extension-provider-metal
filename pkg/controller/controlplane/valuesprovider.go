@@ -105,7 +105,6 @@ var (
 		Name:       "shoot-system-components",
 		EmbeddedFS: charts.InternalChart,
 		Path:       filepath.Join(charts.InternalChartsPath, "shoot-system-components"),
-		Images:     []string{metal.MetallbControllerImageName, metal.MetallbSpeakerImageName},
 		SubCharts: []*chart.Chart{
 			{
 				Name: "cloud-controller-manager",
@@ -117,10 +116,10 @@ var (
 				},
 			},
 			{
-				Name: "metallb",
-				Path: filepath.Join(charts.InternalChartsPath, "metallb"),
+				Name:   "metallb",
+				Path:   filepath.Join(charts.InternalChartsPath, "metallb"),
+				Images: []string{metal.MetallbControllerImageName, metal.MetallbSpeakerImageName},
 				Objects: []*chart.Object{
-					{Type: &corev1.Namespace{}, Name: "metallb-system"},
 					{Type: &rbacv1.ClusterRole{}, Name: "metallb:controller"},
 					{Type: &rbacv1.ClusterRole{}, Name: "metallb:speaker"},
 					{Type: &rbacv1.ClusterRoleBinding{}, Name: "metallb:controller"},
@@ -136,7 +135,6 @@ var (
 					{Type: &corev1.Service{}, Name: "metallb-webhook-service"},
 					{Type: &corev1.ServiceAccount{}, Name: "metallb-controller"},
 					{Type: &corev1.ServiceAccount{}, Name: "metallb-speaker"},
-					//{Type: &metallbv1beta1.IPAddressPool{}, Name: "default"},
 				},
 			},
 		},
@@ -370,10 +368,17 @@ func getMetallbChartValues(
 	if cpConfig.LoadBalancerConfig.MetallbConfig.EnableSpeaker {
 		enableSpeaker = true
 	}
+	enableL2 := false
+	if cpConfig.LoadBalancerConfig.MetallbConfig.EnableL2Advertisement {
+		enableL2 = true
+	}
 	return map[string]interface{}{
 		"enabled": true,
 		"speaker": map[string]interface{}{
 			"enabled": enableSpeaker,
+		},
+		"l2Advertisement": map[string]interface{}{
+			"enabled": enableL2,
 		},
 		"ipAddressPool": cpConfig.LoadBalancerConfig.MetallbConfig.IPAddressPool,
 	}, nil

@@ -1,8 +1,7 @@
-images:
-  metallb-speaker: image-repository:image-tag
-  metallb-controller: image-repository:image-tag
-
 speaker:
   enabled: false
 
 ipAddressPool: []
+
+l2Advertisement:
+  enabled: false

@@ -375,6 +375,7 @@ func Convert_metal_MachineType_To_v1alpha1_MachineType(in *metal.MachineType, ou
 func autoConvert_v1alpha1_MetallbConfig_To_metal_MetallbConfig(in *MetallbConfig, out *metal.MetallbConfig, s conversion.Scope) error {
 	out.IPAddressPool = *(*[]string)(unsafe.Pointer(&in.IPAddressPool))
 	out.EnableSpeaker = in.EnableSpeaker
+	out.EnableL2Advertisement = in.EnableL2Advertisement
 	return nil
 }
 
@@ -386,6 +387,7 @@ func Convert_v1alpha1_MetallbConfig_To_metal_MetallbConfig(in *MetallbConfig, ou
 func autoConvert_metal_MetallbConfig_To_v1alpha1_MetallbConfig(in *metal.MetallbConfig, out *MetallbConfig, s conversion.Scope) error {
 	out.IPAddressPool = *(*[]string)(unsafe.Pointer(&in.IPAddressPool))
 	out.EnableSpeaker = in.EnableSpeaker
+	out.EnableL2Advertisement = in.EnableL2Advertisement
 	return nil
 }
 

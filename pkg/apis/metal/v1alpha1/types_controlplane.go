@@ -42,7 +42,12 @@ type MetallbConfig struct {
 	// IPAddressPool contains IP address pools for metallb.
 	// +optional
 	IPAddressPool []string `json:"ipAddressPool,omitempty"`
+
 	// EnableSpeaker enables the metallb speaker.
 	// +optional
 	EnableSpeaker bool `json:"enableSpeaker,omitempty"`
+
+	// EnableL2Advertisement enables L2 advertisement.
+	// +optional
+	EnableL2Advertisement bool `json:"enableL2Advertisement,omitempty"`
 }

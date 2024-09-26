@@ -498,6 +498,18 @@ bool
 <p>EnableSpeaker enables the metallb speaker.</p>
 </td>
 </tr>
+<tr>
+<td>
+<code>enableL2Advertisement</code></br>
+<em>
+bool
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>EnableL2Advertisement enables L2 advertisement.</p>
+</td>
+</tr>
 </tbody>
 </table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.RegionConfig">RegionConfig
