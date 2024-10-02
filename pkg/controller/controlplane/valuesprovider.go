@@ -364,21 +364,13 @@ func getMetallbChartValues(
 		}
 	}
 
-	enableSpeaker := false
-	if cpConfig.LoadBalancerConfig.MetallbConfig.EnableSpeaker {
-		enableSpeaker = true
-	}
-	enableL2 := false
-	if cpConfig.LoadBalancerConfig.MetallbConfig.EnableL2Advertisement {
-		enableL2 = true
-	}
 	return map[string]any{
 		"enabled": true,
 		"speaker": map[string]any{
-			"enabled": enableSpeaker,
+			"enabled": cpConfig.LoadBalancerConfig.MetallbConfig.EnableSpeaker,
 		},
 		"l2Advertisement": map[string]any{
-			"enabled": enableL2,
+			"enabled": cpConfig.LoadBalancerConfig.MetallbConfig.EnableL2Advertisement,
 		},
 		"ipAddressPool": cpConfig.LoadBalancerConfig.MetallbConfig.IPAddressPool,
 	}, nil
