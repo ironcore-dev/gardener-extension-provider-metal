@@ -159,8 +159,8 @@ func (vp *valuesProvider) GetControlPlaneExposureChartValues(ctx context.Context
 	cp *extensionsv1alpha1.ControlPlane,
 	cluster *extensionscontroller.Cluster,
 	secretsReader secretsmanager.Reader,
-	checksums map[string]string) (map[string]interface{}, error) {
-	return map[string]interface{}{}, nil
+	checksums map[string]string) (map[string]any, error) {
+	return map[string]any{}, nil
 }
 
 // GetConfigChartValues returns the values for the config chart applied by the generic actuator.
@@ -168,9 +168,9 @@ func (vp *valuesProvider) GetConfigChartValues(
 	ctx context.Context,
 	cp *extensionsv1alpha1.ControlPlane,
 	cluster *extensionscontroller.Cluster,
-) (map[string]interface{}, error) {
+) (map[string]any, error) {
 	// Collect config chart values
-	return map[string]interface{}{
+	return map[string]any{
 		metal.ClusterFieldName: cluster.ObjectMeta.Name,
 	}, nil
 }
@@ -184,7 +184,7 @@ func (vp *valuesProvider) GetControlPlaneChartValues(
 	checksums map[string]string,
 	scaledDown bool,
 ) (
-	map[string]interface{},
+	map[string]any,
 	error,
 ) {
 	cpConfig := &apismetal.ControlPlaneConfig{}
@@ -205,7 +205,7 @@ func (vp *valuesProvider) GetControlPlaneShootChartValues(
 	_ secretsmanager.Reader,
 	_ map[string]string,
 ) (
-	map[string]interface{},
+	map[string]any,
 	error,
 ) {
 	cpConfig := &apismetal.ControlPlaneConfig{}
@@ -223,8 +223,8 @@ func (vp *valuesProvider) GetControlPlaneShootCRDsChartValues(
 	_ context.Context,
 	_ *extensionsv1alpha1.ControlPlane,
 	_ *extensionscontroller.Cluster,
-) (map[string]interface{}, error) {
-	return map[string]interface{}{}, nil
+) (map[string]any, error) {
+	return map[string]any{}, nil
 }
 
 // GetStorageClassesChartValues returns the values for the storage classes chart applied by the generic actuator.
@@ -232,8 +232,8 @@ func (vp *valuesProvider) GetStorageClassesChartValues(
 	ctx context.Context,
 	controlPlane *extensionsv1alpha1.ControlPlane,
 	cluster *extensionscontroller.Cluster,
-) (map[string]interface{}, error) {
-	values := make(map[string]interface{})
+) (map[string]any, error) {
+	values := make(map[string]any)
 	return values, nil
 }
 
@@ -246,7 +246,7 @@ func getControlPlaneChartValues(
 	checksums map[string]string,
 	scaledDown bool,
 ) (
-	map[string]interface{},
+	map[string]any,
 	error,
 ) {
 	ccm, err := getCCMChartValues(cpConfig, cp, cluster, secretsReader, checksums, scaledDown)
@@ -254,8 +254,8 @@ func getControlPlaneChartValues(
 		return nil, err
 	}
 
-	return map[string]interface{}{
-		"global": map[string]interface{}{
+	return map[string]any{
+		"global": map[string]any{
 			"genericTokenKubeconfigSecretName": extensionscontroller.GenericTokenKubeconfigSecretNameFromCluster(cluster),
 		},
 		metal.CloudControllerManagerName: ccm,
@@ -270,25 +270,25 @@ func getCCMChartValues(
 	secretsReader secretsmanager.Reader,
 	checksums map[string]string,
 	scaledDown bool,
-) (map[string]interface{}, error) {
+) (map[string]any, error) {
 	serverSecret, found := secretsReader.Get(cloudControllerManagerServerName)
 	if !found {
 		return nil, fmt.Errorf("secret %q not found", cloudControllerManagerServerName)
 	}
 
-	values := map[string]interface{}{
+	values := map[string]any{
 		"enabled":     true,
 		"replicas":    extensionscontroller.GetControlPlaneReplicas(cluster, scaledDown, 1),
 		"clusterName": cp.Namespace,
 		"podNetwork":  strings.Join(extensionscontroller.GetPodNetwork(cluster), ","),
-		"podAnnotations": map[string]interface{}{
+		"podAnnotations": map[string]any{
 			"checksum/secret-" + internal.CloudProviderConfigMapName: checksums[internal.CloudProviderConfigMapName],
 		},
-		"podLabels": map[string]interface{}{
+		"podLabels": map[string]any{
 			v1beta1constants.LabelPodMaintenanceRestart: "true",
 		},
 		"tlsCipherSuites": kutil.TLSCipherSuites,
-		"secrets": map[string]interface{}{
+		"secrets": map[string]any{
 			"server": serverSecret.Name,
 		},
 	}
@@ -333,7 +333,7 @@ func isOverlayEnabled(networking *gardencorev1beta1.Networking) (bool, error) {
 }
 
 // getControlPlaneShootChartValues collects and returns the control plane shoot chart values.
-func (vp *valuesProvider) getControlPlaneShootChartValues(cluster *extensionscontroller.Cluster, cp *apismetal.ControlPlaneConfig) (map[string]interface{}, error) {
+func (vp *valuesProvider) getControlPlaneShootChartValues(cluster *extensionscontroller.Cluster, cp *apismetal.ControlPlaneConfig) (map[string]any, error) {
 	if cluster.Shoot == nil {
 		return nil, fmt.Errorf("cluster %s does not contain a shoot object", cluster.ObjectMeta.Name)
 	}
@@ -342,8 +342,8 @@ func (vp *valuesProvider) getControlPlaneShootChartValues(cluster *extensionscon
 	if err != nil {
 		return nil, err
 	}
-	return map[string]interface{}{
-		metal.CloudControllerManagerName: map[string]interface{}{"enabled": true},
+	return map[string]any{
+		metal.CloudControllerManagerName: map[string]any{"enabled": true},
 		metal.MetallbName:                metallb,
 	}, nil
 }
@@ -351,9 +351,9 @@ func (vp *valuesProvider) getControlPlaneShootChartValues(cluster *extensionscon
 // getMetallbChartValues collects and returns the CCM chart values.
 func getMetallbChartValues(
 	cpConfig *apismetal.ControlPlaneConfig,
-) (map[string]interface{}, error) {
+) (map[string]any, error) {
 	if cpConfig.LoadBalancerConfig == nil || cpConfig.LoadBalancerConfig.MetallbConfig == nil {
-		return map[string]interface{}{
+		return map[string]any{
 			"enabled": false,
 		}, nil
 	}
@@ -372,12 +372,12 @@ func getMetallbChartValues(
 	if cpConfig.LoadBalancerConfig.MetallbConfig.EnableL2Advertisement {
 		enableL2 = true
 	}
-	return map[string]interface{}{
+	return map[string]any{
 		"enabled": true,
-		"speaker": map[string]interface{}{
+		"speaker": map[string]any{
 			"enabled": enableSpeaker,
 		},
-		"l2Advertisement": map[string]interface{}{
+		"l2Advertisement": map[string]any{
 			"enabled": enableL2,
 		},
 		"ipAddressPool": cpConfig.LoadBalancerConfig.MetallbConfig.IPAddressPool,

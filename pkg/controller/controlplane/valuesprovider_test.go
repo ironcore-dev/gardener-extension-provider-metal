@@ -87,7 +87,7 @@ var _ = Describe("Valueprovider Reconcile", func() {
 			}
 			Eventually(Get(config)).Should(Succeed())
 			Expect(config.Data).To(HaveKey("cloudprovider.conf"))
-			cloudProviderConfig := map[string]interface{}{}
+			cloudProviderConfig := map[string]any{}
 			Expect(yaml.Unmarshal([]byte(config.Data["cloudprovider.conf"]), &cloudProviderConfig)).NotTo(HaveOccurred())
 			Expect(cloudProviderConfig["clusterName"]).To(Equal(cluster.Name))
 		})
@@ -97,7 +97,7 @@ var _ = Describe("Valueprovider Reconcile", func() {
 		It("should return correct config chart values", func(ctx SpecContext) {
 			values, err := vp.GetControlPlaneShootCRDsChartValues(ctx, nil, nil)
 			Expect(err).NotTo(HaveOccurred())
-			Expect(values).To(Equal(map[string]interface{}{}))
+			Expect(values).To(Equal(map[string]any{}))
 		})
 	})
 
@@ -173,18 +173,18 @@ var _ = Describe("Valueprovider Reconcile", func() {
 			}
 			values, err := vp.GetControlPlaneChartValues(ctx, cp, cluster, fakeSecretsManager, checksums, false)
 			Expect(err).NotTo(HaveOccurred())
-			Expect(values).To(Equal(map[string]interface{}{
-				"global": map[string]interface{}{
+			Expect(values).To(Equal(map[string]any{
+				"global": map[string]any{
 					"genericTokenKubeconfigSecretName": "generic-token-kubeconfig",
 				},
-				"cloud-controller-manager": map[string]interface{}{
+				"cloud-controller-manager": map[string]any{
 					"enabled":     true,
 					"replicas":    1,
 					"clusterName": ns.Name,
-					"podAnnotations": map[string]interface{}{
+					"podAnnotations": map[string]any{
 						"checksum/secret-cloud-provider-config": "8bafb35ff1ac60275d62e1cbd495aceb511fb354f74a20f7d06ecb48b3a68432",
 					},
-					"podLabels": map[string]interface{}{
+					"podLabels": map[string]any{
 						"maintenance.gardener.cloud/restart": "true",
 					},
 					"tlsCipherSuites": []string{
@@ -198,7 +198,7 @@ var _ = Describe("Valueprovider Reconcile", func() {
 						"TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305",
 						"TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305",
 					},
-					"secrets": map[string]interface{}{
+					"secrets": map[string]any{
 						"server": "cloud-controller-manager-server",
 					},
 					"featureGates": map[string]bool{
@@ -282,9 +282,9 @@ var _ = Describe("Valueprovider Reconcile", func() {
 
 			values, err := vp.GetControlPlaneShootChartValues(ctx, cp, cluster, fakeSecretsManager, nil)
 			Expect(err).NotTo(HaveOccurred())
-			Expect(values).To(Equal(map[string]interface{}{
-				"cloud-controller-manager": map[string]interface{}{"enabled": true},
-				"metallb": map[string]interface{}{
+			Expect(values).To(Equal(map[string]any{
+				"cloud-controller-manager": map[string]any{"enabled": true},
+				"metallb": map[string]any{
 					"enabled": false,
 				},
 			}))
@@ -367,14 +367,14 @@ var _ = Describe("Valueprovider Reconcile", func() {
 
 			values, err := vp.GetControlPlaneShootChartValues(ctx, cp, cluster, fakeSecretsManager, nil)
 			Expect(err).NotTo(HaveOccurred())
-			Expect(values).To(Equal(map[string]interface{}{
-				"cloud-controller-manager": map[string]interface{}{"enabled": true},
-				"metallb": map[string]interface{}{
+			Expect(values).To(Equal(map[string]any{
+				"cloud-controller-manager": map[string]any{"enabled": true},
+				"metallb": map[string]any{
 					"enabled": true,
-					"speaker": map[string]interface{}{
+					"speaker": map[string]any{
 						"enabled": false,
 					},
-					"l2Advertisement": map[string]interface{}{
+					"l2Advertisement": map[string]any{
 						"enabled": false,
 					},
 					"ipAddressPool": []string{"10.10.10.0/24", "10.20.20.10-10.20.20.30"},

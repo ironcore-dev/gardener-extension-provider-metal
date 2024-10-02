@@ -51,9 +51,9 @@ var _ = Describe("Machines", func() {
 			},
 		}
 
-		machineClassProviderSpec := map[string]interface{}{
+		machineClassProviderSpec := map[string]any{
 			"image": "registry/my-os",
-			"labels": map[string]interface{}{
+			"labels": map[string]any{
 				metal.ClusterNameLabel: testCluster.ObjectMeta.Name,
 			},
 			"serverLabels": map[string]string{
@@ -145,7 +145,7 @@ var _ = Describe("Machines", func() {
 	})
 })
 
-func encodeMap(m map[string]interface{}) []byte {
+func encodeMap(m map[string]any) []byte {
 	data, _ := json.Marshal(m)
 	return data
 }

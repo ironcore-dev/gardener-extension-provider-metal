@@ -13,25 +13,25 @@ import (
 	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
 )
 
-func (w *workerDelegate) GetMachineControllerManagerChartValues(ctx context.Context) (map[string]interface{}, error) {
+func (w *workerDelegate) GetMachineControllerManagerChartValues(ctx context.Context) (map[string]any, error) {
 	namespace := &corev1.Namespace{}
 	if err := w.client.Get(ctx, client.ObjectKey{Name: w.worker.Namespace}, namespace); err != nil {
 		return nil, err
 	}
 
-	return map[string]interface{}{
+	return map[string]any{
 		"providerName": metal.ProviderName,
-		"namespace": map[string]interface{}{
+		"namespace": map[string]any{
 			"uid": namespace.UID,
 		},
-		"podLabels": map[string]interface{}{
+		"podLabels": map[string]any{
 			v1beta1constants.LabelPodMaintenanceRestart: "true",
 		},
 	}, nil
 }
 
-func (w *workerDelegate) GetMachineControllerManagerShootChartValues(ctx context.Context) (map[string]interface{}, error) {
-	return map[string]interface{}{
+func (w *workerDelegate) GetMachineControllerManagerShootChartValues(ctx context.Context) (map[string]any, error) {
+	return map[string]any{
 		"providerName": metal.ProviderName,
 	}, nil
 }

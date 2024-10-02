@@ -106,7 +106,7 @@ func (w *workerDelegate) generateMachineClassAndSecrets() ([]*machinecontrollerv
 			return nil, nil, err
 		}
 
-		machineClassProviderSpec := map[string]interface{}{
+		machineClassProviderSpec := map[string]any{
 			metal.ImageFieldName: machineImage,
 			metal.ServerLabels:   serverLabels,
 		}
