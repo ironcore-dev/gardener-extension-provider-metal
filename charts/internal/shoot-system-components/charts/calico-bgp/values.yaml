@@ -1,0 +1,5 @@
+bgp:
+  logSeverityScreen: Info
+  nodeToNodeMeshEnabled: false
+  listenPort: 179
+  bindMode: NodeIP

@@ -1,0 +1,29 @@
+apiVersion: crd.projectcalico.org/v1
+kind: BGPConfiguration
+metadata:
+  name: default
+spec:
+  logSeverityScreen: {{ .Values.bgp.logSeverityScreen }}
+  nodeToNodeMeshEnabled: {{ .Values.bgp.nodeToNodeMeshEnabled }}
+  asNumber: {{ required ".Values.bgp.asNumber is required" .Values.bgp.asNumber }}
+  {{- if .Values.bgp.serviceLoadBalancerIPs }}
+  serviceLoadBalancerIPs:
+  {{- range $cidr := .Values.bgp.serviceLoadBalancerIPs }}
+    - cidr: {{ $cidr }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.bgp.serviceExternalIPs }}
+  serviceExternalIPs:
+  {{- range $cidr := .Values.bgp.serviceExternalIPs }}
+    - cidr: {{ $cidr }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.bgp.serviceClusterIPs }}
+  serviceClusterIPs:
+  {{- range $cidr := .Values.bgp.serviceClusterIPs }}
+    - cidr: {{ $cidr }}
+  {{- end }}
+  {{- end }}
+  listenPort: {{ .Values.bgp.listenPort }}
+  bindMode: {{ .Values.bgp.bindMode }}
+

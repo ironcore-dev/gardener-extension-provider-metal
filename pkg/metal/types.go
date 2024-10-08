@@ -47,10 +47,14 @@ const (
 	CloudProviderConfigName = "cloud-provider-config"
 	// CloudControllerManagerName is a constant for the name of the CloudController deployed by the worker controller.
 	CloudControllerManagerName = "cloud-controller-manager"
+	// CalicoBgpName is a constant for the name of the Calico BGP deployed by the worker controller.
+	CalicoBgpName = "calico-bgp"
 	// MetallbName is a constant for the name of the MetalLB deployed by the worker controller.
 	MetallbName = "metallb"
 	// MachineControllerManagerName is a constant for the name of the machine-controller-manager.
 	MachineControllerManagerName = "machine-controller-manager"
+	// ShootCalicoNetworkType is the network type for calico in a shoot.
+	ShootCalicoNetworkType = "calico"
 	// MachineControllerManagerVpaName is the name of the VerticalPodAutoscaler of the machine-controller-manager deployment.
 	MachineControllerManagerVpaName = "machine-controller-manager-vpa"
 	// MachineControllerManagerMonitoringConfigName is the name of the ConfigMap containing monitoring stack configurations for machine-controller-manager.

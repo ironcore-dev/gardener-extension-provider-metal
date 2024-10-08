@@ -3,3 +3,6 @@ cloud-controller-manager:
 
 metallb:
   enabled: false
+
+calico-bgp:
+  enabled: false

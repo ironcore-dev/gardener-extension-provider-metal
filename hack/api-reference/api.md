@@ -180,6 +180,139 @@ string
 </tr>
 </tbody>
 </table>
+<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.BgpPeer">BgpPeer
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CalicoBgpConfig">CalicoBgpConfig</a>)
+</p>
+<p>
+<p>BgpPeer contains configuration for BGPPeer resource.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>peerIP</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>PeerIP contains IP address of BGP peer followed by an optional port number to peer with.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>asNumber</code></br>
+<em>
+int
+</em>
+</td>
+<td>
+<p>ASNumber contains the AS number of the BGP peer.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>nodeSelector</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>NodeSelector is a key-value pair to select nodes that should have this peering.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.CalicoBgpConfig">CalicoBgpConfig
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.LoadBalancerConfig">LoadBalancerConfig</a>)
+</p>
+<p>
+<p>CalicoBgpConfig contains BGP configuration settings for calico.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>asNumber</code></br>
+<em>
+int
+</em>
+</td>
+<td>
+<p>ASNumber is the default AS number used by a node.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>serviceLoadBalancerIPs</code></br>
+<em>
+[]string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>ServiceLoadBalancerIPs are the CIDR blocks for Kubernetes Service LoadBalancer IPs.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>serviceExternalIPs</code></br>
+<em>
+[]string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>ServiceExternalIPs are the CIDR blocks for Kubernetes Service External IPs.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>serviceClusterIPs</code></br>
+<em>
+[]string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>ServiceClusterIPs are the CIDR blocks from which service cluster IPs are allocated.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>bgpPeer</code></br>
+<em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.BgpPeer">
+[]BgpPeer
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>BGPPeer contains configuration for BGPPeer resource.</p>
+</td>
+</tr>
+</tbody>
+</table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerManagerConfig">CloudControllerManagerConfig
 </h3>
 <p>
@@ -255,6 +388,20 @@ MetallbConfig
 <td>
 <em>(Optional)</em>
 <p>MetallbConfig contains configuration settings for metallb.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>calicoBgpConfig</code></br>
+<em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CalicoBgpConfig">
+CalicoBgpConfig
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>CalicoBgpConfig contains configuration settings for calico.</p>
 </td>
 </tr>
 </tbody>

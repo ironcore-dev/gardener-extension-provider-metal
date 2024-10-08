@@ -35,6 +35,10 @@ type LoadBalancerConfig struct {
 	// MetallbConfig contains configuration settings for metallb.
 	// +optional
 	MetallbConfig *MetallbConfig `json:"metallbConfig,omitempty"`
+
+	// CalicoBgpConfig contains configuration settings for calico.
+	// +optional
+	CalicoBgpConfig *CalicoBgpConfig `json:"calicoBgpConfig,omitempty"`
 }
 
 // MetallbConfig contains configuration settings for metallb.
@@ -50,4 +54,42 @@ type MetallbConfig struct {
 	// EnableL2Advertisement enables L2 advertisement.
 	// +optional
 	EnableL2Advertisement bool `json:"enableL2Advertisement,omitempty"`
+}
+
+// CalicoBgpConfig contains BGP configuration settings for calico.
+type CalicoBgpConfig struct {
+	// ASNumber is the default AS number used by a node.
+	// +required
+	ASNumber int `json:"asNumber"`
+
+	// ServiceLoadBalancerIPs are the CIDR blocks for Kubernetes Service LoadBalancer IPs.
+	// +optional
+	ServiceLoadBalancerIPs []string `json:"serviceLoadBalancerIPs,omitempty"`
+
+	// ServiceExternalIPs are the CIDR blocks for Kubernetes Service External IPs.
+	// +optional
+	ServiceExternalIPs []string `json:"serviceExternalIPs,omitempty"`
+
+	// ServiceClusterIPs are the CIDR blocks from which service cluster IPs are allocated.
+	// +optional
+	ServiceClusterIPs []string `json:"serviceClusterIPs,omitempty"`
+
+	// BGPPeer contains configuration for BGPPeer resource.
+	// +optional
+	BgpPeer []BgpPeer `json:"bgpPeer,omitempty"`
+}
+
+// BgpPeer contains configuration for BGPPeer resource.
+type BgpPeer struct {
+	// PeerIP contains IP address of BGP peer followed by an optional port number to peer with.
+	// +required
+	PeerIP string `json:"peerIP"`
+
+	// ASNumber contains the AS number of the BGP peer.
+	// +required
+	ASNumber int `json:"asNumber"`
+
+	// NodeSelector is a key-value pair to select nodes that should have this peering.
+	// +optional
+	NodeSelector string `json:"nodeSelector,omitempty"`
 }

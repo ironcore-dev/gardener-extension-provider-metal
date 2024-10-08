@@ -342,13 +342,20 @@ func (vp *valuesProvider) getControlPlaneShootChartValues(cluster *extensionscon
 	if err != nil {
 		return nil, err
 	}
+
+	calicoBgp, err := getCalicoBgpChartValues(cp, cluster)
+	if err != nil {
+		return nil, err
+	}
+
 	return map[string]any{
 		metal.CloudControllerManagerName: map[string]any{"enabled": true},
 		metal.MetallbName:                metallb,
+		metal.CalicoBgpName:              calicoBgp,
 	}, nil
 }
 
-// getMetallbChartValues collects and returns the CCM chart values.
+// getMetallbChartValues collects and returns the MetalLB chart values.
 func getMetallbChartValues(
 	cpConfig *apismetal.ControlPlaneConfig,
 ) (map[string]any, error) {
@@ -373,6 +380,70 @@ func getMetallbChartValues(
 			"enabled": cpConfig.LoadBalancerConfig.MetallbConfig.EnableL2Advertisement,
 		},
 		"ipAddressPool": cpConfig.LoadBalancerConfig.MetallbConfig.IPAddressPool,
+	}, nil
+}
+
+// getCalicoBgpChartValues collects and returns the Calico BGP chart values.
+func getCalicoBgpChartValues(
+	cpConfig *apismetal.ControlPlaneConfig,
+	cluster *extensionscontroller.Cluster,
+) (map[string]any, error) {
+	if cpConfig.LoadBalancerConfig == nil || cpConfig.LoadBalancerConfig.CalicoBgpConfig == nil {
+		return map[string]any{
+			"enabled": false,
+		}, nil
+	}
+
+	var serviceLbIPs, serviceExtIPs, serviceClusterIPs []string
+	var peers []map[string]any
+	if cpConfig.LoadBalancerConfig.CalicoBgpConfig != nil &&
+		*cluster.Shoot.Spec.Networking.Type == metal.ShootCalicoNetworkType {
+		if cpConfig.LoadBalancerConfig.CalicoBgpConfig.ServiceLoadBalancerIPs != nil {
+			for _, cidr := range cpConfig.LoadBalancerConfig.CalicoBgpConfig.ServiceLoadBalancerIPs {
+				if err := parseAddressPool(cidr); err != nil {
+					return nil, fmt.Errorf("invalid CIDR %q in pool: %w", cidr, err)
+				}
+				serviceLbIPs = append(serviceLbIPs, cidr)
+			}
+		}
+
+		if cpConfig.LoadBalancerConfig.CalicoBgpConfig.ServiceExternalIPs != nil {
+			for _, cidr := range cpConfig.LoadBalancerConfig.CalicoBgpConfig.ServiceExternalIPs {
+				if err := parseAddressPool(cidr); err != nil {
+					return nil, fmt.Errorf("invalid CIDR %q in pool: %w", cidr, err)
+				}
+				serviceExtIPs = append(serviceExtIPs, cidr)
+			}
+		}
+
+		if cpConfig.LoadBalancerConfig.CalicoBgpConfig.ServiceClusterIPs != nil {
+			for _, cidr := range cpConfig.LoadBalancerConfig.CalicoBgpConfig.ServiceClusterIPs {
+				if err := parseAddressPool(cidr); err != nil {
+					return nil, fmt.Errorf("invalid CIDR %q in pool: %w", cidr, err)
+				}
+				serviceClusterIPs = append(serviceClusterIPs, cidr)
+			}
+		}
+
+		if cpConfig.LoadBalancerConfig.CalicoBgpConfig.BgpPeer != nil {
+			for _, peer := range cpConfig.LoadBalancerConfig.CalicoBgpConfig.BgpPeer {
+				peers = append(peers, map[string]any{
+					"peerIP":       peer.PeerIP,
+					"asNumber":     peer.ASNumber,
+					"nodeSelector": peer.NodeSelector,
+				})
+			}
+		}
+	}
+	return map[string]any{
+		"enabled": true,
+		"bgp": map[string]any{
+			"asNumber":               cpConfig.LoadBalancerConfig.CalicoBgpConfig.ASNumber,
+			"serviceLoadBalancerIPs": serviceLbIPs,
+			"serviceExternalIPs":     serviceExtIPs,
+			"serviceClusterIPs":      serviceClusterIPs,
+			"bgpPeer":                peers,
+		},
 	}, nil
 }
 
