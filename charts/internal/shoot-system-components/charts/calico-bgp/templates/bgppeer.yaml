@@ -1,9 +1,10 @@
 {{- if .Values.bgp.bgpPeer }}
 {{- range $peer := .Values.bgp.bgpPeer }}
+---
 apiVersion: crd.projectcalico.org/v1
 kind: BGPPeer
 metadata:
-  name: bgppeer-{{ $peer.peerIP }}-{{ $peer.asNumber }}
+  name: bgppeer-{{ $peer.asNumber }}-{{ $peer.peerIP }}
 spec:
   asNumber: {{ required ".peer.asNumber is required" $peer.asNumber }}
   {{- if $peer.nodeSelector }}
