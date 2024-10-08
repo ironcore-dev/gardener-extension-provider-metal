@@ -423,6 +423,11 @@ var _ = Describe("Valueprovider Reconcile", func() {
 												ASNumber:     12345,
 												NodeSelector: "foo=bar",
 											},
+											{
+												PeerIP:       "1.2.3.5",
+												ASNumber:     12345,
+												NodeSelector: "foo=bar",
+											},
 										},
 									},
 								},
@@ -491,6 +496,11 @@ var _ = Describe("Valueprovider Reconcile", func() {
 						"bgpPeer": []map[string]any{
 							{
 								"peerIP":       "1.2.3.4",
+								"asNumber":     12345,
+								"nodeSelector": "foo=bar",
+							},
+							{
+								"peerIP":       "1.2.3.5",
 								"asNumber":     12345,
 								"nodeSelector": "foo=bar",
 							},
