@@ -3,3 +3,4 @@ bgp:
   nodeToNodeMeshEnabled: false
   listenPort: 179
   bindMode: NodeIP
+  asNumber: 64512
