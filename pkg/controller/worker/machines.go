@@ -25,7 +25,7 @@ import (
 
 // DeployMachineClasses generates and creates the metal specific machine classes.
 func (w *workerDelegate) DeployMachineClasses(ctx context.Context) error {
-	machineClasses, machineClassSecrets, err := w.generateMachineClassAndSecrets()
+	machineClasses, machineClassSecrets, err := w.generateMachineClassAndSecrets(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to generate machine classes and machine class secrets: %w", err)
 	}
@@ -83,7 +83,7 @@ func (w *workerDelegate) GenerateMachineDeployments(ctx context.Context) (worker
 	return machineDeployments, nil
 }
 
-func (w *workerDelegate) generateMachineClassAndSecrets() ([]*machinecontrollerv1alpha1.MachineClass, []*corev1.Secret, error) {
+func (w *workerDelegate) generateMachineClassAndSecrets(ctx context.Context) ([]*machinecontrollerv1alpha1.MachineClass, []*corev1.Secret, error) {
 	var (
 		machineClasses      []*machinecontrollerv1alpha1.MachineClass
 		machineClassSecrets []*corev1.Secret
@@ -160,6 +160,11 @@ func (w *workerDelegate) generateMachineClassAndSecrets() ([]*machinecontrollerv
 				},
 			}
 
+			userData, err := worker.FetchUserData(ctx, w.client, w.worker.Namespace, pool)
+			if err != nil {
+				return nil, nil, err
+			}
+
 			machineClassSecret := &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      className,
@@ -167,7 +172,7 @@ func (w *workerDelegate) generateMachineClassAndSecrets() ([]*machinecontrollerv
 					Labels:    map[string]string{v1beta1constants.GardenerPurpose: v1beta1constants.GardenPurposeMachineClass},
 				},
 				Data: map[string][]byte{
-					metal.UserDataFieldName: pool.UserData,
+					metal.UserDataFieldName: userData,
 				},
 			}
 
