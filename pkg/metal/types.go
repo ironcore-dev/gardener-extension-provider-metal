@@ -38,8 +38,10 @@ const (
 	UserDataFieldName = "userData"
 	// ImageFieldName is the name of the image field
 	ImageFieldName = "image"
-	// ServerLabels is the name of the server labels field
-	ServerLabels = "serverLabels"
+	// ServerLabelsFieldName is the name of the server labels field
+	ServerLabelsFieldName = "serverLabels"
+	// ExtraIgnition is the name of the ignition field
+	IgnitionFieldName = "ignition"
 	// ClusterNameLabel is the name is the label key of the cluster name
 	ClusterNameLabel = "extension.metal.dev/cluster-name"
 

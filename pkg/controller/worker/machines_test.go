@@ -19,81 +19,152 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	. "sigs.k8s.io/controller-runtime/pkg/envtest/komega"
 
+	metalv1alpha1 "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/v1alpha1"
 	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
 )
 
 var _ = Describe("Machines", func() {
 	ns, _ := SetupTest()
 
-	It("should create the expected machine class for a multi zone clπuster", func(ctx SpecContext) {
-		By("deploying the machine class for a given multi zone cluster")
-		decoder := serializer.NewCodecFactory(k8sClient.Scheme(), serializer.EnableStrict).UniversalDecoder()
-		workerDelegate, err := NewWorkerDelegate(k8sClient, decoder, k8sClient.Scheme(), "", w, testCluster)
-		Expect(err).NotTo(HaveOccurred())
+	When("deploying machine classes", func() {
 
-		err = workerDelegate.DeployMachineClasses(ctx)
-		Expect(err).NotTo(HaveOccurred())
-
-		// TODO: Fix machine pool hashing
-		workerPoolHash, err := worker.WorkerPoolHash(pool, testCluster, nil, nil)
-		Expect(err).NotTo(HaveOccurred())
-
-		By("ensuring that the machine class for each pool has been deployed")
 		var (
-			deploymentName = fmt.Sprintf("%s-%s-z%d", ns.Name, pool.Name, 1)
-			className      = fmt.Sprintf("%s-%s", deploymentName, workerPoolHash)
+			deploymentName     string
+			className          string
+			machineClass       *machinecontrollerv1alpha1.MachineClass
+			machineClassSecret *corev1.Secret
+			workerDelegate     genericworkeractuator.WorkerDelegate
 		)
 
-		machineClass := &machinecontrollerv1alpha1.MachineClass{
-			ObjectMeta: metav1.ObjectMeta{
-				Namespace: ns.Name,
-				Name:      className,
-			},
-		}
+		BeforeEach(func(ctx SpecContext) {
+			// TODO: Fix machine pool hashing
+			workerPoolHash, err := worker.WorkerPoolHash(pool, testCluster, nil, nil)
+			Expect(err).NotTo(HaveOccurred())
+			deploymentName = fmt.Sprintf("%s-%s-z%d", ns.Name, pool.Name, 1)
+			className = fmt.Sprintf("%s-%s", deploymentName, workerPoolHash)
+			machineClass = &machinecontrollerv1alpha1.MachineClass{
+				ObjectMeta: metav1.ObjectMeta{
+					Namespace: ns.Name,
+					Name:      className,
+				},
+			}
+			machineClassSecret = &corev1.Secret{
+				ObjectMeta: metav1.ObjectMeta{
+					Namespace: ns.Name,
+					Name:      className,
+				},
+			}
 
-		machineClassProviderSpec := map[string]any{
-			"image": "registry/my-os",
-			"labels": map[string]any{
-				metal.ClusterNameLabel: testCluster.ObjectMeta.Name,
-			},
-			"serverLabels": map[string]string{
-				"foo": "bar",
-			},
-		}
+			By("deploying the machine class for a given multi zone cluster")
+			decoder := serializer.NewCodecFactory(k8sClient.Scheme(), serializer.EnableStrict).UniversalDecoder()
+			workerDelegate, err = NewWorkerDelegate(k8sClient, decoder, k8sClient.Scheme(), "", w, testCluster)
+			Expect(err).NotTo(HaveOccurred())
+		})
 
-		Eventually(Object(machineClass)).Should(SatisfyAll(
-			HaveField("CredentialsSecretRef", &corev1.SecretReference{
-				Namespace: w.Spec.SecretRef.Namespace,
-				Name:      w.Spec.SecretRef.Name,
-			}),
-			HaveField("SecretRef", &corev1.SecretReference{
-				Namespace: ns.Name,
-				Name:      className,
-			}),
-			HaveField("Provider", "metal"),
-			HaveField("NodeTemplate", &machinecontrollerv1alpha1.NodeTemplate{
-				Capacity:     pool.NodeTemplate.Capacity,
-				InstanceType: pool.MachineType,
-				Region:       w.Spec.Region,
-				Zone:         "zone1",
-			}),
-			HaveField("ProviderSpec", runtime.RawExtension{
-				Raw: encodeMap(machineClassProviderSpec),
-			}),
-		))
+		AfterEach(func(ctx SpecContext) {
+			Expect(k8sClient.Delete(ctx, machineClass)).To(Succeed())
+			Expect(k8sClient.Delete(ctx, machineClassSecret)).To(Succeed())
+		})
 
-		By("ensuring that the machine class secret have been applied")
-		machineClassSecret := &corev1.Secret{
-			ObjectMeta: metav1.ObjectMeta{
-				Namespace: ns.Name,
-				Name:      className,
-			},
-		}
+		It("should create the expected machine class for a multi zone cluster", func(ctx SpecContext) {
+			Expect(workerDelegate.DeployMachineClasses(ctx)).To(Succeed())
 
-		Eventually(Object(machineClassSecret)).Should(SatisfyAll(
-			HaveField("ObjectMeta.Labels", HaveKeyWithValue(v1beta1constants.GardenerPurpose, v1beta1constants.GardenPurposeMachineClass)),
-			HaveField("Data", HaveKeyWithValue("userData", []byte("some-data"))),
-		))
+			By("ensuring that the machine class for each pool has been deployed")
+			machineClassProviderSpec := map[string]any{
+				"image": "registry/my-os",
+				"labels": map[string]any{
+					metal.ClusterNameLabel: testCluster.ObjectMeta.Name,
+				},
+				"serverLabels": map[string]string{
+					"foo": "bar",
+				},
+			}
+
+			Eventually(Object(machineClass)).Should(SatisfyAll(
+				HaveField("CredentialsSecretRef", &corev1.SecretReference{
+					Namespace: w.Spec.SecretRef.Namespace,
+					Name:      w.Spec.SecretRef.Name,
+				}),
+				HaveField("SecretRef", &corev1.SecretReference{
+					Namespace: ns.Name,
+					Name:      className,
+				}),
+				HaveField("Provider", "metal"),
+				HaveField("NodeTemplate", &machinecontrollerv1alpha1.NodeTemplate{
+					Capacity:     pool.NodeTemplate.Capacity,
+					InstanceType: pool.MachineType,
+					Region:       w.Spec.Region,
+					Zone:         "zone1",
+				}),
+				HaveField("ProviderSpec", runtime.RawExtension{
+					Raw: encodeMap(machineClassProviderSpec),
+				}),
+			))
+
+			By("ensuring that the machine class secret have been applied")
+
+			Eventually(Object(machineClassSecret)).Should(SatisfyAll(
+				HaveField("ObjectMeta.Labels", HaveKeyWithValue(v1beta1constants.GardenerPurpose, v1beta1constants.GardenPurposeMachineClass)),
+				HaveField("Data", HaveKeyWithValue("userData", []byte("some-data"))),
+			))
+		})
+
+		It("should forward ignition configuration", func(ctx SpecContext) {
+			infrastructureConfig := metalv1alpha1.InfrastructureConfig{
+				Worker: map[string]metalv1alpha1.WorkerConfig{
+					pool.Name: {
+						ExtraIgnition: &metalv1alpha1.IgnitionConfig{
+							Raw: "abc",
+						},
+					},
+				},
+			}
+			infraJSON, err := json.Marshal(infrastructureConfig)
+			Expect(err).To(Succeed())
+			testCluster.Shoot.Spec.Provider.InfrastructureConfig.Raw = infraJSON
+			Expect(workerDelegate.DeployMachineClasses(ctx)).To(Succeed())
+
+			By("ensuring that the machine class for each pool has been deployed")
+			machineClassProviderSpec := map[string]any{
+				"image": "registry/my-os",
+				"labels": map[string]any{
+					metal.ClusterNameLabel: testCluster.ObjectMeta.Name,
+				},
+				metal.ServerLabelsFieldName: map[string]string{
+					"foo": "bar",
+				},
+				metal.IgnitionFieldName: "abc",
+			}
+
+			Eventually(Object(machineClass)).Should(SatisfyAll(
+				HaveField("CredentialsSecretRef", &corev1.SecretReference{
+					Namespace: w.Spec.SecretRef.Namespace,
+					Name:      w.Spec.SecretRef.Name,
+				}),
+				HaveField("SecretRef", &corev1.SecretReference{
+					Namespace: ns.Name,
+					Name:      className,
+				}),
+				HaveField("Provider", "metal"),
+				HaveField("NodeTemplate", &machinecontrollerv1alpha1.NodeTemplate{
+					Capacity:     pool.NodeTemplate.Capacity,
+					InstanceType: pool.MachineType,
+					Region:       w.Spec.Region,
+					Zone:         "zone1",
+				}),
+				HaveField("ProviderSpec", runtime.RawExtension{
+					Raw: encodeMap(machineClassProviderSpec),
+				}),
+			))
+
+			By("ensuring that the machine class secret have been applied")
+
+			Eventually(Object(machineClassSecret)).Should(SatisfyAll(
+				HaveField("ObjectMeta.Labels", HaveKeyWithValue(v1beta1constants.GardenerPurpose, v1beta1constants.GardenPurposeMachineClass)),
+				HaveField("Data", HaveKeyWithValue("userData", []byte("some-data"))),
+			))
+		})
+
 	})
 
 	It("should generate the machine deployments", func(ctx SpecContext) {
@@ -146,6 +217,7 @@ var _ = Describe("Machines", func() {
 })
 
 func encodeMap(m map[string]any) []byte {
-	data, _ := json.Marshal(m)
+	data, err := json.Marshal(m)
+	Expect(err).To(Succeed())
 	return data
 }

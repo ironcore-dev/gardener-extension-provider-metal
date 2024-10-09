@@ -20,6 +20,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 
+	metalv1alpha1 "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/v1alpha1"
 	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
 )
 
@@ -85,17 +86,22 @@ func (w *workerDelegate) GenerateMachineDeployments(ctx context.Context) (worker
 
 func (w *workerDelegate) generateMachineClassAndSecrets() ([]*machinecontrollerv1alpha1.MachineClass, []*corev1.Secret, error) {
 	var (
-		machineClasses      []*machinecontrollerv1alpha1.MachineClass
-		machineClassSecrets []*corev1.Secret
+		machineClasses       []*machinecontrollerv1alpha1.MachineClass
+		machineClassSecrets  []*corev1.Secret
+		infrastructureConfig metalv1alpha1.InfrastructureConfig
 	)
 
+	err := json.Unmarshal(w.cluster.Shoot.Spec.Provider.InfrastructureConfig.Raw, &infrastructureConfig)
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to unmarshal infrastructure config: %w", err)
+	}
 	for _, pool := range w.worker.Spec.Pools {
 		workerPoolHash, err := w.generateHashForWorkerPool(pool)
 		if err != nil {
 			return nil, nil, fmt.Errorf("failed to generate hash for worker pool %s: %w", pool.Name, err)
 		}
 
-		arch := ptr.Deref[string](pool.Architecture, v1beta1constants.ArchitectureAMD64)
+		arch := ptr.Deref(pool.Architecture, v1beta1constants.ArchitectureAMD64)
 		machineImage, err := w.findMachineImage(pool.MachineImage.Name, pool.MachineImage.Version, &arch)
 		if err != nil {
 			return nil, nil, err
@@ -107,8 +113,12 @@ func (w *workerDelegate) generateMachineClassAndSecrets() ([]*machinecontrollerv
 		}
 
 		machineClassProviderSpec := map[string]any{
-			metal.ImageFieldName: machineImage,
-			metal.ServerLabels:   serverLabels,
+			metal.ImageFieldName:        machineImage,
+			metal.ServerLabelsFieldName: serverLabels,
+		}
+		metalConfig, ok := infrastructureConfig.Worker[pool.Name]
+		if ok && metalConfig.ExtraIgnition != nil {
+			machineClassProviderSpec[metal.IgnitionFieldName] = metalConfig.ExtraIgnition.Raw
 		}
 
 		for zoneIndex, zone := range pool.Zones {

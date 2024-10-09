@@ -110,9 +110,7 @@ var _ = BeforeSuite(func() {
 })
 
 func SetupTest() (*corev1.Namespace, *gardener.ChartApplier) {
-	var (
-		chartApplier gardener.ChartApplier
-	)
+	var chartApplier gardener.ChartApplier
 	ns := &corev1.Namespace{}
 
 	BeforeEach(func(ctx SpecContext) {
@@ -192,6 +190,11 @@ func SetupTest() (*corev1.Namespace, *gardener.ChartApplier) {
 				Spec: gardencorev1beta1.ShootSpec{
 					Kubernetes: gardencorev1beta1.Kubernetes{
 						Version: shootVersion,
+					},
+					Provider: gardencorev1beta1.Provider{
+						InfrastructureConfig: &runtime.RawExtension{
+							Raw: []byte("{}"),
+						},
 					},
 				},
 			},
