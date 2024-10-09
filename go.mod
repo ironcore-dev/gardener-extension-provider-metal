@@ -1,13 +1,13 @@
 module github.com/ironcore-dev/gardener-extension-provider-metal
 
-go 1.22.2
+go 1.23.0
 
 require (
 	github.com/Masterminds/semver/v3 v3.3.0
 	github.com/ahmetb/gen-crd-api-reference-docs v0.3.0
 	github.com/coreos/go-systemd/v22 v22.5.0
 	github.com/gardener/etcd-druid v0.22.5
-	github.com/gardener/gardener v1.99.1
+	github.com/gardener/gardener v1.99.4
 	github.com/gardener/machine-controller-manager v0.53.1
 	github.com/go-logr/logr v1.4.2
 	github.com/ironcore-dev/controller-utils v0.9.3
