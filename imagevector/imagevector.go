@@ -22,7 +22,7 @@ func init() {
 	imageVector, err = imagevector.Read([]byte(imagesYAML))
 	runtime.Must(err)
 
-	imageVector, err = imagevector.WithEnvOverride(imageVector, imagevector.OverrideChartsEnv)
+	imageVector, err = imagevector.WithEnvOverride(imageVector, imagevector.OverrideEnv)
 	runtime.Must(err)
 }
 
