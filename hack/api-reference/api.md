@@ -72,6 +72,18 @@ logical names and versions to provider-specific identifiers.</p>
 <p>RegionConfigs is the list of supported regions.</p>
 </td>
 </tr>
+<tr>
+<td>
+<code>machineTypes</code></br>
+<em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.MachineType">
+[]MachineType
+</a>
+</em>
+</td>
+<td>
+</td>
+</tr>
 </tbody>
 </table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.ControlPlaneConfig">ControlPlaneConfig
@@ -579,6 +591,44 @@ string
 </tr>
 </tbody>
 </table>
+<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.MachineType">MachineType
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CloudProfileConfig">CloudProfileConfig</a>)
+</p>
+<p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>name</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>serverLabels</code></br>
+<em>
+map[string]string
+</em>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.MetallbConfig">MetallbConfig
 </h3>
 <p>
@@ -715,14 +765,14 @@ IgnitionConfig
 </tr>
 <tr>
 <td>
-<code>serverLabels</code></br>
+<code>extraServerLabels</code></br>
 <em>
 map[string]string
 </em>
 </td>
 <td>
 <em>(Optional)</em>
-<p>ServerLabels is a map of labels that are applied to the ServerClaim for Server selection.</p>
+<p>ExtraServerLabels is a map of additional labels that are applied to the ServerClaim for Server selection.</p>
 </td>
 </tr>
 </tbody>
