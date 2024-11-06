@@ -9,34 +9,11 @@ import (
 
 // +genclient
 
-// IgnitionConfig contains ignition settings.
-type IgnitionConfig struct {
-	// Raw contains an inline ignition config, which is merged with the config from the os extension.
-	// +optional
-	Raw string `json:"raw,omitempty"`
-
-	// Override configures, if ignition keys set by the os-extension are overridden
-	// by extra ignition.
-	// +optional
-	Override bool `json:"override,omitempty"`
-}
-
-// WorkerConfig contains settings per pool, which are specific to the metal-operator.
-type WorkerConfig struct {
-	// ExtraIgnition contains additional ignition configuration.
-	// +optional
-	ExtraIgnition *IgnitionConfig `json:"extraIgnition,omitempty"`
-}
-
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // InfrastructureConfig infrastructure configuration resource
 type InfrastructureConfig struct {
 	metav1.TypeMeta `json:",inline"`
-
-	// Worker contains settings per worker pool specific to the metal-operator
-	// +optional
-	Worker map[string]WorkerConfig `json:"worker,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

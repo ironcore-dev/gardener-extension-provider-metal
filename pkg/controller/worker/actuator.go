@@ -5,7 +5,6 @@ package worker
 
 import (
 	"context"
-	"fmt"
 
 	extensionscontroller "github.com/gardener/gardener/extensions/pkg/controller"
 	"github.com/gardener/gardener/extensions/pkg/controller/worker"
@@ -82,15 +81,6 @@ type workerDelegate struct {
 	cloudProfileConfig *api.CloudProfileConfig
 	cluster            *extensionscontroller.Cluster
 	worker             *extensionsv1alpha1.Worker
-}
-
-func (w *workerDelegate) getServerLabelsForMachineType(machineType string) (map[string]string, error) {
-	for _, t := range w.cloudProfileConfig.MachineTypes {
-		if t.Name == machineType {
-			return t.ServerLabels, nil
-		}
-	}
-	return nil, fmt.Errorf("no machine type %s found", machineType)
 }
 
 // NewWorkerDelegate creates a new context for a worker reconciliation.

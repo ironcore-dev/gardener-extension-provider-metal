@@ -85,16 +85,19 @@ func (w *workerDelegate) GenerateMachineDeployments(ctx context.Context) (worker
 
 func (w *workerDelegate) generateMachineClassAndSecrets(ctx context.Context) ([]*machinecontrollerv1alpha1.MachineClass, []*corev1.Secret, error) {
 	var (
-		machineClasses       []*machinecontrollerv1alpha1.MachineClass
-		machineClassSecrets  []*corev1.Secret
-		infrastructureConfig metalv1alpha1.InfrastructureConfig
+		machineClasses      []*machinecontrollerv1alpha1.MachineClass
+		machineClassSecrets []*corev1.Secret
 	)
 
-	err := json.Unmarshal(w.cluster.Shoot.Spec.Provider.InfrastructureConfig.Raw, &infrastructureConfig)
-	if err != nil {
-		return nil, nil, fmt.Errorf("failed to unmarshal infrastructure config: %w", err)
-	}
 	for _, pool := range w.worker.Spec.Pools {
+
+		workerConfig := &metalv1alpha1.WorkerConfig{}
+		if pool.ProviderConfig != nil && pool.ProviderConfig.Raw != nil {
+			if _, _, err := w.decoder.Decode(pool.ProviderConfig.Raw, nil, workerConfig); err != nil {
+				return nil, nil, fmt.Errorf("could not decode provider config: %+v", err)
+			}
+		}
+
 		workerPoolHash, err := w.generateHashForWorkerPool(pool)
 		if err != nil {
 			return nil, nil, fmt.Errorf("failed to generate hash for worker pool %s: %w", pool.Name, err)
@@ -106,7 +109,7 @@ func (w *workerDelegate) generateMachineClassAndSecrets(ctx context.Context) ([]
 			return nil, nil, err
 		}
 
-		serverLabels, err := w.getServerLabelsForMachineType(pool.MachineType)
+		serverLabels, err := w.getServerLabelsForMachine(pool.MachineType, workerConfig)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -115,10 +118,9 @@ func (w *workerDelegate) generateMachineClassAndSecrets(ctx context.Context) ([]
 			metal.ImageFieldName:        machineImage,
 			metal.ServerLabelsFieldName: serverLabels,
 		}
-		metalConfig, ok := infrastructureConfig.Worker[pool.Name]
-		if ok && metalConfig.ExtraIgnition != nil {
-			machineClassProviderSpec[metal.IgnitionFieldName] = metalConfig.ExtraIgnition.Raw
-			machineClassProviderSpec[metal.IgnitionOverrideFieldName] = metalConfig.ExtraIgnition.Override
+		if workerConfig.ExtraIgnition != nil {
+			machineClassProviderSpec[metal.IgnitionFieldName] = workerConfig.ExtraIgnition.Raw
+			machineClassProviderSpec[metal.IgnitionOverrideFieldName] = workerConfig.ExtraIgnition.Override
 		}
 
 		for zoneIndex, zone := range pool.Zones {
@@ -205,4 +207,25 @@ func (w *workerDelegate) generateMachineClassAndSecrets(ctx context.Context) ([]
 func (w *workerDelegate) generateHashForWorkerPool(pool v1alpha1.WorkerPool) (string, error) {
 	// Generate the worker pool hash.
 	return worker.WorkerPoolHash(pool, w.cluster, nil, nil)
+}
+
+func (w *workerDelegate) getServerLabelsForMachine(machineType string, workerConfig *metalv1alpha1.WorkerConfig) (map[string]string, error) {
+	combinedLabels := make(map[string]string)
+	for _, t := range w.cloudProfileConfig.MachineTypes {
+		if t.Name == machineType {
+			for key, value := range t.ServerLabels {
+				combinedLabels[key] = value
+			}
+			break
+		}
+	}
+	if workerConfig.ExtraServerLabels != nil {
+		for key, value := range workerConfig.ExtraServerLabels {
+			combinedLabels[key] = value
+		}
+	}
+	if len(combinedLabels) == 0 {
+		return nil, fmt.Errorf("no server labels found for machine type %s or worker config", machineType)
+	}
+	return combinedLabels, nil
 }

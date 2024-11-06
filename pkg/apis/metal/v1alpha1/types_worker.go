@@ -9,6 +9,19 @@ import (
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
+// WorkerConfig contains configuration settings for the worker nodes.
+type WorkerConfig struct {
+	metav1.TypeMeta
+	// ExtraIgnition contains additional Ignition for Worker nodes.
+	// +optional
+	ExtraIgnition *IgnitionConfig `json:"extraIgnition,omitempty"`
+	// ExtraServerLabels is a map of additional labels that are applied to the ServerClaim for Server selection.
+	// +optional
+	ExtraServerLabels map[string]string `json:"extraServerLabels,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
 // WorkerStatus contains information about created worker resources.
 type WorkerStatus struct {
 	metav1.TypeMeta `json:",inline"`
@@ -33,4 +46,16 @@ type MachineImage struct {
 	// Architecture is the CPU architecture of the machine image.
 	// +optional
 	Architecture *string `json:"architecture,omitempty"`
+}
+
+// IgnitionConfig contains ignition settings.
+type IgnitionConfig struct {
+	// Raw contains an inline ignition config, which is merged with the config from the os extension.
+	// +optional
+	Raw string `json:"raw,omitempty"`
+
+	// Override configures, if ignition keys set by the os-extension are overridden
+	// by extra ignition.
+	// +optional
+	Override bool `json:"override,omitempty"`
 }

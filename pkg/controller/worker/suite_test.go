@@ -60,6 +60,9 @@ var (
 	testCluster            *extensionscontroller.Cluster
 	cloudProfileConfigJSON []byte
 
+	workerConfig     *apiv1alpha1.WorkerConfig
+	workerConfigJSON []byte
+
 	w *gardenerextensionv1alpha1.Worker
 )
 
@@ -129,6 +132,17 @@ func SetupTest() (*corev1.Namespace, *gardener.ChartApplier) {
 		volumeName := "test-volume"
 		volumeType := "fast"
 
+		workerConfig = &apiv1alpha1.WorkerConfig{
+			ExtraServerLabels: map[string]string{
+				"foo1": "bar1",
+			},
+			ExtraIgnition: &apiv1alpha1.IgnitionConfig{
+				Raw:      "abc",
+				Override: true,
+			},
+		}
+		workerConfigJSON, _ = json.Marshal(workerConfig)
+
 		// define test resources
 		pool = gardenerextensionv1alpha1.WorkerPool{
 			MachineType:    "large",
@@ -155,6 +169,9 @@ func SetupTest() (*corev1.Namespace, *gardener.ChartApplier) {
 				Capacity: map[corev1.ResourceName]resource.Quantity{
 					corev1.ResourceCPU: resource.MustParse("100m"),
 				},
+			},
+			ProviderConfig: &runtime.RawExtension{
+				Raw: workerConfigJSON,
 			},
 		}
 		cloudProfileConfig = &apiv1alpha1.CloudProfileConfig{

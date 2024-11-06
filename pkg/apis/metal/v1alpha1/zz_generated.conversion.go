@@ -337,7 +337,6 @@ func Convert_metal_IgnitionConfig_To_v1alpha1_IgnitionConfig(in *metal.IgnitionC
 }
 
 func autoConvert_v1alpha1_InfrastructureConfig_To_metal_InfrastructureConfig(in *InfrastructureConfig, out *metal.InfrastructureConfig, s conversion.Scope) error {
-	out.Worker = *(*map[string]metal.WorkerConfig)(unsafe.Pointer(&in.Worker))
 	return nil
 }
 
@@ -347,7 +346,6 @@ func Convert_v1alpha1_InfrastructureConfig_To_metal_InfrastructureConfig(in *Inf
 }
 
 func autoConvert_metal_InfrastructureConfig_To_v1alpha1_InfrastructureConfig(in *metal.InfrastructureConfig, out *InfrastructureConfig, s conversion.Scope) error {
-	out.Worker = *(*map[string]WorkerConfig)(unsafe.Pointer(&in.Worker))
 	return nil
 }
 
@@ -540,6 +538,7 @@ func Convert_metal_RegionConfig_To_v1alpha1_RegionConfig(in *metal.RegionConfig,
 
 func autoConvert_v1alpha1_WorkerConfig_To_metal_WorkerConfig(in *WorkerConfig, out *metal.WorkerConfig, s conversion.Scope) error {
 	out.ExtraIgnition = (*metal.IgnitionConfig)(unsafe.Pointer(in.ExtraIgnition))
+	out.ExtraServerLabels = *(*map[string]string)(unsafe.Pointer(&in.ExtraServerLabels))
 	return nil
 }
 
@@ -550,6 +549,7 @@ func Convert_v1alpha1_WorkerConfig_To_metal_WorkerConfig(in *WorkerConfig, out *
 
 func autoConvert_metal_WorkerConfig_To_v1alpha1_WorkerConfig(in *metal.WorkerConfig, out *WorkerConfig, s conversion.Scope) error {
 	out.ExtraIgnition = (*IgnitionConfig)(unsafe.Pointer(in.ExtraIgnition))
+	out.ExtraServerLabels = *(*map[string]string)(unsafe.Pointer(&in.ExtraServerLabels))
 	return nil
 }
 

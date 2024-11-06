@@ -51,8 +51,3 @@ spec:
   providerConfig:
     apiVersion: metal.provider.extensions.gardener.cloud/v1alpha1
     kind: InfrastructureConfig
-    worker:
-      WORKER_POOL_NAME:
-        extraIgnition:
-          raw: "the-ignition"
-          # override: true

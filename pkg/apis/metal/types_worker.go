@@ -10,6 +10,17 @@ import (
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
+// WorkerConfig contains configuration settings for the worker nodes.
+type WorkerConfig struct {
+	metav1.TypeMeta
+	// ExtraIgnition contains additional Ignition for Worker nodes.
+	ExtraIgnition *IgnitionConfig
+	// ExtraServerLabels is a map of extra labels that are applied to the ServerClaim for Server selection.
+	ExtraServerLabels map[string]string
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
 // WorkerStatus contains information about created worker resources.
 type WorkerStatus struct {
 	metav1.TypeMeta
@@ -32,4 +43,10 @@ type MachineImage struct {
 	Image string
 	// Architecture is the CPU architecture of the machine image.
 	Architecture *string
+}
+
+// IgnitionConfig contains ignition settings.
+type IgnitionConfig struct {
+	Raw      string
+	Override bool
 }

@@ -93,3 +93,11 @@ spec:
     zones:
     - my-machine-pool-a
     - my-machine-pool-b
+    providerConfig:
+      apiVersion: metal.provider.extensions.gardener.cloud/v1alpha1
+      kind: WorkerConfig
+      extraIgnition:
+        raw: "the-ignition"
+        # override: true
+      serverLabels:
+        foo: bar

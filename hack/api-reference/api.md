@@ -13,8 +13,6 @@ Resource Types:
 <a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CloudProfileConfig">CloudProfileConfig</a>
 </li><li>
 <a href="#metal.provider.extensions.gardener.cloud/v1alpha1.ControlPlaneConfig">ControlPlaneConfig</a>
-</li><li>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.IgnitionConfig">IgnitionConfig</a>
 </li></ul>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.CloudProfileConfig">CloudProfileConfig
 </h3>
@@ -72,18 +70,6 @@ logical names and versions to provider-specific identifiers.</p>
 </td>
 <td>
 <p>RegionConfigs is the list of supported regions.</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>machineTypes</code></br>
-<em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.MachineType">
-[]MachineType
-</a>
-</em>
-</td>
-<td>
 </td>
 </tr>
 </tbody>
@@ -144,67 +130,6 @@ LoadBalancerConfig
 <td>
 <em>(Optional)</em>
 <p>LoadBalancerConfig contains configuration settings for the shoot loadbalancing.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.IgnitionConfig">IgnitionConfig
-</h3>
-<p>
-(<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.WorkerConfig">WorkerConfig</a>)
-</p>
-<p>
-<p>IgnitionConfig contains ignition settings.</p>
-</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>apiVersion</code></br>
-string</td>
-<td>
-<code>
-metal.provider.extensions.gardener.cloud/v1alpha1
-</code>
-</td>
-</tr>
-<tr>
-<td>
-<code>kind</code></br>
-string
-</td>
-<td><code>IgnitionConfig</code></td>
-</tr>
-<tr>
-<td>
-<code>raw</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-<p>Raw contains an inline ignition config, which is merged with the config from the os extension.</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>override</code></br>
-<em>
-bool
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-<p>Override configures, if ignition keys set by the os-extension are overridden
-by extra ignition.</p>
 </td>
 </tr>
 </tbody>
@@ -373,6 +298,50 @@ map[string]bool
 </tr>
 </tbody>
 </table>
+<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.IgnitionConfig">IgnitionConfig
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.WorkerConfig">WorkerConfig</a>)
+</p>
+<p>
+<p>IgnitionConfig contains ignition settings.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>raw</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Raw contains an inline ignition config, which is merged with the config from the os extension.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>override</code></br>
+<em>
+bool
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Override configures, if ignition keys set by the os-extension are overridden
+by extra ignition.</p>
+</td>
+</tr>
+</tbody>
+</table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.InfrastructureConfig">InfrastructureConfig
 </h3>
 <p>
@@ -386,20 +355,6 @@ map[string]bool
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>
-<code>worker</code></br>
-<em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.WorkerConfig">
-map[string]./pkg/apis/metal/v1alpha1.WorkerConfig
-</a>
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-<p>Worker contains settings per worker pool specific to the metal-operator</p>
-</td>
-</tr>
 </tbody>
 </table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.InfrastructureStatus">InfrastructureStatus
@@ -624,44 +579,6 @@ string
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.MachineType">MachineType
-</h3>
-<p>
-(<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CloudProfileConfig">CloudProfileConfig</a>)
-</p>
-<p>
-</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>name</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<code>serverLabels</code></br>
-<em>
-map[string]string
-</em>
-</td>
-<td>
-</td>
-</tr>
-</tbody>
-</table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.MetallbConfig">MetallbConfig
 </h3>
 <p>
@@ -772,11 +689,7 @@ string
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.WorkerConfig">WorkerConfig
 </h3>
 <p>
-(<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.InfrastructureConfig">InfrastructureConfig</a>)
-</p>
-<p>
-<p>WorkerConfig contains settings per pool, which are specific to the metal-operator.</p>
+<p>WorkerConfig contains configuration settings for the worker nodes.</p>
 </p>
 <table>
 <thead>
@@ -797,7 +710,19 @@ IgnitionConfig
 </td>
 <td>
 <em>(Optional)</em>
-<p>ExtraIgnition contains additional ignition configuration.</p>
+<p>ExtraIgnition contains additional Ignition for Worker nodes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>serverLabels</code></br>
+<em>
+map[string]string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>ServerLabels is a map of labels that are applied to the ServerClaim for Server selection.</p>
 </td>
 </tr>
 </tbody>
