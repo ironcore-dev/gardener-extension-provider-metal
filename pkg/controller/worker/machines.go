@@ -219,10 +219,8 @@ func (w *workerDelegate) getServerLabelsForMachine(machineType string, workerCon
 			break
 		}
 	}
-	if workerConfig.ExtraServerLabels != nil {
-		for key, value := range workerConfig.ExtraServerLabels {
-			combinedLabels[key] = value
-		}
+	for key, value := range workerConfig.ExtraServerLabels {
+		combinedLabels[key] = value
 	}
 	if len(combinedLabels) == 0 {
 		return nil, fmt.Errorf("no server labels found for machine type %s or worker config", machineType)
