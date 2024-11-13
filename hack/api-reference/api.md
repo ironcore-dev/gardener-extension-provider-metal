@@ -341,6 +341,20 @@ string
 </tr>
 <tr>
 <td>
+<code>secretRef</code></br>
+<em>
+<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#localobjectreference-v1-core">
+Kubernetes core/v1.LocalObjectReference
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>SecretRef is a reference to a secret containing the ignition config.</p>
+</td>
+</tr>
+<tr>
+<td>
 <code>override</code></br>
 <em>
 bool

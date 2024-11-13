@@ -76,7 +76,7 @@ var _ = Describe("Machines", func() {
 					"foo":  "bar",
 					"foo1": "bar1",
 				},
-				metal.IgnitionFieldName:         "abc",
+				metal.IgnitionFieldName:         "abcdef",
 				metal.IgnitionOverrideFieldName: true,
 			}
 

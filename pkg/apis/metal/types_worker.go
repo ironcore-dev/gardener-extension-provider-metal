@@ -4,6 +4,7 @@
 package metal
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -47,6 +48,7 @@ type MachineImage struct {
 
 // IgnitionConfig contains ignition settings.
 type IgnitionConfig struct {
-	Raw      string
-	Override bool
+	Raw       string
+	SecretRef *corev1.LocalObjectReference
+	Override  bool
 }

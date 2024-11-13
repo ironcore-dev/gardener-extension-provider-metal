@@ -4,6 +4,7 @@
 package v1alpha1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -53,6 +54,10 @@ type IgnitionConfig struct {
 	// Raw contains an inline ignition config, which is merged with the config from the os extension.
 	// +optional
 	Raw string `json:"raw,omitempty"`
+
+	// SecretRef is a reference to a secret containing the ignition config.
+	// +optional
+	SecretRef *corev1.LocalObjectReference `json:"secretRef,omitempty"`
 
 	// Override configures, if ignition keys set by the os-extension are overridden
 	// by extra ignition.

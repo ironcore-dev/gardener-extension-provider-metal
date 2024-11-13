@@ -16,5 +16,16 @@ import (
 // Public to allow building arbitrary schemes.
 // All generated defaulters are covering - they call all nested defaulters.
 func RegisterDefaults(scheme *runtime.Scheme) error {
+	scheme.AddTypeDefaultingFunc(&WorkerConfig{}, func(obj interface{}) { SetObjectDefaults_WorkerConfig(obj.(*WorkerConfig)) })
 	return nil
+}
+
+func SetObjectDefaults_WorkerConfig(in *WorkerConfig) {
+	if in.ExtraIgnition != nil {
+		if in.ExtraIgnition.SecretRef != nil {
+			if in.ExtraIgnition.SecretRef.Name == "" {
+				in.ExtraIgnition.SecretRef.Name = ""
+			}
+		}
+	}
 }

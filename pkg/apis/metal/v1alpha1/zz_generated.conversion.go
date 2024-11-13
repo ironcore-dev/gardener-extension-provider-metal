@@ -12,6 +12,7 @@ import (
 	unsafe "unsafe"
 
 	metal "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
+	v1 "k8s.io/api/core/v1"
 	conversion "k8s.io/apimachinery/pkg/conversion"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -316,6 +317,7 @@ func Convert_metal_ControlPlaneConfig_To_v1alpha1_ControlPlaneConfig(in *metal.C
 
 func autoConvert_v1alpha1_IgnitionConfig_To_metal_IgnitionConfig(in *IgnitionConfig, out *metal.IgnitionConfig, s conversion.Scope) error {
 	out.Raw = in.Raw
+	out.SecretRef = (*v1.LocalObjectReference)(unsafe.Pointer(in.SecretRef))
 	out.Override = in.Override
 	return nil
 }
@@ -327,6 +329,7 @@ func Convert_v1alpha1_IgnitionConfig_To_metal_IgnitionConfig(in *IgnitionConfig,
 
 func autoConvert_metal_IgnitionConfig_To_v1alpha1_IgnitionConfig(in *metal.IgnitionConfig, out *IgnitionConfig, s conversion.Scope) error {
 	out.Raw = in.Raw
+	out.SecretRef = (*v1.LocalObjectReference)(unsafe.Pointer(in.SecretRef))
 	out.Override = in.Override
 	return nil
 }
