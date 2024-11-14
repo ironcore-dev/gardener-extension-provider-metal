@@ -10,6 +10,7 @@ require (
 	github.com/gardener/gardener v1.103.0
 	github.com/gardener/machine-controller-manager v0.53.1
 	github.com/go-logr/logr v1.4.2
+	github.com/imdario/mergo v0.3.16
 	github.com/ironcore-dev/controller-utils v0.9.4
 	github.com/ironcore-dev/vgopath v0.1.7
 	github.com/onsi/ginkgo/v2 v2.21.0
@@ -30,6 +31,7 @@ require (
 	k8s.io/utils v0.0.0-20240902221715-702e33fdd3c3
 	sigs.k8s.io/controller-runtime v0.17.6
 	sigs.k8s.io/controller-tools v0.14.0
+	sigs.k8s.io/yaml v1.4.0
 )
 
 require (
@@ -71,7 +73,6 @@ require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/huandu/xstrings v1.5.0 // indirect
-	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -130,5 +131,4 @@ require (
 	k8s.io/metrics v0.29.8 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
-	sigs.k8s.io/yaml v1.4.0 // indirect
 )

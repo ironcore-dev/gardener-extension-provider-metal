@@ -35,6 +35,15 @@ var _ = Describe("Machines", func() {
 			workerDelegate     genericworkeractuator.WorkerDelegate
 		)
 
+		dataYml := map[string]any{
+			"a": map[string]any{
+				"b": "foo",
+				"c": "bar",
+			},
+		}
+		yamlString, err := mapToString(dataYml)
+		Expect(err).NotTo(HaveOccurred())
+
 		BeforeEach(func(ctx SpecContext) {
 			// TODO: Fix machine pool hashing
 			workerPoolHash, err := worker.WorkerPoolHash(pool, testCluster, nil, nil)
@@ -76,7 +85,7 @@ var _ = Describe("Machines", func() {
 					"foo":  "bar",
 					"foo1": "bar1",
 				},
-				metal.IgnitionFieldName:         "abcdef",
+				metal.IgnitionFieldName: yamlString,
 				metal.IgnitionOverrideFieldName: true,
 			}
 
