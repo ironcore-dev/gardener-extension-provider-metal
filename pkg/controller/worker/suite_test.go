@@ -134,7 +134,6 @@ func SetupTest() (*corev1.Namespace, *gardener.ChartApplier) {
 		volumeName := "test-volume"
 		volumeType := "fast"
 
-
 		dataYml := map[string]any{
 			"a": map[string]any{
 				"b": "foo",
@@ -167,15 +166,14 @@ func SetupTest() (*corev1.Namespace, *gardener.ChartApplier) {
 			ExtraServerLabels: map[string]string{
 				"foo1": "bar1",
 			},
-			
-				ExtraIgnition: &apiv1alpha1.IgnitionConfig{
+
+			ExtraIgnition: &apiv1alpha1.IgnitionConfig{
 				Raw: yamlString,
 				SecretRef: &corev1.LocalObjectReference{
 					Name: ign.Name,
 				},
 				Override: true,
-				},
-
+			},
 		}
 		workerConfigJSON, _ = json.Marshal(workerConfig)
 

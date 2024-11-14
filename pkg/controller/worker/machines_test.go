@@ -85,7 +85,7 @@ var _ = Describe("Machines", func() {
 					"foo":  "bar",
 					"foo1": "bar1",
 				},
-				metal.IgnitionFieldName: yamlString,
+				metal.IgnitionFieldName:         yamlString,
 				metal.IgnitionOverrideFieldName: true,
 			}
 
