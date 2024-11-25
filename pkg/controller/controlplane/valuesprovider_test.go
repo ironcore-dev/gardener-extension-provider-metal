@@ -166,6 +166,7 @@ var _ = Describe("Valueprovider Reconcile", func() {
 						},
 					},
 				},
+				Seed: &gardencorev1beta1.Seed{},
 			}
 
 			checksums := map[string]string{
