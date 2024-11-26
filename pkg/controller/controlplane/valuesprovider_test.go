@@ -166,7 +166,13 @@ var _ = Describe("Valueprovider Reconcile", func() {
 						},
 					},
 				},
-				Seed: &gardencorev1beta1.Seed{},
+				Seed: &gardencorev1beta1.Seed{
+					ObjectMeta: metav1.ObjectMeta{
+						Annotations: map[string]string{
+							metal.LocalMetalAPIAnnotation: "true",
+						},
+					},
+				},
 			}
 
 			checksums := map[string]string{
@@ -187,6 +193,7 @@ var _ = Describe("Valueprovider Reconcile", func() {
 					},
 					"podLabels": map[string]any{
 						"maintenance.gardener.cloud/restart": "true",
+						metal.AllowEgressToIstioIngressLabel: "allowed",
 					},
 					"tlsCipherSuites": []string{
 						"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",

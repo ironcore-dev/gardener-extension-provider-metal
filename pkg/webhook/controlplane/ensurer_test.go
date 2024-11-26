@@ -19,6 +19,7 @@ import (
 	gardenerutils "github.com/gardener/gardener/pkg/utils/gardener"
 	imagevectorutils "github.com/gardener/gardener/pkg/utils/imagevector"
 	testutils "github.com/gardener/gardener/pkg/utils/test"
+	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"go.uber.org/mock/gomock"
@@ -58,6 +59,13 @@ var _ = Describe("Ensurer", func() {
 					Spec: gardencorev1beta1.ShootSpec{
 						Kubernetes: gardencorev1beta1.Kubernetes{
 							Version: "1.26.0",
+						},
+					},
+				},
+				Seed: &gardencorev1beta1.Seed{
+					ObjectMeta: metav1.ObjectMeta{
+						Annotations: map[string]string{
+							metal.LocalMetalAPIAnnotation: "true",
 						},
 					},
 				},
@@ -250,7 +258,8 @@ var _ = Describe("Ensurer", func() {
 
 			It("should inject the sidecar container", func() {
 				Expect(deployment.Spec.Template.Spec.Containers).To(BeEmpty())
-				Expect(ensurer.EnsureMachineControllerManagerDeployment(ctx, nil, deployment, nil)).To(Succeed())
+				Expect(ensurer.EnsureMachineControllerManagerDeployment(ctx, eContextK8s, deployment, nil)).To(Succeed())
+				Expect(deployment.Spec.Template.Labels).To(HaveKeyWithValue(metal.AllowEgressToIstioIngressLabel, "allowed"))
 				Expect(deployment.Spec.Template.Spec.Containers).To(ConsistOf(corev1.Container{
 					Name:            "machine-controller-manager-provider-metal",
 					Image:           "foo:bar",
