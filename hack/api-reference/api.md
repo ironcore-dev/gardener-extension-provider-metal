@@ -381,6 +381,20 @@ by extra ignition.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<code>networks</code></br>
+<em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.Networks">
+[]Networks
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Networks is the metal specific network configuration.</p>
+</td>
+</tr>
 </tbody>
 </table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.InfrastructureStatus">InfrastructureStatus
@@ -694,6 +708,59 @@ bool
 <td>
 <em>(Optional)</em>
 <p>EnableL2Advertisement enables L2 advertisement.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.Networks">Networks
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.InfrastructureConfig">InfrastructureConfig</a>)
+</p>
+<p>
+<p>Networks holds information about the Kubernetes and infrastructure networks.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>name</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Name is the name for this CIDR.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>cidr</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>CIDR is the workers subnet range to create.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>id</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>ID is the ID for the workers&rsquo; subnet.</p>
 </td>
 </tr>
 </tbody>

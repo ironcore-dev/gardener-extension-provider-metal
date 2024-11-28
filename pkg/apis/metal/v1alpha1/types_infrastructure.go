@@ -14,6 +14,10 @@ import (
 // InfrastructureConfig infrastructure configuration resource
 type InfrastructureConfig struct {
 	metav1.TypeMeta `json:",inline"`
+
+	// Networks is the metal specific network configuration.
+	// +optional
+	Networks []Networks `json:"networks,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -21,4 +25,15 @@ type InfrastructureConfig struct {
 // InfrastructureStatus contains information about created infrastructure resources.
 type InfrastructureStatus struct {
 	metav1.TypeMeta `json:",inline"`
+}
+
+// Networks holds information about the Kubernetes and infrastructure networks.
+type Networks struct {
+	// Name is the name for this CIDR.
+	Name string `json:"name"`
+	// CIDR is the workers subnet range to create.
+	CIDR string `json:"cidr"`
+	// ID is the ID for the workers' subnet.
+	// +optional
+	ID string `json:"id,omitempty"`
 }
