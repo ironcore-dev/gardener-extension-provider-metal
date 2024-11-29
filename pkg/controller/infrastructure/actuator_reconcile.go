@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"slices"
 
 	"github.com/gardener/gardener/extensions/pkg/controller"
 	extensionsv1alpha1 "github.com/gardener/gardener/pkg/apis/extensions/v1alpha1"
@@ -36,23 +37,11 @@ func (a *actuator) Reconcile(ctx context.Context, log logr.Logger, infra *extens
 		}
 	}
 
-	if !equalStringSlices(infra.Status.Networking.Nodes, newNodes) {
+	if !slices.Equal(infra.Status.Networking.Nodes, newNodes) {
 		infra.Status.Networking.Nodes = newNodes
 	}
 
 	return a.reconcile(ctx, log, infra, cluster)
-}
-
-func equalStringSlices(a, b []string) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for i := range a {
-		if a[i] != b[i] {
-			return false
-		}
-	}
-	return true
 }
 
 func (a *actuator) reconcile(ctx context.Context, log logr.Logger, infra *extensionsv1alpha1.Infrastructure, cluster *controller.Cluster) error {
