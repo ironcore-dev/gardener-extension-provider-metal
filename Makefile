@@ -110,12 +110,9 @@ check: $(GOIMPORTS) $(GOLANGCI_LINT) $(MOCKGEN)
 	@REPO_ROOT=$(REPO_ROOT) bash $(GARDENER_HACK_DIR)/check-charts.sh ./charts
 
 .PHONY: generate
-generate: deepcopy-gen defaulter-gen conversion-gen $(CONTROLLER_GEN) $(HELM) $(MOCKGEN) $(YQ) $(VGOPATH)
+generate: $(CONTROLLER_GEN) $(HELM) $(MOCKGEN) $(YQ) $(VGOPATH)
 	@GOPATH=$(GOPATH) VGOPATH=$(VGOPATH) \
 	MOCKGEN=$(MOCKGEN) \
-	DEEPCOPY_GEN=$(DEEPCOPY_GEN) \
-	DEFAULTER_GEN=$(DEFAULTER_GEN) \
-	CONVERSION_GEN=$(CONVERSION_GEN) \
 	REPO_ROOT=$(REPO_ROOT) \
 	GARDENER_HACK_DIR=$(GARDENER_HACK_DIR) \
 	bash $(GARDENER_HACK_DIR)/generate-sequential.sh ./charts/... ./cmd/... ./example/... ./pkg/...
@@ -163,9 +160,6 @@ $(LOCALBIN):
 	mkdir -p $(LOCALBIN)
 
 ## Tool Binaries
-DEEPCOPY_GEN ?= $(LOCALBIN)/deepcopy-gen
-CONVERSION_GEN ?= $(LOCALBIN)/conversion-gen
-DEFAULTER_GEN ?= $(LOCALBIN)/defaulter-gen
 ENVTEST ?= $(LOCALBIN)/setup-envtest
 
 ## Tool Versions
@@ -178,18 +172,3 @@ ENVTEST_K8S_VERSION = 1.31.0
 envtest: $(ENVTEST) ## Download envtest-setup locally if necessary.
 $(ENVTEST): $(LOCALBIN)
 	test -s $(LOCALBIN)/setup-envtest || GOBIN=$(LOCALBIN) go install sigs.k8s.io/controller-runtime/tools/setup-envtest@latest
-
-.PHONY: deepcopy-gen
-deepcopy-gen: $(DEEPCOPY_GEN) ## Download deepcopy-gen locally if necessary.
-$(DEEPCOPY_GEN): $(LOCALBIN)
-	test -s $(LOCALBIN)/deepcopy-gen || GOBIN=$(LOCALBIN) go install k8s.io/code-generator/cmd/deepcopy-gen@$(CODE_GENERATOR_VERSION)
-
-.PHONY: defaulter-gen
-defaulter-gen: $(DEFAULTER_GEN) ## Download defaulter-gen locally if necessary.
-$(DEFAULTER_GEN): $(LOCALBIN)
-	test -s $(LOCALBIN)/defaulter-gen || GOBIN=$(LOCALBIN) go install k8s.io/code-generator/cmd/defaulter-gen@$(CODE_GENERATOR_VERSION)
-
-.PHONY: conversion-gen
-conversion-gen: $(CONVERSION_GEN) ## Download conversion-gen locally if necessary.
-$(CONVERSION_GEN): $(LOCALBIN)
-	test -s $(LOCALBIN)/conversion-gen || GOBIN=$(LOCALBIN) go install k8s.io/code-generator/cmd/conversion-gen@$(CODE_GENERATOR_VERSION)
