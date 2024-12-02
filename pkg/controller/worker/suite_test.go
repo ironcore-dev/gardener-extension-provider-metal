@@ -5,7 +5,9 @@ package worker
 
 import (
 	"encoding/json"
+	"fmt"
 	"path/filepath"
+	"runtime"
 	"testing"
 	"time"
 
@@ -22,7 +24,7 @@ import (
 	apiextensionsscheme "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/scheme"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime"
+	apiruntime "k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/intstr"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
@@ -53,6 +55,8 @@ var (
 var (
 	shootVersionMajorMinor = "1.2"
 	shootVersion           = shootVersionMajorMinor + ".3"
+	userDataSecretName     = "userdata-secret-name"
+	userDataSecretDataKey  = "userdata-secret-key"
 
 	pool               gardenerextensionv1alpha1.WorkerPool
 	cloudProfileConfig *apiv1alpha1.CloudProfileConfig
@@ -87,11 +91,18 @@ var _ = BeforeSuite(func() {
 			modutils.Dir("github.com/gardener/machine-controller-manager", "kubernetes", "crds", "machine.sapcloud.io_machinedeployments.yaml"),
 			modutils.Dir("github.com/gardener/machine-controller-manager", "kubernetes", "crds", "machine.sapcloud.io_machines.yaml"),
 			modutils.Dir("github.com/gardener/machine-controller-manager", "kubernetes", "crds", "machine.sapcloud.io_machinesets.yaml"),
-			modutils.Dir("github.com/gardener/machine-controller-manager", "kubernetes", "crds", "machine.sapcloud.io_scales.yaml"),
 			filepath.Join("..", "..", "..", "example", "20-crd-extensions.gardener.cloud_controlplanes.yaml"),
 			filepath.Join("..", "..", "..", "example", "20-crd-extensions.gardener.cloud_workers.yaml"),
 		},
 		ErrorIfCRDPathMissing: true,
+
+		// The BinaryAssetsDirectory is only required if you want to run the tests directly
+		// without call the makefile target test. If not informed it will look for the
+		// default path defined in controller-apiruntime which is /usr/local/kubebuilder/.
+		// Note that you must have the required binaries setup under the bin directory to perform
+		// the tests directly. When we run make test it will be setup and used automatically.
+		BinaryAssetsDirectory: filepath.Join("..", "..", "..", "bin", "k8s",
+			fmt.Sprintf("1.31.0-%s-%s", runtime.GOOS, runtime.GOARCH)),
 	}
 
 	var err error
@@ -177,6 +188,18 @@ func SetupTest() (*corev1.Namespace, *gardener.ChartApplier) {
 		}
 		workerConfigJSON, _ = json.Marshal(workerConfig)
 
+		userDataSecret := &corev1.Secret{
+			ObjectMeta: metav1.ObjectMeta{
+				Namespace: ns.Name,
+				Name:      userDataSecretName,
+			},
+			Data: map[string][]byte{
+				userDataSecretDataKey: []byte("some-data"),
+			},
+		}
+		Expect(k8sClient.Create(ctx, userDataSecret)).To(Succeed())
+		DeferCleanup(k8sClient.Delete, userDataSecret)
+
 		// define test resources
 		pool = gardenerextensionv1alpha1.WorkerPool{
 			MachineType:    "large",
@@ -189,9 +212,12 @@ func SetupTest() (*corev1.Namespace, *gardener.ChartApplier) {
 				Name:    "my-os",
 				Version: "1.0",
 			},
-			Minimum:  0,
-			Name:     "pool",
-			UserData: []byte("some-data"),
+			Minimum: 0,
+			Name:    "pool",
+			UserDataSecretRef: corev1.SecretKeySelector{
+				LocalObjectReference: corev1.LocalObjectReference{Name: userDataSecretName},
+				Key:                  userDataSecretDataKey,
+			},
 			Volume: &gardenerextensionv1alpha1.Volume{
 				Name: &volumeName,
 				Type: &volumeType,
@@ -204,7 +230,7 @@ func SetupTest() (*corev1.Namespace, *gardener.ChartApplier) {
 					corev1.ResourceCPU: resource.MustParse("100m"),
 				},
 			},
-			ProviderConfig: &runtime.RawExtension{
+			ProviderConfig: &apiruntime.RawExtension{
 				Raw: workerConfigJSON,
 			},
 		}
@@ -243,7 +269,7 @@ func SetupTest() (*corev1.Namespace, *gardener.ChartApplier) {
 						Version: shootVersion,
 					},
 					Provider: gardencorev1beta1.Provider{
-						InfrastructureConfig: &runtime.RawExtension{
+						InfrastructureConfig: &apiruntime.RawExtension{
 							Raw: []byte("{}"),
 						},
 					},
@@ -257,7 +283,7 @@ func SetupTest() (*corev1.Namespace, *gardener.ChartApplier) {
 					Name: "metal",
 				},
 				Spec: gardencorev1beta1.CloudProfileSpec{
-					ProviderConfig: &runtime.RawExtension{
+					ProviderConfig: &apiruntime.RawExtension{
 						Raw: cloudProfileConfigJSON,
 					},
 				},

@@ -6,7 +6,9 @@ package controlplane
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"path/filepath"
+	"runtime"
 	"testing"
 	"time"
 
@@ -16,12 +18,13 @@ import (
 	. "github.com/onsi/gomega"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime"
+	apiruntime "k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/config"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/envtest/komega"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
@@ -65,6 +68,14 @@ var _ = BeforeSuite(func() {
 			filepath.Join("..", "..", "..", "example", "20-crd-extensions.gardener.cloud_controlplanes.yaml"),
 		},
 		ErrorIfCRDPathMissing: true,
+
+		// The BinaryAssetsDirectory is only required if you want to run the tests directly
+		// without call the makefile target test. If not informed it will look for the
+		// default path defined in controller-apiruntime which is /usr/local/kubebuilder/.
+		// Note that you must have the required binaries setup under the bin directory to perform
+		// the tests directly. When we run make test it will be setup and used automatically.
+		BinaryAssetsDirectory: filepath.Join("..", "..", "..", "bin", "k8s",
+			fmt.Sprintf("1.31.0-%s-%s", runtime.GOOS, runtime.GOARCH)),
 	}
 
 	var err error
@@ -133,9 +144,9 @@ func SetupTest() (*corev1.Namespace, *valuesProvider, *extensionsv1alpha1.Cluste
 				Name: namespace.Name,
 			},
 			Spec: extensionsv1alpha1.ClusterSpec{
-				CloudProfile: runtime.RawExtension{Raw: []byte("{}")},
-				Seed:         runtime.RawExtension{Raw: []byte("{}")},
-				Shoot:        runtime.RawExtension{Raw: shootJson},
+				CloudProfile: apiruntime.RawExtension{Raw: []byte("{}")},
+				Seed:         apiruntime.RawExtension{Raw: []byte("{}")},
+				Shoot:        apiruntime.RawExtension{Raw: shootJson},
 			},
 		}
 		Expect(k8sClient.Create(ctx, cluster)).Should(Succeed())
@@ -144,6 +155,9 @@ func SetupTest() (*corev1.Namespace, *valuesProvider, *extensionsv1alpha1.Cluste
 		mgr, err := manager.New(cfg, manager.Options{
 			Scheme:  scheme.Scheme,
 			Metrics: metricsserver.Options{BindAddress: "0"},
+			Controller: config.Controller{
+				SkipNameValidation: ptr.To(true),
+			},
 			WebhookServer: &webhook.DefaultServer{Options: webhook.Options{
 				CertDir: testEnv.WebhookInstallOptions.LocalServingCertDir,
 			}},

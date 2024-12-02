@@ -24,10 +24,8 @@ import (
 	"go.uber.org/mock/gomock"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
-	vpaautoscalingv1 "k8s.io/autoscaler/vertical-pod-autoscaler/pkg/apis/autoscaling.k8s.io/v1"
 	"k8s.io/utils/ptr"
 
 	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
@@ -316,42 +314,6 @@ var _ = Describe("Ensurer", func() {
 						Secret: &corev1.SecretVolumeSource{
 							SecretName: "cloudprovider",
 						},
-					},
-				}))
-			})
-		})
-	})
-
-	Describe("#EnsureMachineControllerManagerVPA", func() {
-		var (
-			ensurer genericmutator.Ensurer
-			vpa     *vpaautoscalingv1.VerticalPodAutoscaler
-		)
-
-		BeforeEach(func() {
-			vpa = &vpaautoscalingv1.VerticalPodAutoscaler{}
-		})
-
-		Context("when gardenlet manages MCM", func() {
-			BeforeEach(func() {
-				ensurer = NewEnsurer(logger, true)
-			})
-
-			It("should inject the sidecar container policy", func() {
-				Expect(vpa.Spec.ResourcePolicy).To(BeNil())
-				Expect(ensurer.EnsureMachineControllerManagerVPA(ctx, nil, vpa, nil)).To(Succeed())
-
-				ccv := vpaautoscalingv1.ContainerControlledValuesRequestsOnly
-				Expect(vpa.Spec.ResourcePolicy.ContainerPolicies).To(ConsistOf(vpaautoscalingv1.ContainerResourcePolicy{
-					ContainerName:    "machine-controller-manager-provider-metal",
-					ControlledValues: &ccv,
-					MinAllowed: corev1.ResourceList{
-						corev1.ResourceCPU:    resource.MustParse("30m"),
-						corev1.ResourceMemory: resource.MustParse("64Mi"),
-					},
-					MaxAllowed: corev1.ResourceList{
-						corev1.ResourceCPU:    resource.MustParse("2"),
-						corev1.ResourceMemory: resource.MustParse("5G"),
 					},
 				}))
 			})
