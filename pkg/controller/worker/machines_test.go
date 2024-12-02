@@ -9,6 +9,7 @@ import (
 
 	"github.com/gardener/gardener/extensions/pkg/controller/worker"
 	genericworkeractuator "github.com/gardener/gardener/extensions/pkg/controller/worker/genericactuator"
+	"github.com/gardener/gardener/pkg/apis/core/v1beta1"
 	v1beta1constants "github.com/gardener/gardener/pkg/apis/core/v1beta1/constants"
 	machinecontrollerv1alpha1 "github.com/gardener/machine-controller-manager/pkg/apis/machine/v1alpha1"
 	. "github.com/onsi/ginkgo/v2"
@@ -150,6 +151,7 @@ var _ = Describe("Machines", func() {
 				Annotations:          pool.Annotations,
 				Taints:               pool.Taints,
 				MachineConfiguration: genericworkeractuator.ReadMachineConfiguration(pool),
+				UpdateStrategy:       v1beta1.RollingUpdate,
 			},
 			worker.MachineDeployment{
 				Name:                 deploymentName2,
@@ -163,6 +165,7 @@ var _ = Describe("Machines", func() {
 				Annotations:          pool.Annotations,
 				Taints:               pool.Taints,
 				MachineConfiguration: genericworkeractuator.ReadMachineConfiguration(pool),
+				UpdateStrategy:       v1beta1.RollingUpdate,
 			},
 		}))
 	})

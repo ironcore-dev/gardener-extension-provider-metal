@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.16.4
+    controller-gen.kubebuilder.io/version: v0.16.5
   name: operatingsystemconfigs.extensions.gardener.cloud
 spec:
   group: extensions.gardener.cloud
@@ -68,6 +68,19 @@ spec:
                 x-kubernetes-validations:
                 - message: Value is immutable
                   rule: self == oldSelf
+              credentialsRotation:
+                description: CredentialsRotation is a structure containing information
+                  about the last initiation time of the CA and ServiceAccountKey rotation.
+                properties:
+                  caRotationLastInitiationTime:
+                    description: CARotationLastInitiationTime is the time when the
+                      last CA rotation was initiated.
+                    type: string
+                  serviceAccountKeyRotationLastInitiationTime:
+                    description: ServiceAccountKeyRotationLastInitiationTime is the
+                      time when the last ServiceAccountKey rotation was initiated.
+                    type: string
+                type: object
               criConfig:
                 description: CRI config is a structure contains configurations of
                   the CRI library
@@ -262,6 +275,16 @@ spec:
                   - path
                   type: object
                 type: array
+              kubeletConfigHash:
+                description: KubeletConfigHash is the hash calculated on fields relevant
+                  for in-place update of the Kubelet configuration.
+                type: string
+              kubeletVersion:
+                description: KubeletVersion is the version of the Kubelet.
+                type: string
+              osVersion:
+                description: OSVersion is the version of the OperatingSystem.
+                type: string
               providerConfig:
                 description: ProviderConfig is the provider specific configuration.
                 type: object
@@ -524,6 +547,21 @@ spec:
                   - name
                   type: object
                 type: array
+              inPlaceUpdateConfig:
+                description: InPlaceUpdateConfig contains the configuration for in-place
+                  updates.
+                properties:
+                  updateScriptArgs:
+                    description: UpdateScriptArgs is the arguments to be passed to
+                      the update script for in-place updates.
+                    items:
+                      type: string
+                    type: array
+                  updateScriptPath:
+                    description: UpdateScriptPath is the path of the update script
+                      to be triggered in case of in-place updates.
+                    type: string
+                type: object
               lastError:
                 description: LastError holds information about the last occurred error
                   during an operation.

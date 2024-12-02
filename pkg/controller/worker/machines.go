@@ -10,6 +10,7 @@ import (
 
 	"github.com/gardener/gardener/extensions/pkg/controller/worker"
 	genericworkeractuator "github.com/gardener/gardener/extensions/pkg/controller/worker/genericactuator"
+	gardencorev1beta1 "github.com/gardener/gardener/pkg/apis/core/v1beta1"
 	v1beta1constants "github.com/gardener/gardener/pkg/apis/core/v1beta1/constants"
 	"github.com/gardener/gardener/pkg/apis/extensions/v1alpha1"
 	machinecontrollerv1alpha1 "github.com/gardener/machine-controller-manager/pkg/apis/machine/v1alpha1"
@@ -51,9 +52,15 @@ func (w *workerDelegate) DeployMachineClasses(ctx context.Context) error {
 func (w *workerDelegate) GenerateMachineDeployments(ctx context.Context) (worker.MachineDeployments, error) {
 	var (
 		machineDeployments = worker.MachineDeployments{}
+		updateStrategy     = gardencorev1beta1.RollingUpdate
 	)
 
 	for _, pool := range w.worker.Spec.Pools {
+
+		if pool.UpdateStrategy != nil {
+			updateStrategy = *pool.UpdateStrategy
+		}
+
 		zoneLen := int32(len(pool.Zones))
 		for zoneIndex := range pool.Zones {
 			workerPoolHash, err := w.generateHashForWorkerPool(pool)
@@ -77,6 +84,7 @@ func (w *workerDelegate) GenerateMachineDeployments(ctx context.Context) (worker
 				Labels:               pool.Labels,
 				Annotations:          pool.Annotations,
 				Taints:               pool.Taints,
+				UpdateStrategy:       updateStrategy,
 				MachineConfiguration: genericworkeractuator.ReadMachineConfiguration(pool),
 			})
 		}
