@@ -23,11 +23,22 @@ type ControlPlaneConfig struct {
 	LoadBalancerConfig *LoadBalancerConfig `json:"loadBalancerConfig,omitempty"`
 }
 
+// CloudControllerNetworking contains configuration settings for CCM networking.
+type CloudControllerNetworking struct {
+	// ConfigureNodeAddresses enables the configuration of node addresses.
+	// +optional
+	ConfigureNodeAddresses bool `json:"configureNodeAddresses,omitempty"`
+}
+
 // CloudControllerManagerConfig contains configuration settings for the cloud-controller-manager.
 type CloudControllerManagerConfig struct {
 	// FeatureGates contains information about enabled feature gates.
 	// +optional
 	FeatureGates map[string]bool `json:"featureGates,omitempty"`
+
+	// CloudControllerNetworking contains configuration settings for CCM networking.
+	// +optional
+	CloudControllerNetworking *CloudControllerNetworking `json:"cloudControllerNetworking,omitempty"`
 }
 
 // LoadBalancerConfig contains configuration settings for the shoot loadbalancing.

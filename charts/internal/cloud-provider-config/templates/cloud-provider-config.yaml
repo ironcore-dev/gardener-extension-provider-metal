@@ -6,3 +6,5 @@ metadata:
 data:
   cloudprovider.conf: |
     clusterName: {{ .Values.clusterName }}
+    networking:
+      configureNodeAddresses: {{ .Values.networking.configureNodeAddresses }}
