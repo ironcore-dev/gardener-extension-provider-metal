@@ -21,10 +21,19 @@ type ControlPlaneConfig struct {
 	LoadBalancerConfig *LoadBalancerConfig
 }
 
+// CloudControllerNetworking contains configuration settings for CCM networking.
+type CloudControllerNetworking struct {
+	// ConfigureNodeAddresses enables the configuration of node addresses.
+	ConfigureNodeAddresses bool
+}
+
 // CloudControllerManagerConfig contains configuration settings for the cloud-controller-manager.
 type CloudControllerManagerConfig struct {
 	// FeatureGates contains information about enabled feature gates.
 	FeatureGates map[string]bool
+
+	// CloudControllerNetworking contains configuration settings for CCM networking.
+	CloudControllerNetworking *CloudControllerNetworking
 }
 
 // LoadBalancerConfig contains configuration settings for the shoot loadbalancing.

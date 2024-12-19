@@ -308,6 +308,51 @@ map[string]bool
 <p>FeatureGates contains information about enabled feature gates.</p>
 </td>
 </tr>
+<tr>
+<td>
+<code>cloudControllerNetworking</code></br>
+<em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerNetworking">
+CloudControllerNetworking
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>CloudControllerNetworking contains configuration settings for CCM networking.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerNetworking">CloudControllerNetworking
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerManagerConfig">CloudControllerManagerConfig</a>)
+</p>
+<p>
+<p>CloudControllerNetworking contains configuration settings for CCM networking.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>configureNodeAddresses</code></br>
+<em>
+bool
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>ConfigureNodeAddresses enables the configuration of node addresses.</p>
+</td>
+</tr>
 </tbody>
 </table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.IgnitionConfig">IgnitionConfig
