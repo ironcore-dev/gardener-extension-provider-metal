@@ -146,6 +146,45 @@ LoadBalancerConfig
 </tr>
 </tbody>
 </table>
+<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.AddressesFromNetworks">AddressesFromNetworks
+</h3>
+<p>
+<p>AddressesFromNetworks is a reference to a network resource.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>key</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Key is the name of metadata key for the network.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>subnetRef</code></br>
+<em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.SubnetRef">
+SubnetRef
+</a>
+</em>
+</td>
+<td>
+<p>SubnetRef is a reference to the IP subnet.</p>
+</td>
+</tr>
+</tbody>
+</table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.BgpPeer">BgpPeer
 </h3>
 <p>
@@ -862,6 +901,58 @@ string
 </tr>
 </tbody>
 </table>
+<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.SubnetRef">SubnetRef
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.AddressesFromNetworks">AddressesFromNetworks</a>)
+</p>
+<p>
+<p>SubnetRef is a reference to the IP subnet.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>name</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Name is the name of the network.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>apiGroup</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>APIGroup is the group of the IP pool</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>kind</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Kind is the kind of the IP pool</p>
+</td>
+</tr>
+</tbody>
+</table>
 <h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.WorkerConfig">WorkerConfig
 </h3>
 <p>
@@ -899,6 +990,32 @@ map[string]string
 <td>
 <em>(Optional)</em>
 <p>ExtraServerLabels is a map of additional labels that are applied to the ServerClaim for Server selection.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>addressesFromNetworks</code></br>
+<em>
+<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.*github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/v1alpha1.AddressesFromNetworks">
+[]*github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/v1alpha1.AddressesFromNetworks
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>AddressesFromNetworks is a list of references to Network resources that should be used to assign IP addresses to the worker nodes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>metaData</code></br>
+<em>
+map[string]string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>MedaData is a key-value map of additional data which should be passed to the Machine.</p>
 </td>
 </tr>
 </tbody>

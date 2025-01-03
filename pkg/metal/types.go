@@ -45,6 +45,10 @@ const (
 	IgnitionFieldName = "ignition"
 	// IgnitionOverrideFieldName is the name of the ignitionOverride field
 	IgnitionOverrideFieldName = "ignitionOverride"
+	// MetaDataFieldName is the name of the metadata field
+	MetaDataFieldName = "metaData"
+	// AddressesFromNetworksFieldName is the name of the addressesFromNetworks field
+	AddressesFromNetworksFieldName = "addressesFromNetworks"
 	// ClusterNameLabel is the name is the label key of the cluster name
 	ClusterNameLabel = "extension.metal.dev/cluster-name"
 	// LocalMetalAPIAnnotation is the name of the annotation to mark a seed, which contains a local metal API shoot

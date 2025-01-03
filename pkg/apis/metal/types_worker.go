@@ -18,6 +18,10 @@ type WorkerConfig struct {
 	ExtraIgnition *IgnitionConfig
 	// ExtraServerLabels is a map of extra labels that are applied to the ServerClaim for Server selection.
 	ExtraServerLabels map[string]string
+	// AddressesFromNetworks is a list of references to Network resources that should be used to assign IP addresses to the worker nodes.
+	AddressesFromNetworks []*AddressesFromNetworks
+	// MetaData is a key-value map of additional data which should be passed to the Machine.
+	MetaData map[string]string
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -51,4 +55,22 @@ type IgnitionConfig struct {
 	Raw       string
 	SecretRef *corev1.LocalObjectReference
 	Override  bool
+}
+
+// SubnetRef is a reference to the IP subnet.
+type SubnetRef struct {
+	// Name is the name of the network.
+	Name string
+	// APIGroup is the group of the IP pool
+	APIGroup string
+	// Kind is the kind of the IP pool
+	Kind string
+}
+
+// AddressesFromNetworks is a reference to a network resource.
+type AddressesFromNetworks struct {
+	// Key is the name of metadata key for the network.
+	Key string
+	// SubnetRef is a reference to the IP subnet.
+	SubnetRef *SubnetRef
 }

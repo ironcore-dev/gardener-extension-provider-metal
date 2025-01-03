@@ -185,6 +185,10 @@ func SetupTest() (*corev1.Namespace, *gardener.ChartApplier) {
 				},
 				Override: true,
 			},
+			MetaData: map[string]string{
+				"foo": "bar",
+				"baz": "100",
+			},
 		}
 		workerConfigJSON, _ = json.Marshal(workerConfig)
 

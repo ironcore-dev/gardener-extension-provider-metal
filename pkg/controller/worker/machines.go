@@ -130,6 +130,14 @@ func (w *workerDelegate) generateMachineClassAndSecrets(ctx context.Context) ([]
 			}
 		}
 
+		if workerConfig.MetaData != nil {
+			machineClassProviderSpec[metal.MetaDataFieldName] = workerConfig.MetaData
+		}
+
+		if workerConfig.AddressesFromNetworks != nil {
+			machineClassProviderSpec[metal.AddressesFromNetworksFieldName] = workerConfig.AddressesFromNetworks
+		}
+
 		for zoneIndex, zone := range pool.Zones {
 			var (
 				deploymentName = fmt.Sprintf("%s-%s-z%d", w.worker.Namespace, pool.Name, zoneIndex+1)
