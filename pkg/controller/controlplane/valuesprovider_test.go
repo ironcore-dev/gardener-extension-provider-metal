@@ -26,9 +26,9 @@ import (
 	fakeclient "sigs.k8s.io/controller-runtime/pkg/client/fake"
 	. "sigs.k8s.io/controller-runtime/pkg/envtest/komega"
 
-	apismetal "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/internal"
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
+	apismetal "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/internal"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/metal"
 )
 
 var _ = Describe("Valueprovider Reconcile", func() {

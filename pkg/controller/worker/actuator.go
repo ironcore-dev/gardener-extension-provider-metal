@@ -18,8 +18,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/cluster"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
-	api "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/helper"
+	api "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal/helper"
 )
 
 type delegateFactory struct {

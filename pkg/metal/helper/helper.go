@@ -8,8 +8,8 @@ import (
 
 	"k8s.io/utils/ptr"
 
-	api "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
-	apiv1alpha1 "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/v1alpha1"
+	api "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal"
+	apiv1alpha1 "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal/v1alpha1"
 )
 
 // FindMachineImage takes a list of machine images and tries to find the first entry

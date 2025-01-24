@@ -12,7 +12,7 @@ package v1alpha1
 import (
 	unsafe "unsafe"
 
-	metal "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
+	metal "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal"
 	v1 "k8s.io/api/core/v1"
 	conversion "k8s.io/apimachinery/pkg/conversion"
 	runtime "k8s.io/apimachinery/pkg/runtime"

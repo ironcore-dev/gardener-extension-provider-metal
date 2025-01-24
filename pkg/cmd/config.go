@@ -9,8 +9,8 @@ import (
 	healthcheckconfig "github.com/gardener/gardener/extensions/pkg/apis/config"
 	"github.com/spf13/pflag"
 
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/config"
-	configloader "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/config/loader"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/config"
+	configloader "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/config/loader"
 )
 
 // ConfigOptions are command line options that can be set for config.ControllerConfiguration.

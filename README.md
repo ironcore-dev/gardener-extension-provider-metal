@@ -1,7 +1,7 @@
 # [Gardener Extension for IronCore Metal API provider](https://gardener.cloud)
 
-[![REUSE status](https://api.reuse.software/badge/github.com/ironcore-dev/gardener-extension-provider-metal)](https://api.reuse.software/info/github.com/ironcore-dev/gardener-extension-provider-metal)
-[![Go Report Card](https://goreportcard.com/badge/github.com/ironcore-dev/gardener-extension-provider-metal)](https://goreportcard.com/report/github.com/ironcore-dev/gardener-extension-provider-metal)
+[![REUSE status](https://api.reuse.software/badge/github.com/ironcore-dev/gardener-extension-provider-ironcore-metal)](https://api.reuse.software/info/github.com/ironcore-dev/gardener-extension-provider-ironcore-metal)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ironcore-dev/gardener-extension-provider-ironcore-metal)](https://goreportcard.com/report/github.com/ironcore-dev/gardener-extension-provider-ironcore-metal)
 [![GitHub License](https://img.shields.io/static/v1?label=License&message=Apache-2.0&color=blue)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 
@@ -40,7 +40,7 @@ Static code checks and tests can be executed by running `make verify`. We are us
 
 ## Feedback and Support
 
-Feedback and contributions are always welcome. Please report bugs or suggestions as [GitHub issues](https://github.com/ironcore-dev/gardener-extension-provider-metal/issues) or join our [Slack channel #gardener](https://kubernetes.slack.com/messages/gardener) (please invite yourself to the Kubernetes workspace [here](http://slack.k8s.io)).
+Feedback and contributions are always welcome. Please report bugs or suggestions as [GitHub issues](https://github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/issues) or join our [Slack channel #gardener](https://kubernetes.slack.com/messages/gardener) (please invite yourself to the Kubernetes workspace [here](http://slack.k8s.io)).
 
 ## Learn more!
 

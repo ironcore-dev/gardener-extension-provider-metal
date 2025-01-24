@@ -12,7 +12,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/equality"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	metalvalidation "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/validation"
+	metalvalidation "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal/validation"
 )
 
 type secret struct{}

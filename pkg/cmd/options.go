@@ -14,12 +14,12 @@ import (
 	webhookcmd "github.com/gardener/gardener/extensions/pkg/webhook/cmd"
 	extensioncontrolplanewebhook "github.com/gardener/gardener/extensions/pkg/webhook/controlplane"
 
-	controlplanecontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/controlplane"
-	healthcheckcontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/healthcheck"
-	infrastructurecontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/infrastructure"
-	workercontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/worker"
-	cloudproviderwebhook "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/webhook/cloudprovider"
-	controlplanewebhook "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/webhook/controlplane"
+	controlplanecontroller "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/controller/controlplane"
+	healthcheckcontroller "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/controller/healthcheck"
+	infrastructurecontroller "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/controller/infrastructure"
+	workercontroller "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/controller/worker"
+	cloudproviderwebhook "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/webhook/cloudprovider"
+	controlplanewebhook "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/webhook/controlplane"
 )
 
 // ControllerSwitchOptions are the controllercmd.SwitchOptions for the provider controllers.

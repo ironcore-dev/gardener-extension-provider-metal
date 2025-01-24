@@ -4,4 +4,4 @@
 // +k8s:deepcopy-gen=package
 // +groupName="metal.provider.extensions.config.gardener.cloud"
 
-package config // import "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/config"
+package config // import "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/config"

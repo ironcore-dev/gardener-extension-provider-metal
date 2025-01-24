@@ -18,8 +18,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
-	apismetal "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
+	apismetal "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/metal"
 )
 
 // NewEnsurer creates cloudprovider ensurer.

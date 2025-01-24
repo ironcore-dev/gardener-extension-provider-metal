@@ -17,7 +17,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/admission/validator"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/admission/validator"
 )
 
 var _ = Describe("SecretBinding validator", func() {

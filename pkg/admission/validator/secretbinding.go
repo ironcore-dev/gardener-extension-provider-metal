@@ -14,7 +14,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
-	metalvalidation "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/validation"
+	metalvalidation "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal/validation"
 )
 
 type secretBinding struct {

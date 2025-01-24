@@ -14,7 +14,7 @@ import (
 
 	apisconfig "github.com/gardener/gardener/extensions/pkg/apis/config"
 	apisconfigv1alpha1 "github.com/gardener/gardener/extensions/pkg/apis/config/v1alpha1"
-	config "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/config"
+	config "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/config"
 	resource "k8s.io/apimachinery/pkg/api/resource"
 	conversion "k8s.io/apimachinery/pkg/conversion"
 	runtime "k8s.io/apimachinery/pkg/runtime"

@@ -21,7 +21,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/tools/clientcmd"
 
-	api "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
+	api "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal"
 )
 
 const namespace = "test"

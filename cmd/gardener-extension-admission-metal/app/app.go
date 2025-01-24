@@ -27,9 +27,9 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
-	admissioncmd "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/admission/cmd"
-	metalinstall "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/install"
-	providermetal "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
+	admissioncmd "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/admission/cmd"
+	metalinstall "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal/install"
+	providermetal "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/metal"
 )
 
 // AdmissionName is the name of the admission component.

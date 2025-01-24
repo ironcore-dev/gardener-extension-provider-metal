@@ -29,13 +29,13 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
-	metalinstall "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/install"
-	metalcmd "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/cmd"
-	metalcontrolplane "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/controlplane"
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/healthcheck"
-	infrastructurecontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/infrastructure"
-	workercontroller "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/controller/worker"
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
+	metalinstall "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal/install"
+	metalcmd "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/cmd"
+	metalcontrolplane "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/controller/controlplane"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/controller/healthcheck"
+	infrastructurecontroller "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/controller/infrastructure"
+	workercontroller "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/controller/worker"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/metal"
 )
 
 // NewControllerManagerCommand creates a new command for running a metal provider controller.

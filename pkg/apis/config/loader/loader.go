@@ -11,8 +11,8 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/serializer/json"
 	"k8s.io/apimachinery/pkg/runtime/serializer/versioning"
 
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/config"
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/config/install"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/config"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/config/install"
 )
 
 var (

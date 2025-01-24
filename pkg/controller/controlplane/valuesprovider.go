@@ -32,10 +32,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
-	"github.com/ironcore-dev/gardener-extension-provider-metal/charts"
-	apismetal "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/internal"
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/charts"
+	apismetal "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/internal"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/metal"
 )
 
 const (

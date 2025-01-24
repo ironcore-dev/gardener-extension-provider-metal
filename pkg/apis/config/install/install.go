@@ -7,8 +7,8 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/config"
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/config/v1alpha1"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/config"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/config/v1alpha1"
 )
 
 var (

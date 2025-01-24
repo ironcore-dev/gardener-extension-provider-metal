@@ -13,8 +13,8 @@ import (
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	api "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/install"
+	api "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal/install"
 )
 
 var (

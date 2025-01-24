@@ -6,4 +6,4 @@
 
 //go:generate ../../../hack/update-codegen.sh
 
-package metal // import "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
+package metal // import "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal"

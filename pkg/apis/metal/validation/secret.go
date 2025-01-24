@@ -9,7 +9,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	apivalidation "k8s.io/apimachinery/pkg/api/validation"
 
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/metal"
 )
 
 // ValidateCloudProviderSecret checks whether the given secret contains a valid metal service account.

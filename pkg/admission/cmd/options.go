@@ -6,7 +6,7 @@ package cmd
 import (
 	webhookcmd "github.com/gardener/gardener/extensions/pkg/webhook/cmd"
 
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/admission/validator"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/admission/validator"
 )
 
 // GardenWebhookSwitchOptions are the webhookcmd.SwitchOptions for the admission webhooks.

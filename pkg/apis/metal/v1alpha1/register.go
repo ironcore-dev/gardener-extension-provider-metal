@@ -9,7 +9,7 @@ import (
 )
 
 // GroupName is the group name use in this package
-const GroupName = "metal.provider.extensions.gardener.cloud"
+const GroupName = "ironcore-metal.provider.extensions.gardener.cloud"
 
 // SchemeGroupVersion is group version used to register these objects
 var SchemeGroupVersion = schema.GroupVersion{Group: GroupName, Version: "v1alpha1"}

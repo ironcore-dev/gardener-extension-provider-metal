@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: gardener-extension-provider-metal
 Upstream-Contact: IronCore authors <ospo@sap.com>
-Source: https://github.com/ironcore-dev/gardener-extension-provider-metal
+Source: https://github.com/ironcore-dev/gardener-extension-provider-ironcore-metal
 
 # --------------------------------------------------
 # source code

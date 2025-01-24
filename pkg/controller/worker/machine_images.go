@@ -14,8 +14,8 @@ import (
 	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	apiv1alpha1 "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/v1alpha1"
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/metal/helper"
+	apiv1alpha1 "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal/v1alpha1"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/metal/helper"
 )
 
 // UpdateMachineImagesStatus updates the machine image status

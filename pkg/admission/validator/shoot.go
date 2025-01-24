@@ -17,9 +17,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
-	"github.com/ironcore-dev/gardener-extension-provider-metal/pkg/admission"
-	apismetal "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal"
-	metalvalidation "github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/validation"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/admission"
+	apismetal "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal"
+	metalvalidation "github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/pkg/apis/metal/validation"
 )
 
 type shoot struct {

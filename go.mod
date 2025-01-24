@@ -1,4 +1,4 @@
-module github.com/ironcore-dev/gardener-extension-provider-metal
+module github.com/ironcore-dev/gardener-extension-provider-ironcore-metal
 
 go 1.23.0
 

@@ -10,7 +10,7 @@ import (
 	runtimelog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 
-	"github.com/ironcore-dev/gardener-extension-provider-metal/cmd/gardener-extension-provider-metal/app"
+	"github.com/ironcore-dev/gardener-extension-provider-ironcore-metal/cmd/gardener-extension-provider-metal/app"
 )
 
 func main() {
