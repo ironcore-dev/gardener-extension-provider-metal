@@ -1,18 +1,18 @@
 <p>Packages:</p>
 <ul>
 <li>
-<a href="#metal.provider.extensions.config.gardener.cloud%2fv1alpha1">metal.provider.extensions.config.gardener.cloud/v1alpha1</a>
+<a href="#ironcore-metal.provider.extensions.config.gardener.cloud%2fv1alpha1">ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1</a>
 </li>
 </ul>
-<h2 id="metal.provider.extensions.config.gardener.cloud/v1alpha1">metal.provider.extensions.config.gardener.cloud/v1alpha1</h2>
+<h2 id="ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1">ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1</h2>
 <p>
 <p>Package v1alpha1 contains the metal provider configuration API resources.</p>
 </p>
 Resource Types:
 <ul><li>
-<a href="#metal.provider.extensions.config.gardener.cloud/v1alpha1.ControllerConfiguration">ControllerConfiguration</a>
+<a href="#ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1.ControllerConfiguration">ControllerConfiguration</a>
 </li></ul>
-<h3 id="metal.provider.extensions.config.gardener.cloud/v1alpha1.ControllerConfiguration">ControllerConfiguration
+<h3 id="ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1.ControllerConfiguration">ControllerConfiguration
 </h3>
 <p>
 <p>ControllerConfiguration defines the configuration for the metal provider.</p>
@@ -31,7 +31,7 @@ Resource Types:
 string</td>
 <td>
 <code>
-metal.provider.extensions.config.gardener.cloud/v1alpha1
+ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1
 </code>
 </td>
 </tr>
@@ -61,7 +61,7 @@ settings for the proxy server to use when communicating with the apiserver.</p>
 <td>
 <code>etcd</code></br>
 <em>
-<a href="#metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCD">
+<a href="#ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCD">
 ETCD
 </a>
 </em>
@@ -100,11 +100,11 @@ Default: nil</p>
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCD">ETCD
+<h3 id="ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCD">ETCD
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.config.gardener.cloud/v1alpha1.ControllerConfiguration">ControllerConfiguration</a>)
+<a href="#ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1.ControllerConfiguration">ControllerConfiguration</a>)
 </p>
 <p>
 <p>ETCD is an etcd configuration.</p>
@@ -121,7 +121,7 @@ Default: nil</p>
 <td>
 <code>storage</code></br>
 <em>
-<a href="#metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCDStorage">
+<a href="#ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCDStorage">
 ETCDStorage
 </a>
 </em>
@@ -134,7 +134,7 @@ ETCDStorage
 <td>
 <code>backup</code></br>
 <em>
-<a href="#metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCDBackup">
+<a href="#ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCDBackup">
 ETCDBackup
 </a>
 </em>
@@ -145,11 +145,11 @@ ETCDBackup
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCDBackup">ETCDBackup
+<h3 id="ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCDBackup">ETCDBackup
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCD">ETCD</a>)
+<a href="#ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCD">ETCD</a>)
 </p>
 <p>
 <p>ETCDBackup is an etcd backup configuration.</p>
@@ -176,11 +176,11 @@ string
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCDStorage">ETCDStorage
+<h3 id="ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCDStorage">ETCDStorage
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCD">ETCD</a>)
+<a href="#ironcore-metal.provider.extensions.config.gardener.cloud/v1alpha1.ETCD">ETCD</a>)
 </p>
 <p>
 <p>ETCDStorage is an etcd storage configuration.</p>

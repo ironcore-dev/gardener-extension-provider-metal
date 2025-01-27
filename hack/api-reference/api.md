@@ -353,6 +353,20 @@ bool
 <p>ConfigureNodeAddresses enables the configuration of node addresses.</p>
 </td>
 </tr>
+<tr>
+<td>
+<code>ipamKind</code></br>
+<em>
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.IPAMKind">
+IPAMKind
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>IPAMKind enables the IPAM integration.</p>
+</td>
+</tr>
 </tbody>
 </table>
 <h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.IPAMConfig">IPAMConfig
@@ -394,6 +408,47 @@ IPAMObjectReference
 </td>
 <td>
 <p>IPAMRef is a reference to the IPAM object, which will be used for IP allocation.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.IPAMKind">IPAMKind
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerNetworking">CloudControllerNetworking</a>)
+</p>
+<p>
+<p>IPAMKind specifiers the IPAM objects in-use.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>apiGroup</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>APIGroup is the resource group.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>kind</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Kind is the resource type.</p>
 </td>
 </tr>
 </tbody>
