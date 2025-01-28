@@ -1,20 +1,20 @@
 <p>Packages:</p>
 <ul>
 <li>
-<a href="#metal.provider.extensions.gardener.cloud%2fv1alpha1">metal.provider.extensions.gardener.cloud/v1alpha1</a>
+<a href="#ironcore-metal.provider.extensions.gardener.cloud%2fv1alpha1">ironcore-metal.provider.extensions.gardener.cloud/v1alpha1</a>
 </li>
 </ul>
-<h2 id="metal.provider.extensions.gardener.cloud/v1alpha1">metal.provider.extensions.gardener.cloud/v1alpha1</h2>
+<h2 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1">ironcore-metal.provider.extensions.gardener.cloud/v1alpha1</h2>
 <p>
 <p>Package v1alpha1 contains the metal provider API resources.</p>
 </p>
 Resource Types:
 <ul><li>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CloudProfileConfig">CloudProfileConfig</a>
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.CloudProfileConfig">CloudProfileConfig</a>
 </li><li>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.ControlPlaneConfig">ControlPlaneConfig</a>
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.ControlPlaneConfig">ControlPlaneConfig</a>
 </li></ul>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.CloudProfileConfig">CloudProfileConfig
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.CloudProfileConfig">CloudProfileConfig
 </h3>
 <p>
 <p>CloudProfileConfig contains provider-specific configuration that is embedded into Gardener&rsquo;s <code>CloudProfile</code>
@@ -34,7 +34,7 @@ resource.</p>
 string</td>
 <td>
 <code>
-metal.provider.extensions.gardener.cloud/v1alpha1
+ironcore-metal.provider.extensions.gardener.cloud/v1alpha1
 </code>
 </td>
 </tr>
@@ -49,7 +49,7 @@ string
 <td>
 <code>machineImages</code></br>
 <em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.MachineImages">
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.MachineImages">
 []MachineImages
 </a>
 </em>
@@ -63,7 +63,7 @@ logical names and versions to provider-specific identifiers.</p>
 <td>
 <code>regionConfigs</code></br>
 <em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.RegionConfig">
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.RegionConfig">
 []RegionConfig
 </a>
 </em>
@@ -76,7 +76,7 @@ logical names and versions to provider-specific identifiers.</p>
 <td>
 <code>machineTypes</code></br>
 <em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.MachineType">
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.MachineType">
 []MachineType
 </a>
 </em>
@@ -86,7 +86,7 @@ logical names and versions to provider-specific identifiers.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.ControlPlaneConfig">ControlPlaneConfig
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.ControlPlaneConfig">ControlPlaneConfig
 </h3>
 <p>
 <p>ControlPlaneConfig contains configuration settings for the control plane.</p>
@@ -105,7 +105,7 @@ logical names and versions to provider-specific identifiers.</p>
 string</td>
 <td>
 <code>
-metal.provider.extensions.gardener.cloud/v1alpha1
+ironcore-metal.provider.extensions.gardener.cloud/v1alpha1
 </code>
 </td>
 </tr>
@@ -120,7 +120,7 @@ string
 <td>
 <code>cloudControllerManager</code></br>
 <em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerManagerConfig">
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerManagerConfig">
 CloudControllerManagerConfig
 </a>
 </em>
@@ -134,7 +134,7 @@ CloudControllerManagerConfig
 <td>
 <code>loadBalancerConfig</code></br>
 <em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.LoadBalancerConfig">
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.LoadBalancerConfig">
 LoadBalancerConfig
 </a>
 </em>
@@ -146,50 +146,11 @@ LoadBalancerConfig
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.AddressesFromNetworks">AddressesFromNetworks
-</h3>
-<p>
-<p>AddressesFromNetworks is a reference to a network resource.</p>
-</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>key</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>Key is the name of metadata key for the network.</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>subnetRef</code></br>
-<em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.SubnetRef">
-SubnetRef
-</a>
-</em>
-</td>
-<td>
-<p>SubnetRef is a reference to the IP subnet.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.BgpPeer">BgpPeer
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.BgpPeer">BgpPeer
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CalicoBgpConfig">CalicoBgpConfig</a>)
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.CalicoBgpConfig">CalicoBgpConfig</a>)
 </p>
 <p>
 <p>BgpPeer contains configuration for BGPPeer resource.</p>
@@ -238,11 +199,11 @@ string
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.CalicoBgpConfig">CalicoBgpConfig
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.CalicoBgpConfig">CalicoBgpConfig
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.LoadBalancerConfig">LoadBalancerConfig</a>)
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.LoadBalancerConfig">LoadBalancerConfig</a>)
 </p>
 <p>
 <p>CalicoBgpConfig contains BGP configuration settings for calico.</p>
@@ -306,7 +267,7 @@ int
 <td>
 <code>bgpPeer</code></br>
 <em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.BgpPeer">
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.BgpPeer">
 []BgpPeer
 </a>
 </em>
@@ -318,11 +279,11 @@ int
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerManagerConfig">CloudControllerManagerConfig
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerManagerConfig">CloudControllerManagerConfig
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.ControlPlaneConfig">ControlPlaneConfig</a>)
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.ControlPlaneConfig">ControlPlaneConfig</a>)
 </p>
 <p>
 <p>CloudControllerManagerConfig contains configuration settings for the cloud-controller-manager.</p>
@@ -351,7 +312,7 @@ map[string]bool
 <td>
 <code>networking</code></br>
 <em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerNetworking">
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerNetworking">
 CloudControllerNetworking
 </a>
 </em>
@@ -363,11 +324,11 @@ CloudControllerNetworking
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerNetworking">CloudControllerNetworking
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerNetworking">CloudControllerNetworking
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerManagerConfig">CloudControllerManagerConfig</a>)
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.CloudControllerManagerConfig">CloudControllerManagerConfig</a>)
 </p>
 <p>
 <p>CloudControllerNetworking contains configuration settings for CCM networking.</p>
@@ -394,11 +355,106 @@ bool
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.IgnitionConfig">IgnitionConfig
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.IPAMConfig">IPAMConfig
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.WorkerConfig">WorkerConfig</a>)
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.WorkerConfig">WorkerConfig</a>)
+</p>
+<p>
+<p>IPAMConfig is a reference to an IPAM resource.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>metadataKey</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>MetadataKey is the name of metadata key for the network.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>ipamRef</code></br>
+<em>
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.IPAMObjectReference">
+IPAMObjectReference
+</a>
+</em>
+</td>
+<td>
+<p>IPAMRef is a reference to the IPAM object, which will be used for IP allocation.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.IPAMObjectReference">IPAMObjectReference
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.IPAMConfig">IPAMConfig</a>)
+</p>
+<p>
+<p>IPAMObjectReference is a reference to the IPAM object, which will be used for IP allocation.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>name</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Name is the name of resource being referenced.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>apiGroup</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>APIGroup is the group for the resource being referenced.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>kind</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Kind is the type of resource being referenced.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.IgnitionConfig">IgnitionConfig
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.WorkerConfig">WorkerConfig</a>)
 </p>
 <p>
 <p>IgnitionConfig contains ignition settings.</p>
@@ -452,7 +508,7 @@ by extra ignition.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.InfrastructureConfig">InfrastructureConfig
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.InfrastructureConfig">InfrastructureConfig
 </h3>
 <p>
 <p>InfrastructureConfig infrastructure configuration resource</p>
@@ -469,7 +525,7 @@ by extra ignition.</p>
 <td>
 <code>networks</code></br>
 <em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.Networks">
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.Networks">
 []Networks
 </a>
 </em>
@@ -481,7 +537,7 @@ by extra ignition.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.InfrastructureStatus">InfrastructureStatus
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.InfrastructureStatus">InfrastructureStatus
 </h3>
 <p>
 <p>InfrastructureStatus contains information about created infrastructure resources.</p>
@@ -496,11 +552,11 @@ by extra ignition.</p>
 <tbody>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.LoadBalancerConfig">LoadBalancerConfig
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.LoadBalancerConfig">LoadBalancerConfig
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.ControlPlaneConfig">ControlPlaneConfig</a>)
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.ControlPlaneConfig">ControlPlaneConfig</a>)
 </p>
 <p>
 <p>LoadBalancerConfig contains configuration settings for the shoot loadbalancing.</p>
@@ -517,7 +573,7 @@ by extra ignition.</p>
 <td>
 <code>metallbConfig</code></br>
 <em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.MetallbConfig">
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.MetallbConfig">
 MetallbConfig
 </a>
 </em>
@@ -531,7 +587,7 @@ MetallbConfig
 <td>
 <code>calicoBgpConfig</code></br>
 <em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CalicoBgpConfig">
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.CalicoBgpConfig">
 CalicoBgpConfig
 </a>
 </em>
@@ -543,11 +599,11 @@ CalicoBgpConfig
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.MachineImage">MachineImage
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.MachineImage">MachineImage
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.WorkerStatus">WorkerStatus</a>)
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.WorkerStatus">WorkerStatus</a>)
 </p>
 <p>
 <p>MachineImage is a mapping from logical names and versions to metal-specific identifiers.</p>
@@ -607,11 +663,11 @@ string
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.MachineImageVersion">MachineImageVersion
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.MachineImageVersion">MachineImageVersion
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.MachineImages">MachineImages</a>)
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.MachineImages">MachineImages</a>)
 </p>
 <p>
 <p>MachineImageVersion contains a version and a provider-specific identifier.</p>
@@ -660,11 +716,11 @@ string
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.MachineImages">MachineImages
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.MachineImages">MachineImages
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CloudProfileConfig">CloudProfileConfig</a>)
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.CloudProfileConfig">CloudProfileConfig</a>)
 </p>
 <p>
 <p>MachineImages is a mapping from logical names and versions to provider-specific identifiers.</p>
@@ -692,7 +748,7 @@ string
 <td>
 <code>versions</code></br>
 <em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.MachineImageVersion">
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.MachineImageVersion">
 []MachineImageVersion
 </a>
 </em>
@@ -703,11 +759,11 @@ string
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.MachineType">MachineType
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.MachineType">MachineType
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CloudProfileConfig">CloudProfileConfig</a>)
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.CloudProfileConfig">CloudProfileConfig</a>)
 </p>
 <p>
 </p>
@@ -741,11 +797,11 @@ map[string]string
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.MetallbConfig">MetallbConfig
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.MetallbConfig">MetallbConfig
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.LoadBalancerConfig">LoadBalancerConfig</a>)
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.LoadBalancerConfig">LoadBalancerConfig</a>)
 </p>
 <p>
 <p>MetallbConfig contains configuration settings for metallb.</p>
@@ -796,11 +852,11 @@ bool
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.Networks">Networks
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.Networks">Networks
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.InfrastructureConfig">InfrastructureConfig</a>)
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.InfrastructureConfig">InfrastructureConfig</a>)
 </p>
 <p>
 <p>Networks holds information about the Kubernetes and infrastructure networks.</p>
@@ -849,11 +905,11 @@ string
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.RegionConfig">RegionConfig
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.RegionConfig">RegionConfig
 </h3>
 <p>
 (<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.CloudProfileConfig">CloudProfileConfig</a>)
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.CloudProfileConfig">CloudProfileConfig</a>)
 </p>
 <p>
 <p>RegionConfig is the definition of a region.</p>
@@ -901,59 +957,7 @@ string
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.SubnetRef">SubnetRef
-</h3>
-<p>
-(<em>Appears on:</em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.AddressesFromNetworks">AddressesFromNetworks</a>)
-</p>
-<p>
-<p>SubnetRef is a reference to the IP subnet.</p>
-</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>name</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>Name is the name of the network.</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>apiGroup</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>APIGroup is the group of the IP pool</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>kind</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>Kind is the kind of the IP pool</p>
-</td>
-</tr>
-</tbody>
-</table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.WorkerConfig">WorkerConfig
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.WorkerConfig">WorkerConfig
 </h3>
 <p>
 <p>WorkerConfig contains configuration settings for the worker nodes.</p>
@@ -970,7 +974,7 @@ string
 <td>
 <code>extraIgnition</code></br>
 <em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.IgnitionConfig">
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.IgnitionConfig">
 IgnitionConfig
 </a>
 </em>
@@ -994,33 +998,33 @@ map[string]string
 </tr>
 <tr>
 <td>
-<code>addressesFromNetworks</code></br>
+<code>ipamConfig</code></br>
 <em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.*github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/v1alpha1.AddressesFromNetworks">
-[]*github.com/ironcore-dev/gardener-extension-provider-metal/pkg/apis/metal/v1alpha1.AddressesFromNetworks
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.IPAMConfig">
+[]IPAMConfig
 </a>
 </em>
 </td>
 <td>
 <em>(Optional)</em>
-<p>AddressesFromNetworks is a list of references to Network resources that should be used to assign IP addresses to the worker nodes.</p>
+<p>IPAMConfig is a list of references to Network resources that should be used to assign IP addresses to the worker nodes.</p>
 </td>
 </tr>
 <tr>
 <td>
-<code>metaData</code></br>
+<code>metadata</code></br>
 <em>
 map[string]string
 </em>
 </td>
 <td>
 <em>(Optional)</em>
-<p>MedaData is a key-value map of additional data which should be passed to the Machine.</p>
+<p>Metadata is a key-value map of additional data which should be passed to the Machine.</p>
 </td>
 </tr>
 </tbody>
 </table>
-<h3 id="metal.provider.extensions.gardener.cloud/v1alpha1.WorkerStatus">WorkerStatus
+<h3 id="ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.WorkerStatus">WorkerStatus
 </h3>
 <p>
 <p>WorkerStatus contains information about created worker resources.</p>
@@ -1037,7 +1041,7 @@ map[string]string
 <td>
 <code>machineImages</code></br>
 <em>
-<a href="#metal.provider.extensions.gardener.cloud/v1alpha1.MachineImage">
+<a href="#ironcore-metal.provider.extensions.gardener.cloud/v1alpha1.MachineImage">
 []MachineImage
 </a>
 </em>
