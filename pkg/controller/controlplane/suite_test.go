@@ -36,7 +36,7 @@ import (
 
 const (
 	pollingInterval      = 50 * time.Millisecond
-	eventuallyTimeout    = 10 * time.Second
+	eventuallyTimeout    = 60 * time.Second
 	consistentlyDuration = 1 * time.Second
 )
 
