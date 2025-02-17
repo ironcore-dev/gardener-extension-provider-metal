@@ -8,15 +8,19 @@ metadata:
   name: bgpfilter-{{ $filter.name }}
 spec:
   {{- if $filter.exportV4 }}
+  exportV4:
   {{- toYaml $filter.exportV4 | nindent 2 }}
   {{- end }}
   {{- if $filter.importV4 }}
+  importV4:
   {{- toYaml $filter.importV4 | nindent 2 }}
   {{- end }}
   {{- if $filter.exportV6 }}
+  exportV6:
   {{- toYaml $filter.exportV6 | nindent 2 }}
   {{- end }}
   {{- if $filter.importV6 }}
+  importV6:
   {{- toYaml $filter.importV6 | nindent 2 }}
   {{- end }}
 {{- end }}

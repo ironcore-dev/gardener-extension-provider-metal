@@ -14,7 +14,7 @@ spec:
   peerIP: {{ $peer.peerIP }}
   {{- if $peer.filters }}
   filters:
-  {{- toYaml $filter.peer.filters | nindent 2 }}
+  {{- toYaml $peer.filters | nindent 2 }}
   {{- end }}
 {{- end }}
 {{- end }}
