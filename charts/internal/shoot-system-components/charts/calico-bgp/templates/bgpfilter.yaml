@@ -5,7 +5,7 @@
 apiVersion: crd.projectcalico.org/v1
 kind: BGPFilter
 metadata:
-  name: bgpfilter-{{ $filter.name }}
+  name: {{ $filter.name }}
 spec:
   {{- if $filter.exportV4 }}
   exportV4:
